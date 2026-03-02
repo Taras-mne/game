@@ -1,4 +1,5 @@
 function love.load()
+    require("rendering_system")
     require("tiling_system")
     love.graphics.setFont(love.graphics.newFont(20))
 

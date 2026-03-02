@@ -18,31 +18,40 @@ TILE_SIZE = {
     h= 32
 }
 
-TILE_NAMES = {
-    A= {x=1,y=1},
-    B= {x=2,y=1},
-    C= {x=1,y=2},
-    D= {x=2,y=2},
-    Grass=  {y=1,x=3},
-    Water=  {y=1,x=4},
-    Lava=   {y=2,x=3},
-    Spikes= {y=2,x=4},
+TILE_NAMES = { --needed to fill TILESET table, removed after
+    A= {x=1, y=1, atlas="ass"},
+    B= {x=2, y=1, atlas="ass" },
+    C= {x=1,y=2, atlas="ass"},
+    D= {x=2,y=2, atlas="ass"},
+    Grass=  {y=1, x=3, atlas="fbf"},
+    Water=  {y=1, x=4, atlas="fbf"},
+    Lava=   {y=2, x=3, atlas="fbf"},
+    Spikes= {y=2, x=4, atlas="fbf"}
+}
+
+TILE_ATLASES = {
+    fbf= "pics/5by5template.png",
+    ass= "pics/nigg.png"
 }
 
 TILESET = {}
 
-TILE_ATLAS = nil
-
 function load_tilesets()
-    TILE_ATLAS = love.graphics.newImage("pics/5by5template.png")
+    for key, path in pairs(TILE_ATLASES) do
+        TILE_ATLASES[key] = love.graphics.newImage(path)
+    end
     for name, coords in pairs(TILE_NAMES) do
         local src_x = (coords.x - 1) * TILE_SIZE.w
         local src_y = (coords.y - 1) * TILE_SIZE.h
 
-        local tile_quad = love.graphics.newQuad(src_x, src_y, TILE_SIZE.w, TILE_SIZE.h, TILE_ATLAS:getDimensions())
+        local tile_quad = love.graphics.newQuad(src_x, src_y, TILE_SIZE.w, TILE_SIZE.h, TILE_ATLASES[coords.atlas]:getDimensions())
 
-        TILESET[name] = tile_quad 
+        TILESET[name] = {
+            quad= tile_quad,
+            atlas= coords.atlas
+        } 
     end
+    TILE_NAMES = nil
 end
 
 function make_tilemap(w,h,bg_t,name)
@@ -208,9 +217,9 @@ function draw_tilemap(tilemap, x, y)
     for _, column in ipairs(tiles) do
         local h_sh = 0
         for _, value in ipairs(column) do
-            local tile_quad = TILESET[value]
-            if tile_quad then
-                love.graphics.draw(TILE_ATLAS, tile_quad, h_sh + x, v_sh + y)
+            local tile = TILESET[value]
+            if tile then
+                draw_tile(tile, h_sh + x, v_sh + y)
             end
 
             h_sh = h_sh + TILE_SIZE.w
