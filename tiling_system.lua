@@ -29,11 +29,20 @@ TILE_NAMES = {
     Spikes= {y=2,x=4},
 }
 
-TILESET = nil
+TILESET = {}
+
+TILE_ATLAS = nil
 
 function load_tilesets()
-    --todo - cut it all up b4hand
-    TILESET = love.graphics.newImage("pics/5by5template.png")
+    TILE_ATLAS = love.graphics.newImage("pics/5by5template.png")
+    for name, coords in pairs(TILE_NAMES) do
+        local src_x = (coords.x - 1) * TILE_SIZE.w
+        local src_y = (coords.y - 1) * TILE_SIZE.h
+
+        local tile_quad = love.graphics.newQuad(src_x, src_y, TILE_SIZE.w, TILE_SIZE.h, TILE_ATLAS:getDimensions())
+
+        TILESET[name] = tile_quad 
+    end
 end
 
 function make_tilemap(w,h,bg_t,name)
@@ -156,7 +165,6 @@ function read_tilemap(filename)
             --TODO: prob should parse next 3 tokens but
         elseif tonumber(tokens[i]) == nil then
             tile = tokens[i]
-            print(tile)
         else
             local x = tonumber(tokens[i])
             local y = tonumber(tokens[i+1])
@@ -200,14 +208,9 @@ function draw_tilemap(tilemap, x, y)
     for _, column in ipairs(tiles) do
         local h_sh = 0
         for _, value in ipairs(column) do
-            local tile_coords = TILE_NAMES[value]
-            if tile_coords then
-                local src_x = (tile_coords.x - 1) * TILE_SIZE.w
-                local src_y = (tile_coords.y - 1) * TILE_SIZE.h
-
-                local tile_quad = love.graphics.newQuad(src_x, src_y, TILE_SIZE.w, TILE_SIZE.h, TILESET:getDimensions())
-                
-                love.graphics.draw(TILESET, tile_quad, h_sh + x, v_sh + y)
+            local tile_quad = TILESET[value]
+            if tile_quad then
+                love.graphics.draw(TILE_ATLAS, tile_quad, h_sh + x, v_sh + y)
             end
 
             h_sh = h_sh + TILE_SIZE.w
