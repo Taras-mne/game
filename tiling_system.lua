@@ -168,19 +168,18 @@ function read_tilemap(filename)
     end
     local tile = tilemap.bg_t
     repeat
-        if tokens[i] == ")" 
-        or tokens[i] == "(" then
-            --nothing
-            --TODO: prob should parse next 3 tokens but
+        if tokens[i] == "(" then
+            assert(tokens[i+3] == ")", "closing bracket expected")
+            local x = tonumber(tokens[i+1])
+            local y = tonumber(tokens[i+2])
+            tilemap.tiles[x][y] = tile
+            i = i + 4
         elseif tonumber(tokens[i]) == nil then
             tile = tokens[i]
-        else
-            local x = tonumber(tokens[i])
-            local y = tonumber(tokens[i+1])
-            tilemap.tiles[x][y] = tile
             i = i + 1
+        else
+            assert(false, "unexpected token recieved: " .. tokens[i])
         end
-        i = i + 1
     until i >= #tokens
     return tilemap
 end
