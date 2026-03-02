@@ -108,7 +108,7 @@ function upload_tilemap(tilemap)
         file_s = file_s .. "\n"
     end
 
-    local file = io.open(tilemap.name .. ".txt", "w")
+    local file = io.open("o_maps/".. tilemap.name .. ".txt", "w")
     if file then
         file:write(file_s)
         file:close()
@@ -149,7 +149,7 @@ function tokenize(file_str)
 end 
 
 function read_tilemap(filename)
-    local file = assert(io.open(filename, "rb"))
+    local file = assert(io.open("maps/".. filename, "rb"))
     local content = file:read("*all")
     file:close()
     local tokens = tokenize(content)
