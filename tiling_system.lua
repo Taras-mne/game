@@ -47,6 +47,7 @@ function load_tilesets()
         local tile_quad = love.graphics.newQuad(src_x, src_y, TILE_SIZE.w, TILE_SIZE.h, TILE_ATLASES[coords.atlas]:getDimensions())
 
         TILESET[name] = {
+            name= name,
             quad= tile_quad,
             atlas= coords.atlas
         } 

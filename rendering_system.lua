@@ -1,3 +1,15 @@
+DRAW_QUEUE = {}
+
+function draw_all()
+    for key,call in pairs(DRAW_QUEUE) do
+        call()
+    end
+end
+
+function draw_call_add(call)
+    table.insert(DRAW_QUEUE, call)
+end
+
 function draw_tile(tile, x, y)
     love.graphics.draw(TILE_ATLASES[tile.atlas], tile.quad, x, y)
 end

@@ -7,9 +7,11 @@ function check_zones(x, y, button)
 end
 
 function draw_zones()
+    love.graphics.setColor(1, 0, 0, 0.5) 
     for i,foo in pairs(ZONES_OF_INTEREST) do
         foo(0, 0, true)
     end
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 function create_zone(x, y, w, h, callback, name)
