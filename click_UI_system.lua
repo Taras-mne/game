@@ -1,18 +1,18 @@
 ZONES_OF_INTEREST = {}
 
 function check_zones(x, y, button)
-    for i,foo in ipairs(ZONES_OF_INTEREST) do
+    for i,foo in pairs(ZONES_OF_INTEREST) do
         foo(x, y)
     end
 end
 
 function draw_zones()
-    for i,foo in ipairs(ZONES_OF_INTEREST) do
+    for i,foo in pairs(ZONES_OF_INTEREST) do
         foo(0, 0, true)
     end
 end
 
-function create_zone(x, y, w, h, callback)
+function create_zone(x, y, w, h, callback, name)
     local foo = function(c_x, c_y, show)
         if show then
             love.graphics.rectangle("fill", x, y, w, h)
@@ -26,7 +26,12 @@ function create_zone(x, y, w, h, callback)
         then 
             return 
         end
+
         callback()
     end
-    table.insert(ZONES_OF_INTEREST, foo)
+    if name then
+        ZONES_OF_INTEREST[name] = foo
+    else
+        table.insert(ZONES_OF_INTEREST, foo)
+    end
 end 

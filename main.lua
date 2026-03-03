@@ -6,7 +6,7 @@ function love.load()
     load_tilesets()
 
     tilemap = read_tilemap("demo_map.txt") 
-    r_tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
+    -- r_tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
     -- upload_tilemap(tilemap)
     -- upload_tilemap(r_tilemap)
     
@@ -14,32 +14,16 @@ function love.load()
         10, 10, 
         70, 70, 
         function() 
-            love.graphics.setColor(1, 0, 0, 1) 
-        end
+            tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.THREE_QUARTERS)
+        end, "turn_left"
     )
 
     create_zone(
-        100, 10, 
+        110, 10, 
         70, 70, 
         function() 
-            love.graphics.setColor(0, 1, 0, 1) 
-        end
-    )
-
-    create_zone(
-        200, 10, 
-        70, 70, 
-        function() 
-            love.graphics.setColor(0, 0, 1, 1) 
-        end
-    )
-
-    create_zone(
-        300, 10, 
-        70, 70, 
-        function() 
-            love.graphics.setColor(1, 1, 1, 1) 
-        end
+            tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
+        end, "turn_right"
     )
     
     love.window.setMode(1300, 800, {resizable=false, fullscreen=false, vsync=true})
