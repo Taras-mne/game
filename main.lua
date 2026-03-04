@@ -6,15 +6,11 @@ function love.load()
 
     load_tilesets()
 
-    tilemap = read_tilemap("demo_map.txt") 
-    -- r_tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
-    -- upload_tilemap(tilemap)
-    -- upload_tilemap(r_tilemap)
+    tilemap = read_tilemap("demo_map.txt")
     
-    create_palette_i(10, 10)
-    create_tilemap_i(150, 10)
+    window_setup()
     
-    love.window.setMode(1300, 800, {resizable=false, fullscreen=false, vsync=true})
+    love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 end
 
 function love.update(dt)
@@ -22,7 +18,6 @@ end
 
 function love.draw()
     draw_all()
-    
     -- draw_zones()
 end
 

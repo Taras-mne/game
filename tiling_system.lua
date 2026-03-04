@@ -18,15 +18,17 @@ TILE_SIZE = {
     h= 32
 }
 
-TILE_NAMES = { --needed to fill TILESET table, removed after
+TILE_NAMES = {
     A= {x=1, y=1, atlas="ass"},
-    B= {x=2, y=1, atlas="ass" },
-    C= {x=1,y=2, atlas="ass"},
-    D= {x=2,y=2, atlas="ass"},
-    Grass=  {y=1, x=3, atlas="fbf"},
-    Water=  {y=1, x=4, atlas="fbf"},
-    Lava=   {y=2, x=3, atlas="fbf"},
-    Spikes= {y=2, x=4, atlas="fbf"}
+    B= {x=2, y=1, atlas="ass"},
+    C= {x=1, y=2, atlas="ass"},
+    D= {x=2, y=2, atlas="ass"},
+    Grass=    {y=1, x=3, atlas="fbf"},
+    Water=    {y=1, x=4, atlas="fbf"},
+    Lava=     {y=2, x=3, atlas="fbf"},
+    Spikes=   {y=2, x=4, atlas="fbf"},
+    Rot90cw=  {y=5, x=4, atlas="fbf"},
+    Rot90ccw= {y=5, x=5, atlas="fbf"}
 }
 
 TILE_ATLASES = {

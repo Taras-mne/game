@@ -1,5 +1,69 @@
 MEMO = "A"
 
+function window_setup()
+    ZONES_OF_INTEREST = {}
+    DRAW_QUEUE = {}
+    create_palette_i(10, 10)
+    create_tilemap_i(150, 10)
+    buttons_bar_i(550, 10)
+end
+
+function buttons_bar_i(x, y)
+    local padding = 5
+    local margin = 10
+    
+    local rot_R = {
+        x = x + padding,
+        y = y + padding,
+        w = TILE_SIZE.w,
+        h = TILE_SIZE.h,
+        tile = TILESET.Rot90cw
+    }
+    local rot_L = {
+        x = x + rot_R.w + margin + padding,
+        y = y + padding,
+        w = TILE_SIZE.w,
+        h = TILE_SIZE.h,
+        tile = TILESET.Rot90ccw
+    }
+    local rect = {
+        x = x,
+        y = y,
+        w = TILE_SIZE.w * 2 + margin + padding * 2,
+        h = TILE_SIZE.h + padding * 2,
+    }
+
+    create_zone(
+        rot_R.x, rot_R.y, 
+        rot_R.w, rot_R.h, 
+        function()
+            tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.THREE_QUARTERS)
+            window_setup()
+        end,
+        "rot_R"
+    )
+    create_zone(
+        rot_L.x, rot_L.y, 
+        rot_L.w, rot_L.h,
+        function()
+            tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
+            window_setup()
+        end,
+        "rot_L"
+    )
+
+    draw_call_add(function()
+        love.graphics.setColor(1, 0.5, 0, 1)
+        love.graphics.rectangle("fill", 
+            rect.x, rect.y, 
+            rect.w, rect.h
+        )
+        love.graphics.setColor(1, 1, 1, 1)
+        draw_tile(rot_R.tile, rot_R.x, rot_R.y)
+        draw_tile(rot_L.tile, rot_L.x, rot_L.y)
+    end)
+end
+
 function create_tilemap_i(x, y)
     local tiles = tilemap.tiles --!tilemap is a global name!
     local v_sh = 0
