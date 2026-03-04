@@ -28,7 +28,8 @@ TILE_NAMES = {
     Lava=     {y=2, x=3, atlas="big_atlas"},
     Spikes=   {y=2, x=4, atlas="big_atlas"},
     Rot90cw=  {y=5, x=4, atlas="big_atlas"},
-    Rot90ccw= {y=5, x=5, atlas="big_atlas"}
+    Rot90ccw= {y=5, x=5, atlas="big_atlas"},
+    Save=     {y=5, x=1, atlas="big_atlas"},
 }
 
 TILE_ATLASES = {
@@ -191,7 +192,7 @@ function rotate_tilemap(tilemap, rot_m)
     local n_w = math.abs(tilemap.w * rot_m[1][1]) + math.abs(tilemap.h * rot_m[1][2])
     local n_h = math.abs(tilemap.w * rot_m[2][1]) + math.abs(tilemap.h * rot_m[2][2])
     local tiles = tilemap.tiles
-    local n_tilemap = make_tilemap(n_w, n_h, tilemap.bg_t, tilemap.name .. "_r")
+    local n_tilemap = make_tilemap(n_w, n_h, tilemap.bg_t, tilemap.name)
     for x, column in pairs(tiles) do
         for y, value in pairs(column) do
             if value == tilemap.bg_t then

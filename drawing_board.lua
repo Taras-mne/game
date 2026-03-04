@@ -26,17 +26,25 @@ function buttons_bar_i(x, y)
         h = TILE_SIZE.h,
         tile = TILESET.Rot90ccw
     }
+    local save = {
+        x = x + (rot_R.w + margin)/2 + padding,
+        y = y + rot_R.w + margin + padding,
+        w = TILE_SIZE.w,
+        h = TILE_SIZE.h,
+        tile = TILESET.Save
+    }
     local rect = {
         x = x,
         y = y,
         w = TILE_SIZE.w * 2 + margin + padding * 2,
-        h = TILE_SIZE.h + padding * 2,
+        h = TILE_SIZE.w * 2 + margin + padding * 2,
     }
 
     create_zone(
         rot_R.x, rot_R.y, 
         rot_R.w, rot_R.h, 
         function()
+            --!tilemap is global!
             tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.THREE_QUARTERS)
             drawing_board_setup()
         end,
@@ -46,10 +54,20 @@ function buttons_bar_i(x, y)
         rot_L.x, rot_L.y, 
         rot_L.w, rot_L.h,
         function()
+            --!tilemap is global!
             tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
             drawing_board_setup()
         end,
         "rot_L"
+    )
+    create_zone(
+        save.x, save.y, 
+        save.w, save.h, 
+        function()
+            upload_tilemap(tilemap)
+            --TODO - draw a popup 
+        end,
+        "save"
     )
 
     draw_call_add(function()
@@ -61,6 +79,7 @@ function buttons_bar_i(x, y)
         love.graphics.setColor(1, 1, 1, 1)
         draw_tile(rot_R.tile, rot_R.x, rot_R.y)
         draw_tile(rot_L.tile, rot_L.x, rot_L.y)
+        draw_tile(save.tile, save.x, save.y)
     end)
 end
 
