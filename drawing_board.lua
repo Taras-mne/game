@@ -1,6 +1,6 @@
 MEMO = "A"
 
-function window_setup()
+function drawing_board_setup()
     ZONES_OF_INTEREST = {}
     DRAW_QUEUE = {}
     create_palette_i(10, 10)
@@ -38,7 +38,7 @@ function buttons_bar_i(x, y)
         rot_R.w, rot_R.h, 
         function()
             tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.THREE_QUARTERS)
-            window_setup()
+            drawing_board_setup()
         end,
         "rot_R"
     )
@@ -47,7 +47,7 @@ function buttons_bar_i(x, y)
         rot_L.w, rot_L.h,
         function()
             tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
-            window_setup()
+            drawing_board_setup()
         end,
         "rot_L"
     )

@@ -8,7 +8,7 @@ function love.load()
 
     tilemap = read_tilemap("demo_map.txt")
     
-    window_setup()
+    drawing_board_setup()
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 end
