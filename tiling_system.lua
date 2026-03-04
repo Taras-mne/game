@@ -19,21 +19,21 @@ TILE_SIZE = {
 }
 
 TILE_NAMES = {
-    A= {x=1, y=1, atlas="ass"},
-    B= {x=2, y=1, atlas="ass"},
-    C= {x=1, y=2, atlas="ass"},
-    D= {x=2, y=2, atlas="ass"},
-    Grass=    {y=1, x=3, atlas="fbf"},
-    Water=    {y=1, x=4, atlas="fbf"},
-    Lava=     {y=2, x=3, atlas="fbf"},
-    Spikes=   {y=2, x=4, atlas="fbf"},
-    Rot90cw=  {y=5, x=4, atlas="fbf"},
-    Rot90ccw= {y=5, x=5, atlas="fbf"}
+    A= {x=1, y=1, atlas="smol_atlas"},
+    B= {x=2, y=1, atlas="smol_atlas"},
+    C= {x=1, y=2, atlas="smol_atlas"},
+    D= {x=2, y=2, atlas="smol_atlas"},
+    Grass=    {y=1, x=3, atlas="big_atlas"},
+    Water=    {y=1, x=4, atlas="big_atlas"},
+    Lava=     {y=2, x=3, atlas="big_atlas"},
+    Spikes=   {y=2, x=4, atlas="big_atlas"},
+    Rot90cw=  {y=5, x=4, atlas="big_atlas"},
+    Rot90ccw= {y=5, x=5, atlas="big_atlas"}
 }
 
 TILE_ATLASES = {
-    fbf= "pics/5by5template.png",
-    ass= "pics/nigg.png"
+    big_atlas= "pics/5by5.png",
+    smol_atlas= "pics/2by2.png"
 }
 
 TILESET = {}
