@@ -7,11 +7,8 @@ function check_zones(x, y, button)
 end
 
 function check_hover(x, y, isDown)
-    if not isDown then
-        return
-    end
     for i,foo in pairs(ZONES_OF_INTEREST) do
-        foo(x, y)
+        foo(x, y, false, true, isDown)
     end
 end
 
@@ -23,8 +20,8 @@ function draw_zones()
     love.graphics.setColor(1, 1, 1, 1)
 end
 
-function create_zone(x, y, w, h, callback)
-    local foo = function(c_x, c_y, show)
+function create_zone(x, y, w, h, callback, hover_callback)
+    local foo = function(c_x, c_y, show, hover, is_down)
         if show then
             love.graphics.rectangle("fill", x, y, w, h)
             return
@@ -38,7 +35,12 @@ function create_zone(x, y, w, h, callback)
             return 
         end
 
-        callback()
+        if hover and hover_callback then 
+            hover_callback(is_down)
+        elseif not hover then
+            callback()
+        end
+
     end
     table.insert(ZONES_OF_INTEREST, foo)
 end 

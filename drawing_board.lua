@@ -92,6 +92,11 @@ function create_tilemap_i(x, y)
                 TILE_SIZE.w-2, TILE_SIZE.h-2, 
                 function()
                     tilemap.tiles[i][j] = MEMO
+                end,
+                function(isDown)
+                    if isDown then
+                        tilemap.tiles[i][j] = MEMO
+                    end
                 end
             )
 
