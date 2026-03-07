@@ -6,14 +6,16 @@ function love.load()
 
     load_tilesets()
 
-    tilemap = read_tilemap("demo_map.txt")
-    
-    drawing_board_setup()
+    tilemap = read_tilemap("beeg.txt")
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
+
+    drawing_board_setup()
 end
 
 function love.update(dt)
+    local x, y = love.mouse.getPosition()
+    check_hover(x, y, love.mouse.isDown(1))
 end
 
 function love.draw()
@@ -23,4 +25,8 @@ end
 
 function love.mousepressed(x, y, button, istouch)
     check_zones(x, y, button)
+end
+
+function love.resize(width, height)
+    drawing_board_setup()
 end

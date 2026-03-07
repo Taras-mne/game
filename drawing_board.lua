@@ -3,9 +3,10 @@ MEMO = "A"
 function drawing_board_setup()
     ZONES_OF_INTEREST = {}
     DRAW_QUEUE = {}
+    local screen_width, screen_height = love.window.getMode()
     create_palette_i(10, 10)
-    create_tilemap_i(150, 10)
-    buttons_bar_i(550, 10)
+    create_tilemap_i(50, 50)
+    buttons_bar_i(screen_width - 100, 10)
 end
 
 function buttons_bar_i(x, y)
@@ -47,8 +48,7 @@ function buttons_bar_i(x, y)
             --!tilemap is global!
             tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.THREE_QUARTERS)
             drawing_board_setup()
-        end,
-        "rot_R"
+        end
     )
     create_zone(
         rot_L.x, rot_L.y, 
@@ -57,8 +57,7 @@ function buttons_bar_i(x, y)
             --!tilemap is global!
             tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
             drawing_board_setup()
-        end,
-        "rot_L"
+        end
     )
     create_zone(
         save.x, save.y, 
@@ -66,8 +65,7 @@ function buttons_bar_i(x, y)
         function()
             upload_tilemap(tilemap)
             --TODO - draw a popup 
-        end,
-        "save"
+        end
     )
 
     draw_call_add(function()
@@ -94,8 +92,7 @@ function create_tilemap_i(x, y)
                 TILE_SIZE.w-2, TILE_SIZE.h-2, 
                 function()
                     tilemap.tiles[i][j] = MEMO
-                end,
-                tilemap.name .. "_" .. i .. "_" .. j
+                end
             )
 
             h_sh = h_sh + TILE_SIZE.w

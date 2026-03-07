@@ -1,0 +1,4 @@
+NAME demo_map
+27x55
+BG Grass
+===
