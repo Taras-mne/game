@@ -1,5 +1,9 @@
 ZONES_OF_INTEREST = {}
 
+function nuke_zones()
+    ZONES_OF_INTEREST = {}
+end
+
 function check_zones(x, y, button)
     for i,foo in pairs(ZONES_OF_INTEREST) do
         foo(x, y)
@@ -40,7 +44,7 @@ function create_zone(x, y, w, h, callback, hover_callback)
         elseif not hover then
             callback()
         end
-
     end
+
     table.insert(ZONES_OF_INTEREST, foo)
 end 

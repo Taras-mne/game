@@ -1,5 +1,9 @@
 DRAW_QUEUE = {}
 
+function nuke_draw_queue()
+    DRAW_QUEUE = {}
+end
+
 function draw_all()
     for key,call in pairs(DRAW_QUEUE) do
         call()

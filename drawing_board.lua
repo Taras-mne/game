@@ -1,8 +1,8 @@
 MEMO = "A"
 
 function drawing_board_setup()
-    ZONES_OF_INTEREST = {}
-    DRAW_QUEUE = {}
+    nuke_zones()
+    nuke_draw_queue()
     local screen_width, screen_height = love.window.getMode()
     palette_i(10, 10)
     tilemap_i(50, 50)
@@ -80,7 +80,7 @@ function buttons_bar_i(x, y)
 end
 
 function tilemap_i(x, y)
-    local tiles = TILEMAP.tiles --!tilemap is a global name!
+    local tiles = TILEMAP.tiles
     local v_sh = 0
     for i, column in ipairs(tiles) do
         local h_sh = 0
@@ -103,7 +103,7 @@ function tilemap_i(x, y)
         v_sh = v_sh + TILE_SIZE.h
     end
     draw_call_add(function() 
-        draw_tilemap(TILEMAP, x, y) --!tilemap is a global name! 
+        draw_tilemap(TILEMAP, x, y)
     end)
 end
 
