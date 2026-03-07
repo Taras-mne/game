@@ -5,7 +5,7 @@ function drawing_board_setup()
     nuke_draw_queue()
     local screen_width, screen_height = love.window.getMode()
     palette_i(10, 10)
-    tilemap_i(50, 50)
+    tilemap_i(120, 10)
     buttons_bar_i(screen_width - 100, 10)
 end
 
@@ -103,31 +103,45 @@ function tilemap_i(x, y)
         v_sh = v_sh + TILE_SIZE.h
     end
     draw_call_add(function() 
-        draw_tilemap(TILEMAP, x, y)
+        draw_tilemap(TILEMAP, x, y) --is in rendering system cause will be used later
     end)
 end
 
 function palette_i(x, y)
-    local where = {x = x, y = y}
+    local padding = 5
+    local margin = 10
+    local where = {x = x + padding, y = y + padding}
+    local count = 0
 
     for key,tile in pairs(TILESET) do
         create_zone(
             where.x, where.y, 
             TILE_SIZE.w, TILE_SIZE.h, 
-            function() MEMO = key end, 
-            name
+            function() MEMO = key end
         )
-        where.y = where.y + 40
+        where.y = where.y + TILE_SIZE.h + margin
+        count = count + 1
     end
 
-    draw_call_add(function() draw_palette(x, y) end)
-end
+    local rect = {
+        x = x,
+        y = y,
+        w = TILE_SIZE.w * 2 + margin + padding * 2,
+        h = TILE_SIZE.w * count + margin * (count-1) + padding * 2,
+    }
 
-function draw_palette(x, y)
-    local where = {x = x, y = y}
-    draw_tile(TILESET[MEMO], where.x + 40, where.y)
-    for key,tile in pairs(TILESET) do
-        draw_tile(tile, where.x, where.y)
-        where.y = where.y + 40
-    end
+    draw_call_add(function() 
+        local where = {x = x + padding, y = y + padding}
+        love.graphics.setColor(0.33, 0.33, 0.33, 1)
+        love.graphics.rectangle("fill", 
+            rect.x, rect.y, 
+            rect.w, rect.h
+        )
+        love.graphics.setColor(1, 1, 1, 1)
+        draw_tile(TILESET[MEMO], where.x + TILE_SIZE.w + margin, where.y)
+        for key,tile in pairs(TILESET) do
+            draw_tile(tile, where.x, where.y)
+            where.y = where.y + TILE_SIZE.h + margin
+        end
+    end)
 end
