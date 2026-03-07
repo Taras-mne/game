@@ -4,8 +4,8 @@ function drawing_board_setup()
     ZONES_OF_INTEREST = {}
     DRAW_QUEUE = {}
     local screen_width, screen_height = love.window.getMode()
-    create_palette_i(10, 10)
-    create_tilemap_i(50, 50)
+    palette_i(10, 10)
+    tilemap_i(50, 50)
     buttons_bar_i(screen_width - 100, 10)
 end
 
@@ -45,8 +45,7 @@ function buttons_bar_i(x, y)
         rot_R.x, rot_R.y, 
         rot_R.w, rot_R.h, 
         function()
-            --!tilemap is global!
-            tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.THREE_QUARTERS)
+            TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.THREE_QUARTERS)
             drawing_board_setup()
         end
     )
@@ -54,8 +53,7 @@ function buttons_bar_i(x, y)
         rot_L.x, rot_L.y, 
         rot_L.w, rot_L.h,
         function()
-            --!tilemap is global!
-            tilemap = rotate_tilemap(tilemap, ROTATION_MATRICES.QUARTER)
+            TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.QUARTER)
             drawing_board_setup()
         end
     )
@@ -63,7 +61,7 @@ function buttons_bar_i(x, y)
         save.x, save.y, 
         save.w, save.h, 
         function()
-            upload_tilemap(tilemap)
+            upload_tilemap(TILEMAP)
             --TODO - draw a popup 
         end
     )
@@ -81,8 +79,8 @@ function buttons_bar_i(x, y)
     end)
 end
 
-function create_tilemap_i(x, y)
-    local tiles = tilemap.tiles --!tilemap is a global name!
+function tilemap_i(x, y)
+    local tiles = TILEMAP.tiles --!tilemap is a global name!
     local v_sh = 0
     for i, column in ipairs(tiles) do
         local h_sh = 0
@@ -91,11 +89,11 @@ function create_tilemap_i(x, y)
                 x + h_sh + 1, y + v_sh + 1, 
                 TILE_SIZE.w-2, TILE_SIZE.h-2, 
                 function()
-                    tilemap.tiles[i][j] = MEMO
+                    TILEMAP.tiles[i][j] = MEMO
                 end,
                 function(isDown)
                     if isDown then
-                        tilemap.tiles[i][j] = MEMO
+                        TILEMAP.tiles[i][j] = MEMO
                     end
                 end
             )
@@ -105,11 +103,11 @@ function create_tilemap_i(x, y)
         v_sh = v_sh + TILE_SIZE.h
     end
     draw_call_add(function() 
-        draw_tilemap(tilemap, x, y) --!tilemap is a global name! 
+        draw_tilemap(TILEMAP, x, y) --!tilemap is a global name! 
     end)
 end
 
-function create_palette_i(x, y)
+function palette_i(x, y)
     local where = {x = x, y = y}
 
     for key,tile in pairs(TILESET) do

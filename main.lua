@@ -6,7 +6,7 @@ function love.load()
 
     load_tilesets()
 
-    tilemap = read_tilemap("beeg.txt")
+    TILEMAP = read_tilemap("beeg.txt")
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 
