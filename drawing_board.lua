@@ -148,15 +148,13 @@ function update_bucket()
     end
     
     local new_seeds = {}
-    local visited = {}
     local memo_tile = memo.tile
 
     function try_add(nx, ny)
         local key = tostring(nx) .. "," .. tostring(ny)
-        if not visited[key] and nx > 0 and nx <= TILEMAP.w 
+        if nx > 0 and nx <= TILEMAP.w 
         and ny > 0 and ny <= TILEMAP.h
         and TILEMAP.tiles[nx][ny] == memo_tile then
-            visited[key] = true
             table.insert(new_seeds, {nx, ny})
         end
     end
@@ -165,12 +163,16 @@ function update_bucket()
         local seed = seeds[i]
         if seed and seed[1] and seed[2] then
             local x, y = seed[1], seed[2]
+            if TILEMAP.tiles[x][y] == DRAWING_STATE.tile then
+                goto continue
+            end
             TILEMAP.tiles[x][y] = DRAWING_STATE.tile
 
             try_add(x + 1, y)
             try_add(x - 1, y)
             try_add(x, y - 1)
             try_add(x, y + 1)
+            ::continue::
         end
     end
 
