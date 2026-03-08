@@ -1,6 +1,6 @@
 DRAWING_STATE = {
     tile= "Water",
-    tool= "Pen"
+    tool= "Pen",
 }
 
 TOOLS = { --TODO: repopulate with tiles when loading
@@ -89,17 +89,27 @@ function buttons_bar_i(x, y)
     end)
 end
 
+function do_pen(i,j,tilemap)
+    tilemap.tiles[i][j] = DRAWING_STATE.tile
+end
+
 function get_cell_click_and_hover(i,j)
-    return 
+    return --returns two functions
     function()
-        TILEMAP.tiles[i][j] = DRAWING_STATE.tile
+        if DRAWING_STATE.tool == "Pen" then 
+            do_pen(i,j,TILEMAP)
+        end
     end,
     function(isDown)
+        PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
         if isDown then
-            TILEMAP.tiles[i][j] = DRAWING_STATE.tile
+            if DRAWING_STATE.tool == "Pen" then
+                do_pen(i,j,TILEMAP)
+            end
         else
-            PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
-            PROJECTED_TILEMAP.tiles[i][j] = DRAWING_STATE.tile
+            if DRAWING_STATE.tool == "Pen" then
+                do_pen(i,j,PROJECTED_TILEMAP)
+            end
         end
     end
 end
