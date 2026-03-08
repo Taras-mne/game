@@ -1,4 +1,5 @@
 function love.load()
+    require("utils")
     require("drawing_board")
     require("click_UI_system")
     require("rendering_system")

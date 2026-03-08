@@ -93,6 +93,31 @@ function do_pen(i,j,tilemap)
     tilemap.tiles[i][j] = DRAWING_STATE.tile
 end
 
+function do_line(i,j,tilemap,hard)
+    if DRAWING_STATE.memo == nil then
+        if hard then 
+            DRAWING_STATE.memo = {i,j}
+        end
+    else
+        local current_pos = {i,j}
+        tilemap.tiles[current_pos[1]][current_pos[2]] = DRAWING_STATE.tile
+        tilemap.tiles[DRAWING_STATE.memo[1]][DRAWING_STATE.memo[2]] = DRAWING_STATE.tile
+        
+        local current_pos_r = {i,j}
+        local vec = normalize(sum(neg(current_pos), DRAWING_STATE.memo))
+        while current_pos_r[1] ~= DRAWING_STATE.memo[1] 
+        or current_pos_r[2] ~= DRAWING_STATE.memo[2] do
+            current_pos = sum(current_pos, vec)
+            current_pos_r = {round(current_pos[1]), round(current_pos[2])}
+            tilemap.tiles[current_pos_r[1]][current_pos_r[2]] = DRAWING_STATE.tile
+        end
+
+        if hard then 
+            DRAWING_STATE.memo = nil
+        end
+    end
+end
+
 function do_rect(i,j,tilemap,hard)
     if DRAWING_STATE.memo == nil then
         if hard then 
@@ -109,7 +134,6 @@ function do_rect(i,j,tilemap,hard)
         end
     end
 end
-
 
 function update_bucket()
     if DRAWING_STATE.tool ~= "Bucket" or DRAWING_STATE.memo == nil then
@@ -158,7 +182,6 @@ function update_bucket()
     DRAWING_STATE.memo.seeds = new_seeds
 end
 
-
 function do_bucket(i,j,tilemap)
     if tilemap.tiles[i][j] == DRAWING_STATE.tile then 
         return 
@@ -186,8 +209,12 @@ function get_cell_click_and_hover(i,j)
     elseif DRAWING_STATE.tool == "Line" then
         return
         function()
+            do_line(i,j,TILEMAP,true)
         end,
         function(isDown)
+            PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
+            do_line(i,j,PROJECTED_TILEMAP)
+            do_pen(i,j,PROJECTED_TILEMAP)
         end
     elseif DRAWING_STATE.tool == "Rect" then
         return
