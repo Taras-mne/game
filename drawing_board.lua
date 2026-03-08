@@ -110,6 +110,65 @@ function do_rect(i,j,tilemap,hard)
     end
 end
 
+
+function update_bucket()
+    if DRAWING_STATE.tool ~= "Bucket" or DRAWING_STATE.memo == nil then
+        return
+    end
+    
+    local memo = DRAWING_STATE.memo
+    local seeds = memo.seeds
+    if not seeds or #seeds == 0 then
+        DRAWING_STATE.memo = nil
+        return
+    end
+    
+    local new_seeds = {}
+    local visited = {}
+    local memo_tile = memo.tile
+
+    function try_add(nx, ny)
+        local key = tostring(nx) .. "," .. tostring(ny)
+        if not visited[key] and nx > 0 and nx <= TILEMAP.w 
+        and ny > 0 and ny <= TILEMAP.h
+        and TILEMAP.tiles[nx][ny] == memo_tile then
+            visited[key] = true
+            table.insert(new_seeds, {nx, ny})
+        end
+    end
+    
+    for i = 1, #seeds do
+        local seed = seeds[i]
+        if seed and seed[1] and seed[2] then
+            local x, y = seed[1], seed[2]
+            TILEMAP.tiles[x][y] = DRAWING_STATE.tile
+
+            try_add(x + 1, y)
+            try_add(x - 1, y)
+            try_add(x, y - 1)
+            try_add(x, y + 1)
+        end
+    end
+
+    if #new_seeds == 0 then
+        DRAWING_STATE.memo = nil
+        return
+    end
+
+    DRAWING_STATE.memo.seeds = new_seeds
+end
+
+
+function do_bucket(i,j,tilemap)
+    if tilemap.tiles[i][j] == DRAWING_STATE.tile then 
+        return 
+    end
+    DRAWING_STATE.memo = {
+        tile= tilemap.tiles[i][j],
+        seeds = {{i,j},},
+    }
+end
+
 function get_cell_click_and_hover(i,j)
     if DRAWING_STATE.tool == "Pen" then
         return --returns two functions
@@ -143,8 +202,11 @@ function get_cell_click_and_hover(i,j)
     elseif DRAWING_STATE.tool == "Bucket" then
         return
         function()
+            do_bucket(i,j,TILEMAP)
         end,
         function(isDown)
+            PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
+            do_pen(i,j,PROJECTED_TILEMAP)
         end
     end
 end

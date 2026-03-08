@@ -17,6 +17,7 @@ function love.load()
 end
 
 function love.update(dt)
+    update_bucket()
     local x, y = love.mouse.getPosition()
     check_hover(x, y, love.mouse.isDown(1))
 end
