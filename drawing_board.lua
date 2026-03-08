@@ -1,4 +1,6 @@
-MEMO = "A"
+DRAWING_STATE = {
+    tile= "Water"
+}
 
 function drawing_board_setup()
     nuke_zones()
@@ -89,11 +91,11 @@ function tilemap_i(x, y)
                 x + h_sh + 1, y + v_sh + 1, 
                 TILE_SIZE.w-2, TILE_SIZE.h-2, 
                 function()
-                    TILEMAP.tiles[i][j] = MEMO
+                    TILEMAP.tiles[i][j] = DRAWING_STATE.tile
                 end,
                 function(isDown)
                     if isDown then
-                        TILEMAP.tiles[i][j] = MEMO
+                        TILEMAP.tiles[i][j] = DRAWING_STATE.tile
                     end
                 end
             )
@@ -103,7 +105,7 @@ function tilemap_i(x, y)
         v_sh = v_sh + TILE_SIZE.h
     end
     draw_call_add(function() 
-        draw_tilemap(TILEMAP, x, y) --is in rendering system cause will be used later
+        draw_tilemap(TILEMAP, x, y)
     end)
 end
 
@@ -117,7 +119,7 @@ function palette_i(x, y)
         create_zone(
             where.x, where.y, 
             TILE_SIZE.w, TILE_SIZE.h, 
-            function() MEMO = key end
+            function() DRAWING_STATE.tile = key end
         )
         where.y = where.y + TILE_SIZE.h + margin
         count = count + 1
@@ -138,7 +140,7 @@ function palette_i(x, y)
             rect.w, rect.h
         )
         love.graphics.setColor(1, 1, 1, 1)
-        draw_tile(TILESET[MEMO], where.x + TILE_SIZE.w + margin, where.y)
+        draw_tile(TILESET[DRAWING_STATE.tile], where.x + TILE_SIZE.w + margin, where.y)
         for key,tile in pairs(TILESET) do
             draw_tile(tile, where.x, where.y)
             where.y = where.y + TILE_SIZE.h + margin
