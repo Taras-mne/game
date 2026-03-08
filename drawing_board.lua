@@ -89,6 +89,21 @@ function buttons_bar_i(x, y)
     end)
 end
 
+function get_cell_click_and_hover(i,j)
+    return 
+    function()
+        TILEMAP.tiles[i][j] = DRAWING_STATE.tile
+    end,
+    function(isDown)
+        if isDown then
+            TILEMAP.tiles[i][j] = DRAWING_STATE.tile
+        else
+            PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
+            PROJECTED_TILEMAP.tiles[i][j] = DRAWING_STATE.tile
+        end
+    end
+end
+
 function tilemap_i(x, y)
     local tiles = TILEMAP.tiles
     local v_sh = 0
@@ -98,14 +113,7 @@ function tilemap_i(x, y)
             create_zone(
                 x + h_sh + 1, y + v_sh + 1, 
                 TILE_SIZE.w-2, TILE_SIZE.h-2, 
-                function()
-                    TILEMAP.tiles[i][j] = DRAWING_STATE.tile
-                end,
-                function(isDown)
-                    if isDown then
-                        TILEMAP.tiles[i][j] = DRAWING_STATE.tile
-                    end
-                end
+                get_cell_click_and_hover(i,j)
             )
 
             h_sh = h_sh + TILE_SIZE.w
@@ -113,7 +121,7 @@ function tilemap_i(x, y)
         v_sh = v_sh + TILE_SIZE.h
     end
     draw_call_add(function() 
-        draw_tilemap(TILEMAP, x, y)
+        draw_tilemap(PROJECTED_TILEMAP, x, y)
     end)
 end
 

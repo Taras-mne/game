@@ -11,6 +11,10 @@ ROTATION_MATRICES = {
         { 0,-1},
         { 1, 0},
     },
+    ZERO = {
+        { 1, 0},
+        { 0, 1},
+    },
 }
 
 TILE_SIZE = {
@@ -213,4 +217,8 @@ function rotate_tilemap(tilemap, rot_m)
         end
     end
     return n_tilemap
+end
+
+function clone_tilemap(tilemap)
+    return rotate_tilemap(tilemap, ROTATION_MATRICES.ZERO)
 end

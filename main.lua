@@ -7,6 +7,9 @@ function love.load()
     load_tilesets()
 
     TILEMAP = read_tilemap("beeg.txt")
+    --needed projecting without destroying TILEMAP
+    --is cloned when needed
+    PROJECTED_TILEMAP = TILEMAP
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 
@@ -21,6 +24,7 @@ end
 function love.draw()
     draw_all()
     -- draw_zones()
+    PROJECTED_TILEMAP = TILEMAP
 end
 
 function love.mousepressed(x, y, button, istouch)
