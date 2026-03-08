@@ -93,23 +93,58 @@ function do_pen(i,j,tilemap)
     tilemap.tiles[i][j] = DRAWING_STATE.tile
 end
 
-function get_cell_click_and_hover(i,j)
-    return --returns two functions
-    function()
-        if DRAWING_STATE.tool == "Pen" then 
-            do_pen(i,j,TILEMAP)
+function do_rect(i,j,tilemap,hard)
+    if DRAWING_STATE.memo == nil then
+        if hard then 
+            DRAWING_STATE.memo = {i,j}
         end
-    end,
-    function(isDown)
-        PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
-        if isDown then
-            if DRAWING_STATE.tool == "Pen" then
-                do_pen(i,j,TILEMAP)
+    else
+        for ii=math.min(i,DRAWING_STATE.memo[1]), math.max(i,DRAWING_STATE.memo[1]) do
+            for jj=math.min(j,DRAWING_STATE.memo[2]), math.max(j,DRAWING_STATE.memo[2]) do
+                tilemap.tiles[ii][jj] = DRAWING_STATE.tile
             end
-        else
-            if DRAWING_STATE.tool == "Pen" then
+        end
+        if hard then 
+            DRAWING_STATE.memo = nil
+        end
+    end
+end
+
+function get_cell_click_and_hover(i,j)
+    if DRAWING_STATE.tool == "Pen" then
+        return --returns two functions
+        function()
+            do_pen(i,j,TILEMAP)
+        end,
+        function(isDown)
+            PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
+            if isDown then
+                do_pen(i,j,TILEMAP)
+            else
                 do_pen(i,j,PROJECTED_TILEMAP)
             end
+        end
+    elseif DRAWING_STATE.tool == "Line" then
+        return
+        function()
+        end,
+        function(isDown)
+        end
+    elseif DRAWING_STATE.tool == "Rect" then
+        return
+        function()
+            do_rect(i,j,TILEMAP,true)
+        end,
+        function(isDown)
+            PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
+            do_pen(i,j,PROJECTED_TILEMAP)
+            do_rect(i,j,PROJECTED_TILEMAP)
+        end
+    elseif DRAWING_STATE.tool == "Bucket" then
+        return
+        function()
+        end,
+        function(isDown)
         end
     end
 end
@@ -145,7 +180,9 @@ function palette_i(x, y)
         create_zone(
             where.x, where.y, 
             TILE_SIZE.w, TILE_SIZE.h, 
-            function() DRAWING_STATE.tile = key end
+            function() 
+                DRAWING_STATE.tile = key 
+            end
         )
         where.y = where.y + TILE_SIZE.h + margin
         count = count + 1
@@ -157,7 +194,11 @@ function palette_i(x, y)
         create_zone(
             where.x, where.y, 
             TILE_SIZE.w, TILE_SIZE.h, 
-            function() DRAWING_STATE.tool = tool end
+            function() 
+                DRAWING_STATE.tool = tool
+                DRAWING_STATE.memo = nil
+                drawing_board_setup() 
+            end
         )
     end
 
