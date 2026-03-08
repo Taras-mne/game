@@ -1,5 +1,13 @@
 DRAWING_STATE = {
-    tile= "Water"
+    tile= "Water",
+    tool= "Pen"
+}
+
+TOOLS = { --TODO: repopulate with tiles when loading
+    "Pen",
+    "Line",
+    "Rect",
+    "Bucket",
 }
 
 function drawing_board_setup()
@@ -125,25 +133,66 @@ function palette_i(x, y)
         count = count + 1
     end
 
-    local rect = {
-        x = x,
-        y = y,
-        w = TILE_SIZE.w * 2 + margin + padding * 2,
-        h = TILE_SIZE.w * count + margin * (count-1) + padding * 2,
+    local where = {x = x + padding + TILE_SIZE.w + margin, y = y + padding}
+    for key,tool in pairs(TOOLS) do
+        where.y = where.y + TILE_SIZE.h + margin
+        create_zone(
+            where.x, where.y, 
+            TILE_SIZE.w, TILE_SIZE.h, 
+            function() DRAWING_STATE.tool = tool end
+        )
+    end
+
+    local rects = {
+        {
+            x = x,
+            y = y,
+            w = TILE_SIZE.w + padding * 2,
+            h = TILE_SIZE.w * count + margin * (count-1) + padding * 2,
+            color = {0.15, 0.15, 0.75, 1}
+        },
+        {
+            x = x + TILE_SIZE.w + padding * 2,
+            y = y,
+            w = TILE_SIZE.w + padding * 2,
+            h = TILE_SIZE.h + padding * 2,
+            color = {1, 0.5, 0.5, 1}
+        },
+        {
+            x = x + TILE_SIZE.w + padding * 2,
+            y = y + TILE_SIZE.h + padding * 2,
+            w = TILE_SIZE.w + padding * 2,
+            h = TILE_SIZE.w * 4 + margin * 3 + padding * 2,
+            color = {0.1, 0.4, 0.2, 1}
+        },
     }
 
     draw_call_add(function() 
-        local where = {x = x + padding, y = y + padding}
-        love.graphics.setColor(0.33, 0.33, 0.33, 1)
-        love.graphics.rectangle("fill", 
-            rect.x, rect.y, 
-            rect.w, rect.h
-        )
+        for i,rect in ipairs(rects) do
+            love.graphics.setColor(unpack(rect.color))
+            love.graphics.rectangle("fill", 
+                rect.x, rect.y, 
+                rect.w, rect.h
+            )
+        end
         love.graphics.setColor(1, 1, 1, 1)
-        draw_tile(TILESET[DRAWING_STATE.tile], where.x + TILE_SIZE.w + margin, where.y)
+        local where = {x = x + padding, y = y + padding}
         for key,tile in pairs(TILESET) do
             draw_tile(tile, where.x, where.y)
             where.y = where.y + TILE_SIZE.h + margin
+        end
+        local where = {x = x + padding + TILE_SIZE.w + margin, y = y + padding}
+        draw_tile(TILESET[DRAWING_STATE.tile], where.x, where.y)
+        for key,tool in pairs(TOOLS) do
+            where.y = where.y + TILE_SIZE.h + margin
+            if DRAWING_STATE.tool == tool then
+                love.graphics.rectangle("fill", 
+                    where.x - 2, where.y - 2, 
+                    TILE_SIZE.w + 4, TILE_SIZE.h + 4
+                ) 
+            end
+            tile = TILESET[tool]
+            draw_tile(tile, where.x, where.y)
         end
     end)
 end
