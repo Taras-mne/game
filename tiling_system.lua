@@ -36,6 +36,11 @@ TILE_NAMES = {
     Rot90cw=  {y=5, x=4, atlas="big_atlas"},
     Rot90ccw= {y=5, x=5, atlas="big_atlas"},
     Save=     {y=5, x=1, atlas="big_atlas"},
+
+    UpArrow=     {y=2, x=2, atlas="big_atlas"},
+    DownArrow=   {y=4, x=2, atlas="big_atlas"},
+    LeftArrow=   {y=3, x=1, atlas="big_atlas"},
+    RightArrow=  {y=3, x=3, atlas="big_atlas"},
 }
 
 TILE_ATLASES = {
