@@ -1,5 +1,5 @@
 # THERE'S NO GAME YET :-)
-currently i am erecting systems an tools 4 game to work later
+currently i am erecting systems and tools 4 game to work later
 at some point i'll fork the repository away to private, but 4 now nothing developed so far is unique enough to hide it away
 the whole thing is made on [LOVE2D](https://love2d.org/), cause i hate clicking them buttons in them GUIs, and studying a new one is a hustle, so i rather wouldn't
 
