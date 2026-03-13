@@ -266,8 +266,12 @@ function palette_i(x, y)
     local margin = 10
     local where = {x = x + padding, y = y + padding}
     local count = 0
+    local tiles_todraw = {}
 
     for key,tile in pairs(TILESET) do
+        if isInTable(RESERVED_TILES, key) then
+            goto continue
+        end
         create_zone(
             where.x, where.y, 
             TILE_SIZE.w, TILE_SIZE.h, 
@@ -275,8 +279,10 @@ function palette_i(x, y)
                 DRAWING_STATE.tile = key 
             end
         )
+        table.insert(tiles_todraw, key)
         where.y = where.y + TILE_SIZE.h + margin
         count = count + 1
+        ::continue::
     end
 
     local where = {x = x + padding + TILE_SIZE.w + margin, y = y + padding}
@@ -327,8 +333,8 @@ function palette_i(x, y)
         end
         love.graphics.setColor(1, 1, 1, 1)
         local where = {x = x + padding, y = y + padding}
-        for key,tile in pairs(TILESET) do
-            draw_tile(tile, where.x, where.y)
+        for _,key in pairs(tiles_todraw) do
+            draw_tile(TILESET[key], where.x, where.y)
             where.y = where.y + TILE_SIZE.h + margin
         end
         local where = {x = x + padding + TILE_SIZE.w + margin, y = y + padding}

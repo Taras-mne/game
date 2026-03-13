@@ -25,3 +25,12 @@ end
 function compare_points(p1, p2)
     return p1.x == p2.x and p1.y == p2.y
 end
+
+function isInTable(table, value)
+    for _, v in ipairs(table) do
+        if v == value then
+            return true
+        end
+    end
+    return false
+end

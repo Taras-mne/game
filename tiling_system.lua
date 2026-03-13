@@ -41,6 +41,28 @@ TILE_NAMES = {
     DownArrow=   {y=4, x=2, atlas="big_atlas"},
     LeftArrow=   {y=3, x=1, atlas="big_atlas"},
     RightArrow=  {y=3, x=3, atlas="big_atlas"},
+
+    BLOCK=  {y=4, x=1, atlas="big_atlas"},
+    NoTile=  {y=4, x=3, atlas="big_atlas"},
+}
+
+RESERVED_TILES = {
+    "Pen",
+    "Line",
+    "Rect",
+    "Bucket",
+
+    "BLOCK",
+    "NoTile",
+
+    "UpArrow",
+    "DownArrow",
+    "LeftArrow",
+    "RightArrow",
+
+    "Save",
+    "Rot90ccw",
+    "Rot90cw",
 }
 
 TILE_ATLASES = {
