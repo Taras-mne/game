@@ -37,11 +37,29 @@ function draw_tilemap(tilemap, x, y)
     local link_y = y + #tiles[1] * TILE_SIZE.h + 10
 
     for direction, link in pairs(tilemap.links) do
-        if link.name ~= "BLOCK" then
-            love.graphics.print(direction .. ": " .. link.name .. "." .. link.side, x, link_y)
-        else
-            love.graphics.print(direction .. ": " .. link.name, x, link_y)
+        local block_tile = TILESET["BLOCK"]
+        if link.name == "BLOCK" then
+            local line = {}
+            local diff = {}
+            local shifts = {
+                L= {-50, 0},
+                R= {50 + (tilemap.h-1) * TILE_SIZE.w, 0},
+                U= {0, -50},
+                D= {0, 50 + (tilemap.w-1) * TILE_SIZE.h}
+            }
+            if direction == "L" or  direction == "R" then
+                diff = {0,1}
+                len = tilemap.w
+            else
+                diff = {1,0}
+                len = tilemap.h
+            end
+            for i=0,len-1 do 
+                draw_tile(
+                    block_tile, 
+                    x + diff[1] * i * TILE_SIZE.w + shifts[direction][1], 
+                    y + diff[2] * i * TILE_SIZE.h + shifts[direction][2])
+            end
         end
-        link_y = link_y + 20
     end
 end

@@ -26,6 +26,27 @@ function compare_points(p1, p2)
     return p1.x == p2.x and p1.y == p2.y
 end
 
+function transform_point(point, rot_m)
+    n_point = {}
+
+    n_point.x = point.x * rot_m[1][1] + point.y * rot_m[1][2]
+    n_point.y = point.x * rot_m[2][1] + point.y * rot_m[2][2]
+    
+    return n_point 
+end
+
+function sizeful_transform_point(point, size, n_size, rot_m)
+    local t_x = point.x - (1 + size.w)/2
+    local t_y = point.y - (1 + size.h)/2
+    
+    n_point = transform_point({x= t_x, y= t_y}, rot_m)
+
+    n_point.x = n_point.x + (1 + n_size.w)/2
+    n_point.y = n_point.y + (1 + n_size.h)/2
+    
+    return n_point 
+end
+
 function isInTable(table, value)
     for _, v in ipairs(table) do
         if v == value then

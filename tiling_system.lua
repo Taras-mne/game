@@ -270,20 +270,6 @@ function rotate_tilemap(tilemap, rot_m)
     local n_size = {w= n_w, h=n_h}
     local tiles = tilemap.tiles
     local n_tilemap = make_tilemap(n_w, n_h, tilemap.bg_t, tilemap.name)
-    
-    function transform_point(point, size, n_size, rot_m)
-        n_point = {}
-        local t_x = point.x - (1 + size.w)/2
-        local t_y = point.y - (1 + size.h)/2
-
-        n_point.x = t_x * rot_m[1][1] + t_y * rot_m[1][2]
-        n_point.y = t_x * rot_m[2][1] + t_y * rot_m[2][2]
-
-        n_point.x = n_point.x + (1 + n_size.w)/2
-        n_point.y = n_point.y + (1 + n_size.h)/2
-        
-        return n_point 
-    end
 
     for x, column in pairs(tiles) do
         for y, value in pairs(column) do
@@ -291,7 +277,7 @@ function rotate_tilemap(tilemap, rot_m)
                 goto continue
             end
 
-            local point = transform_point({x= x, y= y}, size, n_size, rot_m)
+            local point = sizeful_transform_point({x= x, y= y}, size, n_size, rot_m)
             n_tilemap.tiles[point.x][point.y] = value
 
             ::continue::
@@ -306,13 +292,7 @@ function rotate_tilemap(tilemap, rot_m)
     }
 
     for key,point in pairs(points) do
-        --a hack {w= -1, h= -1} for sizeless rotation 
-        --might also b solved with 3 by 3 and like
-        --| |U| |
-        --|R| |L|
-        --| |D| |
-        --but works fine 4 now
-        n_point = transform_point(point, {w= -1, h= -1}, {w= -1, h= -1}, rot_m)
+        n_point = transform_point(point, rot_m)
         for n_key,point in pairs(points) do
             if compare_points(n_point, point) then 
                 n_tilemap.links[n_key] = tilemap.links[key] 
