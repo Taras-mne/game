@@ -50,6 +50,8 @@ TILE_ATLASES = {
 
 TILESET = {}
 
+TILEMAPS = {}
+
 function load_tilesets()
     for key, path in pairs(TILE_ATLASES) do
         TILE_ATLASES[key] = love.graphics.newImage(path)
@@ -77,7 +79,7 @@ function make_tilemap(w,h,bg_t,name)
             tiles[i][j] = bg_t
         end
     end
-    return {
+    local tilemap =  {
         tiles= tiles, 
         w= w, 
         h= h, 
@@ -90,6 +92,8 @@ function make_tilemap(w,h,bg_t,name)
             R = "BLOCK",
         }
     }
+    TILEMAPS[name] = tilemap
+    return tilemap
 end
 
 function upload_tilemap(tilemap)
@@ -148,9 +152,10 @@ function tokenize(file_str)
         then
             try_put(tokens, token)
             token = ""
-        elseif ch == '(' 
+        elseif ch == '(' or ch == ')'
+            or ch == '[' or ch == ']'
             or ch == 'x' 
-            or ch == ')'then
+            or ch == '.'then
             try_put(tokens, token)
             try_put(tokens, ch)
             token = ""
@@ -182,20 +187,26 @@ function read_tilemap(filename)
         end
     end
     local tile = tilemap.bg_t
-    repeat
+    while i < #tokens do
         if tokens[i] == "(" then
             assert(tokens[i+3] == ")", "closing bracket expected")
             local x = tonumber(tokens[i+1])
             local y = tonumber(tokens[i+2])
             tilemap.tiles[x][y] = tile
             i = i + 4
+        elseif tokens[i] == "===" then
+            i = i + 1
+            break
         elseif tonumber(tokens[i]) == nil then
             tile = tokens[i]
             i = i + 1
         else
             assert(false, "unexpected token recieved: " .. tokens[i])
         end
-    until i >= #tokens
+    end 
+    -- while i < #tokens do
+    --     i = i + 1
+    -- end
     return tilemap
 end
 

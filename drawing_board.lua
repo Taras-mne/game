@@ -15,7 +15,7 @@ function drawing_board_setup()
     nuke_draw_queue()
     local screen_width, screen_height = love.window.getMode()
     palette_i(10, 10)
-    tilemap_i(120, 10)
+    tilemap_i(round(screen_width/3), round(screen_height/4))
     buttons_bar_i(screen_width - 100, 10)
 end
 

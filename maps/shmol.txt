@@ -1,0 +1,13 @@
+NAME shmol
+5x5
+BG Grass
+===
+Save (1 1)
+Bucket (5 5)
+Line (1 5)
+Water (5 1)
+===
+U -> [shmol].D
+D -> [shmol].U
+L -> [shmol].R
+R -> [shmol].L
