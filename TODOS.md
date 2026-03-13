@@ -1,9 +1,10 @@
 # IN PROGRESS
-- make links show the 2 tiles deep look (no rot magic yet)
+- make links show the 1 tile deep look with rotating magic
+- make links show the 1 tile deep look with hover working
 - make the save function save them links
 
 # QUICK ONES
-- make special sprite 4 empty/unknown tile
+- make special sprite 4 empty/unknown tile appear in place of those tiles
 
 # BIG ONES
 - make it a proper ECS
