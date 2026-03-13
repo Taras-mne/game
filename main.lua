@@ -25,7 +25,7 @@ end
 
 function love.draw()
     draw_all()
-    draw_zones()
+    -- draw_zones()
     PROJECTED_TILEMAP = TILEMAP
 end
 
