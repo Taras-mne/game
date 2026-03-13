@@ -4,7 +4,7 @@
 - make the save function save them links
 
 # QUICK ONES
-- make special sprite 4 empty/unknown tile appear in place of those tiles
+- none 4 now
 
 # BIG ONES
 - make it a proper ECS

@@ -21,12 +21,15 @@ end
 function draw_tilemap(tilemap, x, y)
     local tiles = tilemap.tiles
     local h_sh = 0
+    local no_tile = TILESET.NoTile
     for _, column in ipairs(tiles) do
         local v_sh = 0
         for _, value in ipairs(column) do
             local tile = TILESET[value]
             if tile then
                 draw_tile(tile, h_sh + x, v_sh + y)
+            else
+                draw_tile(no_tile, h_sh + x, v_sh + y)
             end
 
             v_sh = v_sh + TILE_SIZE.h
