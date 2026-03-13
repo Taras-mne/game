@@ -17,7 +17,7 @@ function neg(t)
 end
 
 function normalize(t)
-    l = (t[1]^2 + t[2]^2)^0.5
+    local l = (t[1]^2 + t[2]^2)^0.5
     return({t[1]/l,t[2]/l})
 end
 
