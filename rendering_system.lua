@@ -18,29 +18,6 @@ function draw_tile(tile, x, y)
     love.graphics.draw(TILE_ATLASES[tile.atlas], tile.quad, x, y)
 end
 
-function get_side(tilemap, side)
-    local len = 0
-    local line = {}
-    local presets = {
-        L= {start= {1, 1}, diff= {0, 1}},
-        R= {start= {tilemap.w, 1}, diff= {0, 1}},
-        U= {start= {1, 1}, diff= {1, 0}},
-        D= {start= {1, tilemap.h}, diff= {1, 0}},
-    }
-    local preset = presets[side]
-    if side == "L" or  side == "R" then
-        len = tilemap.h
-    else
-        len = tilemap.w
-    end
-    for i=1,len do
-        table.insert(line, tilemap.tiles[preset.start[1]][preset.start[2]])
-        preset.start[1] = preset.start[1] + preset.diff[1]
-        preset.start[2] = preset.start[2] + preset.diff[2]
-    end
-    return line
-end
-
 function draw_tilemap(tilemap, x, y)
     local tiles = tilemap.tiles
     local h_sh = 0
