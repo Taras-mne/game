@@ -1,0 +1,14 @@
+NAME shmol_tor
+5x5
+BG Grass
+===
+Save (1 1)
+Bucket (5 5)
+NULL (3 3)
+Line (1 5)
+Water (5 1)
+===
+U -> [shmol_tor].D
+L -> [shmol_tor].R
+R -> [shmol_tor].L
+D -> [shmol_tor].U

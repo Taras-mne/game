@@ -1,0 +1,14 @@
+NAME shmol_sphere
+5x5
+BG Grass
+===
+Save (1 1)
+Bucket (5 5)
+NULL (3 3)
+Line (1 5)
+Water (5 1)
+===
+U -> [shmol_sphere].L
+L -> [shmol_sphere].U
+R -> [shmol_sphere].D
+D -> [shmol_sphere].R
