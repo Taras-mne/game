@@ -7,7 +7,7 @@ function round(x)
     end
 end
 
---only used in line funcction, prob to be removed later in favor of only 45 deg lines
+--only used in line function, prob to be removed later in favor of only 45 deg lines
 function sum(t1,t2)
     return({t1[1] + t2[1],t1[2] + t2[2]})
 end
