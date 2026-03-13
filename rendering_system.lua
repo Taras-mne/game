@@ -33,4 +33,15 @@ function draw_tilemap(tilemap, x, y)
         end
         v_sh = v_sh + TILE_SIZE.h
     end
+
+    local link_y = y + #tiles[1] * TILE_SIZE.h + 10
+
+    for direction, link in pairs(tilemap.links) do
+        if link.name ~= "BLOCK" then
+            love.graphics.print(direction .. ": " .. link.name .. "." .. link.side, x, link_y)
+        else
+            love.graphics.print(direction .. ": " .. link.name, x, link_y)
+        end
+        link_y = link_y + 20 -- Adjust spacing between links
+    end
 end
