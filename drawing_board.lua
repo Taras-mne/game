@@ -242,9 +242,9 @@ end
 
 function tilemap_i(x, y)
     local tiles = TILEMAP.tiles
-    local v_sh = 0
+    local h_sh = 0
     for i, column in ipairs(tiles) do
-        local h_sh = 0
+        local v_sh = 0
         for j, value in ipairs(column) do
             create_zone(
                 x + h_sh + 1, y + v_sh + 1, 
@@ -252,9 +252,9 @@ function tilemap_i(x, y)
                 get_cell_click_and_hover(i,j)
             )
 
-            h_sh = h_sh + TILE_SIZE.w
+            v_sh = v_sh + TILE_SIZE.h
         end
-        v_sh = v_sh + TILE_SIZE.h
+        h_sh = h_sh + TILE_SIZE.w
     end
     draw_call_add(function() 
         draw_tilemap(PROJECTED_TILEMAP, x, y)

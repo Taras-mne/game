@@ -7,7 +7,7 @@ function love.load()
 
     load_tilesets()
 
-    TILEMAP = read_tilemap("beeg.txt")
+    TILEMAP = read_tilemap("shmol.txt")
     --needed projecting without destroying TILEMAP
     --is cloned when needed
     PROJECTED_TILEMAP = TILEMAP
@@ -25,7 +25,7 @@ end
 
 function love.draw()
     draw_all()
-    -- draw_zones()
+    draw_zones()
     PROJECTED_TILEMAP = TILEMAP
 end
 

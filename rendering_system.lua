@@ -18,20 +18,27 @@ function draw_tile(tile, x, y)
     love.graphics.draw(TILE_ATLASES[tile.atlas], tile.quad, x, y)
 end
 
+function get_side(tilemap, side)
+    local len = 0
+    if direction == "L" or  direction == "R" then
+    else
+    end
+end
+
 function draw_tilemap(tilemap, x, y)
     local tiles = tilemap.tiles
-    local v_sh = 0
+    local h_sh = 0
     for _, column in ipairs(tiles) do
-        local h_sh = 0
+        local v_sh = 0
         for _, value in ipairs(column) do
             local tile = TILESET[value]
             if tile then
                 draw_tile(tile, h_sh + x, v_sh + y)
             end
 
-            h_sh = h_sh + TILE_SIZE.w
+            v_sh = v_sh + TILE_SIZE.h
         end
-        v_sh = v_sh + TILE_SIZE.h
+        h_sh = h_sh + TILE_SIZE.w
     end
 
     local link_y = y + #tiles[1] * TILE_SIZE.h + 10
@@ -39,20 +46,19 @@ function draw_tilemap(tilemap, x, y)
     for direction, link in pairs(tilemap.links) do
         local block_tile = TILESET["BLOCK"]
         if link.name == "BLOCK" then
-            local line = {}
             local diff = {}
             local shifts = {
                 L= {-50, 0},
-                R= {50 + (tilemap.h-1) * TILE_SIZE.w, 0},
+                R= {50 + (tilemap.w-1) * TILE_SIZE.w, 0},
                 U= {0, -50},
-                D= {0, 50 + (tilemap.w-1) * TILE_SIZE.h}
+                D= {0, 50 + (tilemap.h-1) * TILE_SIZE.h}
             }
             if direction == "L" or  direction == "R" then
                 diff = {0,1}
-                len = tilemap.w
+                len = tilemap.h
             else
                 diff = {1,0}
-                len = tilemap.h
+                len = tilemap.w
             end
             for i=0,len-1 do 
                 draw_tile(
@@ -60,6 +66,8 @@ function draw_tilemap(tilemap, x, y)
                     x + diff[1] * i * TILE_SIZE.w + shifts[direction][1], 
                     y + diff[2] * i * TILE_SIZE.h + shifts[direction][2])
             end
+        else
+            side = get_side(TILEMAPS[link.name], link.side)
         end
     end
 end
