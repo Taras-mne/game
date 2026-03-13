@@ -1,15 +1,15 @@
 ROTATION_MATRICES = {
     QUARTER = {
-        { 0, 1},
-        {-1, 0},
+        { 0,-1},
+        { 1, 0},
     },
     HALF = {
         {-1, 0},
         { 0,-1},
     },
     THREE_QUARTERS = {
-        { 0,-1},
-        { 1, 0},
+        { 0, 1},
+        {-1, 0},
     },
     ZERO = {
         { 1, 0},
@@ -114,7 +114,6 @@ function make_tilemap(w,h,bg_t,name)
             R = {name = "BLOCK"},
         }
     }
-    TILEMAPS[name] = tilemap
     return tilemap
 end
 
@@ -201,6 +200,7 @@ function read_tilemap(filename)
         tokens[7],
         tokens[2]
     )
+    TILEMAPS[tilemap.name] = tilemap
     local i = 0
     for key,token in ipairs(tokens) do
         if token == "===" then
@@ -285,8 +285,8 @@ function rotate_tilemap(tilemap, rot_m)
     end
 
     local points = {
-        D= {x= 0, y= -1}, 
-        U= {x= 0, y= 1},
+        D= {x= 0, y= 1}, 
+        U= {x= 0, y= -1},
         L= {x= -1, y= 0},
         R= {x= 1, y= 0},
     }
