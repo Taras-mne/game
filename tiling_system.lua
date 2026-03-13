@@ -85,7 +85,7 @@ function make_tilemap(w,h,bg_t,name)
         h= h, 
         name= name, 
         bg_t= bg_t,
-        links = { --for future use
+        links = {
             U = {name = "BLOCK"},
             D = {name = "BLOCK"},
             L = {name = "BLOCK"},
@@ -244,24 +244,57 @@ end
 function rotate_tilemap(tilemap, rot_m)
     local n_w = math.abs(tilemap.w * rot_m[1][1]) + math.abs(tilemap.h * rot_m[1][2])
     local n_h = math.abs(tilemap.w * rot_m[2][1]) + math.abs(tilemap.h * rot_m[2][2])
+    local size = {w= tilemap.w, h=tilemap.h}
+    local n_size = {w= n_w, h=n_h}
     local tiles = tilemap.tiles
     local n_tilemap = make_tilemap(n_w, n_h, tilemap.bg_t, tilemap.name)
+    
+    function transform_point(point, size, n_size, rot_m)
+        n_point = {}
+        local t_x = point.x - (1 + size.w)/2
+        local t_y = point.y - (1 + size.h)/2
+
+        n_point.x = t_x * rot_m[1][1] + t_y * rot_m[1][2]
+        n_point.y = t_x * rot_m[2][1] + t_y * rot_m[2][2]
+
+        n_point.x = n_point.x + (1 + n_size.w)/2
+        n_point.y = n_point.y + (1 + n_size.h)/2
+        
+        return n_point 
+    end
+
     for x, column in pairs(tiles) do
         for y, value in pairs(column) do
             if value == tilemap.bg_t then
                 goto continue
             end
-            local t_x = x - (1 + tilemap.w)/2
-            local t_y = y - (1 + tilemap.h)/2
-            
-            local n_x = t_x * rot_m[1][1] + t_y * rot_m[1][2]
-            local n_y = t_x * rot_m[2][1] + t_y * rot_m[2][2]
 
-            n_x = n_x + (1 + n_w)/2
-            n_y = n_y + (1 + n_h)/2
+            local point = transform_point({x= x, y= y}, size, n_size, rot_m)
+            n_tilemap.tiles[point.x][point.y] = value
 
-            n_tilemap.tiles[n_x][n_y] = value
             ::continue::
+        end
+    end
+
+    local points = {
+        D= {x= 0, y= -1}, 
+        U= {x= 0, y= 1},
+        L= {x= -1, y= 0},
+        R= {x= 1, y= 0},
+    }
+
+    for key,point in pairs(points) do
+        --a hack {w= -1, h= -1} for sizeless rotation 
+        --might also b solved with 3 by 3 and like
+        --| |U| |
+        --|R| |L|
+        --| |D| |
+        --but works fine 4 now
+        n_point = transform_point(point, {w= -1, h= -1}, {w= -1, h= -1}, rot_m)
+        for n_key,point in pairs(points) do
+            if compare_points(n_point, point) then 
+                n_tilemap.links[n_key] = tilemap.links[key] 
+            end
         end
     end
     return n_tilemap

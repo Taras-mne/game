@@ -42,6 +42,6 @@ function draw_tilemap(tilemap, x, y)
         else
             love.graphics.print(direction .. ": " .. link.name, x, link_y)
         end
-        link_y = link_y + 20 -- Adjust spacing between links
+        link_y = link_y + 20
     end
 end
