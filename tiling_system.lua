@@ -86,10 +86,10 @@ function make_tilemap(w,h,bg_t,name)
         name= name, 
         bg_t= bg_t,
         links = { --for future use
-            U = "BLOCK",
-            D = "BLOCK",
-            L = "BLOCK",
-            R = "BLOCK",
+            U = {name = "BLOCK"},
+            D = {name = "BLOCK"},
+            L = {name = "BLOCK"},
+            R = {name = "BLOCK"},
         }
     }
     TILEMAPS[name] = tilemap
@@ -204,9 +204,40 @@ function read_tilemap(filename)
             assert(false, "unexpected token recieved: " .. tokens[i])
         end
     end 
-    -- while i < #tokens do
-    --     i = i + 1
-    -- end
+    local self_side = ""
+    local dest_side = ""
+    local destanation = {}
+    while i < #tokens do
+        if tokens[i] == "->" then
+            self_side = tokens[i-1]
+            i = i + 1
+        elseif tokens[i] == "[" then
+            assert(tokens[i+2] == "]", "closing bracket expected")
+            destanation = TILEMAPS[tokens[i+1]]
+            i = i + 3
+        elseif tokens[i] == "BLOCK" then
+            -- block is default, no behaviour needed
+            self_side = ""
+            dest_side = ""
+            destanation = {}
+            i = i + 1
+        elseif tokens[i] == "." then
+            dest_side = tokens[i+1]
+            assert(self_side ~= "", "missing self side")
+            assert(dest_side ~= "", "missing destanation side")
+            assert(destanation.name ~= nil, "missing destanation")
+            tilemap.links[self_side] = {name = destanation.name, side = dest_side}
+            i = i + 1
+        elseif tokens[i] == "U" 
+            or tokens[i] == "D"
+            or tokens[i] == "L"
+            or tokens[i] == "R" 
+        then
+            i = i + 1
+        else
+            assert(false, "unexpected token recieved: " .. tokens[i])
+        end
+    end
     return tilemap
 end
 

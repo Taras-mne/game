@@ -8,6 +8,6 @@ Line (1 5)
 Water (5 1)
 ===
 U -> [shmol].D
-D -> [shmol].U
 L -> [shmol].R
 R -> [shmol].L
+D -> BLOCK
