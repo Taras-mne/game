@@ -1,6 +1,6 @@
 # IN PROGRESS
-- make links show the 1 tile deep look with rotating magic
 - make links show the 1 tile deep look with hover working
+- make links show the 1 tile deep look with flipping magic
 - make the save function save them links
 
 # QUICK ONES

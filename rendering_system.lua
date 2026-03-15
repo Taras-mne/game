@@ -43,16 +43,6 @@ function draw_tilemap(tilemap, x, y)
         U= {0, -50},
         D= {0, 50 + (tilemap.h-1) * TILE_SIZE.h}
     }
-    local flipped_transitions = {
-        "R_U",
-        "U_R",
-        "D_L",
-        "L_D",
-        "U_U",
-        "R_R",
-        "L_L",
-        "D_D",
-    }
     
     for direction, link in pairs(tilemap.links) do
         local block_tile = TILESET["BLOCK"]
@@ -75,9 +65,9 @@ function draw_tilemap(tilemap, x, y)
                     y + diff[2] * i * TILE_SIZE.h + shift[2])
             end
         else
-            side = get_side(
+            local side = get_side(
                 TILEMAPS[link.name], link.side, 
-                is_in_table(flipped_transitions, direction.."_"..link.side))
+                flipped_check(direction, link.side))
             i = 0
             for _,tile_name in pairs(side) do
                 local tile = TILESET[tile_name] 
