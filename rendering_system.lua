@@ -47,7 +47,11 @@ function draw_tilemap(tilemap, x, y)
         "R_U",
         "U_R",
         "D_L",
-        "L_D"
+        "L_D",
+        "U_U",
+        "R_R",
+        "L_L",
+        "D_D",
     }
     
     for direction, link in pairs(tilemap.links) do
