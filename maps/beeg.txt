@@ -2,3 +2,8 @@ NAME beeg
 25x20
 BG Grass
 ===
+===
+D -> BLOCK
+L -> BLOCK
+R -> BLOCK
+U -> BLOCK

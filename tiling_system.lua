@@ -184,6 +184,17 @@ function upload_tilemap(tilemap)
         file_s = file_s .. "\n"
     end
 
+    file_s = file_s .. "===\n"
+
+    for direction, link in pairs(tilemap.links) do
+        if link.name == "BLOCK" then
+            file_s = file_s .. direction .. " -> BLOCK"
+        else
+            file_s = file_s .. direction .. " -> [" .. link.name .. "]." .. link.side
+        end
+        file_s = file_s .. "\n"
+    end
+
     local file = io.open("o_maps/".. tilemap.name .. ".txt", "w")
     if file then
         file:write(file_s)
