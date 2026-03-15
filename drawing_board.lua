@@ -269,7 +269,7 @@ function palette_i(x, y)
     local tiles_todraw = {}
 
     for key,tile in pairs(TILESET) do
-        if isInTable(RESERVED_TILES, key) then
+        if is_in_table(RESERVED_TILES, key) then
             goto continue
         end
         create_zone(

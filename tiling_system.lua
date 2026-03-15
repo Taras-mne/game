@@ -46,7 +46,7 @@ TILE_NAMES = {
     NoTile=  {y=4, x=3, atlas="big_atlas"},
 }
 
-RESERVED_TILES = {
+RESERVED_TILES = {-- tiles that are gfx not 4 level editing
     "Pen",
     "Line",
     "Rect",
@@ -74,7 +74,7 @@ TILESET = {}
 
 TILEMAPS = {}
 
-function get_side(tilemap, side)
+function get_side(tilemap, side, is_flipped)
     local len = 0
     local line = {}
     local presets = {
@@ -93,6 +93,9 @@ function get_side(tilemap, side)
         table.insert(line, tilemap.tiles[preset.start[1]][preset.start[2]])
         preset.start[1] = preset.start[1] + preset.diff[1]
         preset.start[2] = preset.start[2] + preset.diff[2]
+    end
+    if is_flipped then
+        line = array_flip(line)
     end
     return line
 end

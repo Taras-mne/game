@@ -47,11 +47,19 @@ function sizeful_transform_point(point, size, n_size, rot_m)
     return n_point 
 end
 
-function isInTable(table, value)
+function is_in_table(table, value)
     for _, v in ipairs(table) do
         if v == value then
             return true
         end
     end
     return false
+end
+
+function array_flip(array)
+    n_array = {}
+    for i=#array,1,-1 do
+        table.insert(n_array, array[i])
+    end
+    return n_array
 end

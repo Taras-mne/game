@@ -37,17 +37,22 @@ function draw_tilemap(tilemap, x, y)
         h_sh = h_sh + TILE_SIZE.w
     end
 
-    local link_y = y + #tiles[1] * TILE_SIZE.h + 10
-
+    local shifts = {
+        L= {-50, 0},
+        R= {50 + (tilemap.w-1) * TILE_SIZE.w, 0},
+        U= {0, -50},
+        D= {0, 50 + (tilemap.h-1) * TILE_SIZE.h}
+    }
+    local flipped_transitions = {
+        "R_U",
+        "U_R",
+        "D_L",
+        "L_D"
+    }
+    
     for direction, link in pairs(tilemap.links) do
         local block_tile = TILESET["BLOCK"]
         local diff = {}
-        local shifts = {
-            L= {-50, 0},
-            R= {50 + (tilemap.w-1) * TILE_SIZE.w, 0},
-            U= {0, -50},
-            D= {0, 50 + (tilemap.h-1) * TILE_SIZE.h}
-        }
         local shift = shifts[direction]
 
         if direction == "L" or  direction == "R" then
@@ -66,7 +71,9 @@ function draw_tilemap(tilemap, x, y)
                     y + diff[2] * i * TILE_SIZE.h + shift[2])
             end
         else
-            side = get_side(TILEMAPS[link.name], link.side)
+            side = get_side(
+                TILEMAPS[link.name], link.side, 
+                is_in_table(flipped_transitions, direction.."_"..link.side))
             i = 0
             for _,tile_name in pairs(side) do
                 local tile = TILESET[tile_name] 
