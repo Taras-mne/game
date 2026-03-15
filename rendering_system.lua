@@ -38,31 +38,22 @@ function draw_tilemap(tilemap, x, y)
     end
 
     local shifts = {
-        L= {-50, 0},
-        R= {50 + (tilemap.w-1) * TILE_SIZE.w, 0},
-        U= {0, -50},
-        D= {0, 50 + (tilemap.h-1) * TILE_SIZE.h}
+        L= {-50, 0, diff= {0,1}, len= tilemap.h},
+        R= {50 + (tilemap.w-1) * TILE_SIZE.w, 0, diff= {0,1}, len= tilemap.h},
+        U= {0, -50, diff= {1,0}, len= tilemap.w},
+        D= {0, 50 + (tilemap.h-1) * TILE_SIZE.h, diff= {1,0}, len= tilemap.w}
     }
     
     for direction, link in pairs(tilemap.links) do
         local block_tile = TILESET["BLOCK"]
-        local diff = {}
         local shift = shifts[direction]
 
-        if direction == "L" or  direction == "R" then
-            diff = {0,1}
-            len = tilemap.h
-        else
-            diff = {1,0}
-            len = tilemap.w
-        end
-
         if link.name == "BLOCK" then
-            for i=0,len-1 do 
+            for i=0,shift.len-1 do 
                 draw_tile(
                     block_tile, 
-                    x + diff[1] * i * TILE_SIZE.w + shift[1], 
-                    y + diff[2] * i * TILE_SIZE.h + shift[2])
+                    x + shift.diff[1] * i * TILE_SIZE.w + shift[1], 
+                    y + shift.diff[2] * i * TILE_SIZE.h + shift[2])
             end
         else
             local side = get_side(
@@ -73,8 +64,8 @@ function draw_tilemap(tilemap, x, y)
                 local tile = TILESET[tile_name] 
                 draw_tile(
                     tile, 
-                    x + diff[1] * i * TILE_SIZE.w + shift[1], 
-                    y + diff[2] * i * TILE_SIZE.h + shift[2])
+                    x + shift.diff[1] * i * TILE_SIZE.w + shift[1], 
+                    y + shift.diff[2] * i * TILE_SIZE.h + shift[2])
                 i = i + 1
             end
         end
