@@ -80,12 +80,8 @@ function flipped_check(side_from, side_where)
         "U_R",
         "D_L",
         "L_D",
-        "U_U",
-        "R_R",
-        "L_L",
-        "D_D",
     }
-    return is_in_table(flipped_transitions, side_from.."_"..side_where)
+    return side_from == side_where or is_in_table(flipped_transitions, side_from.."_"..side_where)
 end
 
 function get_side(tilemap, side, is_flipped)
