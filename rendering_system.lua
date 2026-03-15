@@ -80,3 +80,56 @@ function draw_tilemap(tilemap, x, y)
         end
     end
 end
+
+function draw_palette(x, y, padding, margin, tiles_todraw) 
+    local rects = {
+        {
+            x = x,
+            y = y,
+            w = TILE_SIZE.w + padding * 2,
+            h = TILE_SIZE.w * #tiles_todraw + margin * (#tiles_todraw-1) + padding * 2,
+            color = {0.15, 0.15, 0.75, 1}
+        },
+        {
+            x = x + TILE_SIZE.w + padding * 2,
+            y = y,
+            w = TILE_SIZE.w + padding * 2,
+            h = TILE_SIZE.h + padding * 2,
+            color = {1, 0.5, 0.5, 1}
+        },
+        {
+            x = x + TILE_SIZE.w + padding * 2,
+            y = y + TILE_SIZE.h + padding * 2,
+            w = TILE_SIZE.w + padding * 2,
+            h = TILE_SIZE.w * 4 + margin * 3 + padding * 2,
+            color = {0.1, 0.4, 0.2, 1}
+        },
+    }
+
+    for i,rect in ipairs(rects) do
+        love.graphics.setColor(unpack(rect.color))
+        love.graphics.rectangle("fill", 
+            rect.x, rect.y, 
+            rect.w, rect.h
+        )
+    end
+    love.graphics.setColor(1, 1, 1, 1)
+    local where = {x = x + padding, y = y + padding}
+    for _,key in pairs(tiles_todraw) do
+        draw_tile(TILESET[key], where.x, where.y)
+        where.y = where.y + TILE_SIZE.h + margin
+    end
+    local where = {x = x + padding + TILE_SIZE.w + margin, y = y + padding}
+    draw_tile(TILESET[DRAWING_STATE.tile], where.x, where.y)
+    for key,tool in pairs(TOOLS) do
+        where.y = where.y + TILE_SIZE.h + margin
+        if DRAWING_STATE.tool == tool then
+            love.graphics.rectangle("fill", 
+                where.x - 2, where.y - 2, 
+                TILE_SIZE.w + 4, TILE_SIZE.h + 4
+            ) 
+        end
+        tile = TILESET[tool]
+        draw_tile(tile, where.x, where.y)
+    end
+end
