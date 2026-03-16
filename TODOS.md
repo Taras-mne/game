@@ -8,5 +8,5 @@
 
 # BIG ONES
 - make it a proper ECS
-- make a char moving on the grid 
+- make a char moving on the grid
 - make links work 4 char

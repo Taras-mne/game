@@ -200,9 +200,9 @@ function get_cell_click_and_hover(i,j)
         function()
             do_pen(i,j,TILEMAP)
         end,
-        function(isDown)
+        function(is_down)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
-            if isDown then
+            if is_down then
                 do_pen(i,j,TILEMAP)
             else
                 do_pen(i,j,PROJECTED_TILEMAP)
@@ -213,7 +213,7 @@ function get_cell_click_and_hover(i,j)
         function()
             do_line(i,j,TILEMAP,true)
         end,
-        function(isDown)
+        function(is_down)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_line(i,j,PROJECTED_TILEMAP)
             do_pen(i,j,PROJECTED_TILEMAP)
@@ -223,7 +223,7 @@ function get_cell_click_and_hover(i,j)
         function()
             do_rect(i,j,TILEMAP,true)
         end,
-        function(isDown)
+        function(is_down)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_pen(i,j,PROJECTED_TILEMAP)
             do_rect(i,j,PROJECTED_TILEMAP)
@@ -233,7 +233,7 @@ function get_cell_click_and_hover(i,j)
         function()
             do_bucket(i,j,TILEMAP)
         end,
-        function(isDown)
+        function(is_down)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_pen(i,j,PROJECTED_TILEMAP)
         end

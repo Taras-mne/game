@@ -10,9 +10,9 @@ function check_zones(x, y, button)
     end
 end
 
-function check_hover(x, y, isDown)
+function check_hover(x, y, is_down)
     for i,foo in pairs(ZONES_OF_INTEREST) do
-        foo(x, y, false, true, isDown)
+        foo(x, y, false, true, is_down)
     end
 end
 
