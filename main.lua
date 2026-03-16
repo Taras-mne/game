@@ -29,7 +29,7 @@ function love.draw()
     PROJECTED_TILEMAP = TILEMAP
 end
 
-function love.mousepressed(x, y, button, istouch)
+function love.mousepressed(x, y, button, is_touch)
     check_zones(x, y, button)
 end
 
