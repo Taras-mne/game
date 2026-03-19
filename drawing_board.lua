@@ -228,34 +228,47 @@ function update_bucket()
         DRAWING_STATE.memo = nil
         return
     end
+
+    local original = TILEMAPS[TILEMAP.name] 
+    assert(not original.is_clone, "original is a clone 4 some reson")
+    local rot_deg = normilize_deg(-TILEMAP.rotation_deg)
+    local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
     
     local new_seeds = {}
     local memo_tile = memo.tile
 
     function try_add(nx, ny)
-        local key = tostring(nx) .. "," .. tostring(ny)
         if nx > 0 and nx <= TILEMAP.w 
         and ny > 0 and ny <= TILEMAP.h
         and TILEMAP.tiles[nx][ny] == memo_tile then
-            table.insert(new_seeds, {nx, ny})
+            table.insert(new_seeds, {x= nx, y= ny})
         end
     end
     
-    for i = 1, #seeds do
-        local seed = seeds[i]
-        if seed and seed[1] and seed[2] then
-            local x, y = seed[1], seed[2]
-            if TILEMAP.tiles[x][y] == DRAWING_STATE.tile then
-                goto continue
-            end
-            TILEMAP.tiles[x][y] = DRAWING_STATE.tile
-
-            try_add(x + 1, y)
-            try_add(x - 1, y)
-            try_add(x, y - 1)
-            try_add(x, y + 1)
-            ::continue::
+    for _,seed in pairs(seeds) do
+        if seed.x == nil or seed.y == nil then
+            goto continue
         end
+        if TILEMAP.tiles[seed.x][seed.y] == DRAWING_STATE.tile then
+            goto continue
+        end
+
+        TILEMAP.tiles[seed.x][seed.y] = DRAWING_STATE.tile
+
+        try_add(seed.x + 1, seed.y)
+        try_add(seed.x - 1, seed.y)
+        try_add(seed.x, seed.y - 1)
+        try_add(seed.x, seed.y + 1)
+
+        seed = sizeful_transform_point(
+            seed, 
+            extract_size(TILEMAP), 
+            extract_size(original), 
+            rot_m
+        )
+        original.tiles[seed.x][seed.y] = DRAWING_STATE.tile
+
+        ::continue::
     end
 
     if #new_seeds == 0 then
@@ -272,7 +285,7 @@ function do_bucket(i,j,tilemap)
     end
     DRAWING_STATE.memo = {
         tile= tilemap.tiles[i][j],
-        seeds = {{i,j},},
+        seeds = {{x= i, y= j}}
     }
 end
 
