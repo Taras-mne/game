@@ -201,7 +201,7 @@ function get_cell_click_and_hover(dx,dy)
         local j = math.floor((y-dy)/TILE_SIZE.h) + 1
         return i,j
     end
-    
+
     if DRAWING_STATE.tool == "Pen" then
         return --returns two functions
         function(x,y)
@@ -261,7 +261,7 @@ function tilemap_i(x, y)
 
     create_zone(
         x, y, 
-        TILE_SIZE.w * TILEMAP.w, TILE_SIZE.h * TILEMAP.h, 
+        (TILE_SIZE.w * TILEMAP.w)-1, (TILE_SIZE.h * TILEMAP.h)-1, 
         get_cell_click_and_hover(x, y)
     )
     
