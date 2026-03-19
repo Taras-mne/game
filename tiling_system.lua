@@ -281,27 +281,27 @@ function read_tilemap(filename)
     end 
     local self_side = ""
     local dest_side = ""
-    local destanation = {}
+    local destination = {}
     while i < #tokens do
         if tokens[i] == "->" then
             self_side = tokens[i-1]
             i = i + 1
         elseif tokens[i] == "[" then
             assert(tokens[i+2] == "]", "closing bracket expected")
-            destanation = TILEMAPS[tokens[i+1]]
+            destination = TILEMAPS[tokens[i+1]]
             i = i + 3
         elseif tokens[i] == "BLOCK" then
             -- block is default, no behaviour needed
             self_side = ""
             dest_side = ""
-            destanation = {}
+            destination = {}
             i = i + 1
         elseif tokens[i] == "." then
             dest_side = tokens[i+1]
             assert(self_side ~= "", "missing self side")
-            assert(dest_side ~= "", "missing destanation side")
-            assert(destanation.name ~= nil, "missing destanation")
-            tilemap.links[self_side] = {name = destanation.name, side = dest_side}
+            assert(dest_side ~= "", "missing destination side")
+            assert(destination.name ~= nil, "missing destination")
+            tilemap.links[self_side] = {name = destination.name, side = dest_side}
             i = i + 1
         elseif tokens[i] == "U" 
             or tokens[i] == "D"
@@ -325,7 +325,7 @@ function rotate_tilemap(tilemap, rot_m)
     local n_tilemap = make_tilemap(n_w, n_h, tilemap.bg_t, tilemap.name)
     
     n_tilemap.is_clone = true
-    n_tilemap.rotation_deg = normilize_deg(tilemap.rotation_deg + rot_m.rotation_deg)
+    n_tilemap.rotation_deg = normalize_deg(tilemap.rotation_deg + rot_m.rotation_deg)
 
     for x, column in pairs(tiles) do
         for y, value in pairs(column) do
@@ -348,7 +348,7 @@ function rotate_tilemap(tilemap, rot_m)
     }
 
     for key,point in pairs(points) do
-        n_point = transform_point(point, rot_m)
+        local n_point = transform_point(point, rot_m)
         for n_key,point in pairs(points) do
             if compare_points(n_point, point) then 
                 n_tilemap.links[n_key] = tilemap.links[key] 

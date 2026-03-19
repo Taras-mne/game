@@ -5,7 +5,7 @@ function nuke_draw_queue()
 end
 
 function draw_all()
-    for key,call in pairs(DRAW_QUEUE) do
+    for i,call in ipairs(DRAW_QUEUE) do
         call()
     end
 end
@@ -59,7 +59,7 @@ function draw_tilemap(tilemap, x, y)
             local side = get_side(
                 TILEMAPS[link.name], link.side, 
                 flipped_check(direction, link.side))
-            i = 0
+            local i = 0
             for _,tile_name in pairs(side) do
                 local tile = TILESET[tile_name] 
                 draw_tile(
@@ -120,7 +120,7 @@ function draw_palette(x, y, padding, margin, tiles_todraw)
                 TILE_SIZE.w + 4, TILE_SIZE.h + 4
             ) 
         end
-        tile = TILESET[tool]
+        local tile = TILESET[tool]
         draw_tile(tile, where.x, where.y)
     end
 end

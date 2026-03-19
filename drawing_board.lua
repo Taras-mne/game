@@ -94,9 +94,9 @@ function do_pen(i,j,tilemap,hard)
     if hard and tilemap.is_clone then
         local original = TILEMAPS[tilemap.name] 
         assert(not original.is_clone, "original is a clone 4 some reson")
-        local rot_deg = normilize_deg(-tilemap.rotation_deg)
+        local rot_deg = normalize_deg(-tilemap.rotation_deg)
         local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
-        point = sizeful_transform_point(
+        local point = sizeful_transform_point(
             {x=i, y=j}, 
             extract_size(tilemap), 
             extract_size(original), 
@@ -108,7 +108,8 @@ end
 
 function plot_line(p1, p2, tilemap)
     local p_diff = sum_points(p1, neg_point(p2))
-    local diff = {} 
+    local diff = {}
+    local limit = 0 
     if (math.abs(p_diff.x) < 2) and (math.abs(p_diff.y) < 2) then
         tilemap.tiles[p1.x][p1.y] = DRAWING_STATE.tile
         tilemap.tiles[p2.x][p2.y] = DRAWING_STATE.tile
@@ -149,7 +150,7 @@ function do_line(i, j, tilemap, hard)
     if hard then 
         local original = TILEMAPS[tilemap.name] 
         assert(not original.is_clone, "original is a clone 4 some reson")
-        local rot_deg = normilize_deg(-tilemap.rotation_deg)
+        local rot_deg = normalize_deg(-tilemap.rotation_deg)
         local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
 
         click_point = sizeful_transform_point(
@@ -195,7 +196,7 @@ function do_rect(i,j,tilemap,hard)
     if hard then 
         local original = TILEMAPS[tilemap.name] 
         assert(not original.is_clone, "original is a clone 4 some reson")
-        local rot_deg = normilize_deg(-tilemap.rotation_deg)
+        local rot_deg = normalize_deg(-tilemap.rotation_deg)
         local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
 
         click_point = sizeful_transform_point(
@@ -231,7 +232,7 @@ function update_bucket()
 
     local original = TILEMAPS[TILEMAP.name] 
     assert(not original.is_clone, "original is a clone 4 some reson")
-    local rot_deg = normilize_deg(-TILEMAP.rotation_deg)
+    local rot_deg = normalize_deg(-TILEMAP.rotation_deg)
     local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
     
     local new_seeds = {}

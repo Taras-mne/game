@@ -27,7 +27,7 @@ function sign(number)
 end
 
 function transform_point(point, rot_m)
-    n_point = {}
+    local n_point = {}
 
     n_point.x = point.x * rot_m[1][1] + point.y * rot_m[1][2]
     n_point.y = point.x * rot_m[2][1] + point.y * rot_m[2][2]
@@ -39,7 +39,7 @@ function sizeful_transform_point(point, size, n_size, rot_m)
     local t_x = point.x - (1 + size.w)/2
     local t_y = point.y - (1 + size.h)/2
     
-    n_point = transform_point({x= t_x, y= t_y}, rot_m)
+    local n_point = transform_point({x= t_x, y= t_y}, rot_m)
 
     n_point.x = n_point.x + (1 + n_size.w)/2
     n_point.y = n_point.y + (1 + n_size.h)/2
@@ -57,14 +57,14 @@ function is_in_table(table, value)
 end
 
 function array_flip(array)
-    n_array = {}
+    local n_array = {}
     for i=#array,1,-1 do
         table.insert(n_array, array[i])
     end
     return n_array
 end
 
-function normilize_deg(deg)
+function normalize_deg(deg)
     return deg % 360
 end
 
