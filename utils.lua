@@ -1,3 +1,10 @@
+DEG_TO_NAMES = {
+    [90 * 0] = "ZERO",
+    [90 * 1] = "QUARTER",
+    [90 * 2] = "HALF",
+    [90 * 3] = "THREE_QUARTERS",
+}
+
 function round(x)
     if x >= 0 then
         return math.floor(x + 0.5)
@@ -71,10 +78,3 @@ end
 function extract_size(obj)
     return {w= obj.w, h= obj.h}
 end
-
-DEG_TO_NAMES = {
-    [90 * 0] = "ZERO",
-    [90 * 1] = "QUARTER",
-    [90 * 2] = "HALF",
-    [90 * 3] = "THREE_QUARTERS",
-}

@@ -47,6 +47,20 @@ function draw_tilemap(tilemap, x, y)
     for direction, link in pairs(tilemap.links) do
         local block_tile = TILESET["BLOCK"]
         local shift = shifts[direction]
+        local other_tilemap = {}
+        if link.name == tilemap.name then
+            if tilemap.rotation_deg == 0 then
+                other_tilemap = tilemap
+            else 
+                local deg = normalize_deg(-tilemap.rotation_deg)
+                other_tilemap = rotate_tilemap(
+                    tilemap, 
+                    ROTATION_MATRICES[DEG_TO_NAMES[deg]]
+                )
+            end
+        else
+            other_tilemap = TILEMAPS[link.name]
+        end
 
         if link.name == "BLOCK" then
             for i=0,shift.len-1 do 
@@ -55,20 +69,21 @@ function draw_tilemap(tilemap, x, y)
                     x + shift.diff[1] * i * TILE_SIZE.w + shift[1], 
                     y + shift.diff[2] * i * TILE_SIZE.h + shift[2])
             end
-        else
-            local side = get_side(
-                TILEMAPS[link.name], link.side, 
-                flipped_check(direction, link.side))
-            local i = 0
-            for _,tile_name in pairs(side) do
-                local tile = TILESET[tile_name] 
-                draw_tile(
-                    tile, 
-                    x + shift.diff[1] * i * TILE_SIZE.w + shift[1], 
-                    y + shift.diff[2] * i * TILE_SIZE.h + shift[2])
-                i = i + 1
-            end
+            goto continue
         end
+        local side = get_side(
+            other_tilemap, link.side, 
+            flipped_check(direction, link.side))
+        local i = 0
+        for _,tile_name in pairs(side) do
+            local tile = TILESET[tile_name] 
+            draw_tile(
+                tile, 
+                x + shift.diff[1] * i * TILE_SIZE.w + shift[1], 
+                y + shift.diff[2] * i * TILE_SIZE.h + shift[2])
+            i = i + 1
+        end
+        ::continue::
     end
 end
 

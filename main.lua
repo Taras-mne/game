@@ -7,7 +7,7 @@ function love.load()
 
     load_tilesets()
 
-    TILEMAP = read_tilemap("shmol_tor.txt")
+    TILEMAP = read_tilemap("shmol_sphere.txt")
     --needed projecting without destroying TILEMAP
     --is cloned when needed
     PROJECTED_TILEMAP = TILEMAP
