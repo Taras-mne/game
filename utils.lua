@@ -68,6 +68,10 @@ function normilize_deg(deg)
     return deg % 360
 end
 
+function extract_size(obj)
+    return {w= obj.w, h= obj.h}
+end
+
 DEG_TO_NAMES = {
     [90 * 0] = "ZERO",
     [90 * 1] = "QUARTER",

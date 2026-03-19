@@ -89,8 +89,21 @@ function buttons_bar_i(x, y)
     end)
 end
 
-function do_pen(i,j,tilemap)
+function do_pen(i,j,tilemap,hard)
     tilemap.tiles[i][j] = DRAWING_STATE.tile
+    if hard and tilemap.is_clone then
+        local original = TILEMAPS[tilemap.name] 
+        assert(not original.is_clone, "original is a clone 4 some reson")
+        local rot_deg = normilize_deg(-tilemap.rotation_deg)
+        local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
+        point = sizeful_transform_point(
+            {x=i, y=j}, 
+            extract_size(tilemap), 
+            extract_size(original), 
+            rot_m
+        )
+        do_pen(point.x, point.y, original, hard)
+    end
 end
 
 function do_line(i,j,tilemap,hard)
@@ -205,15 +218,15 @@ function get_cell_click_and_hover(dx,dy)
         return --returns two functions
         function(x,y)
             local i,j = get_ij(x,y)
-            do_pen(i,j,TILEMAP)
+            do_pen(i,j,TILEMAP,true)
         end,
         function(x,y,is_down)
             local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             if is_down then
-                do_pen(i,j,TILEMAP)
+                do_pen(i,j,TILEMAP,true)
             else
-                do_pen(i,j,PROJECTED_TILEMAP)
+                do_pen(i,j,PROJECTED_TILEMAP,false)
             end
         end
     elseif DRAWING_STATE.tool == "Line" then
