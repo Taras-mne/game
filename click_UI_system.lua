@@ -40,9 +40,9 @@ function create_zone(x, y, w, h, callback, hover_callback)
         end
 
         if hover and hover_callback then 
-            hover_callback(c_x,c_y,is_down)
+            hover_callback(c_x, c_y, is_down)
         elseif not hover then
-            callback(c_x,c_y)
+            callback(c_x, c_y)
         end
     end
 

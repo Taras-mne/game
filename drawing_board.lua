@@ -196,7 +196,6 @@ end
 
 function get_cell_click_and_hover(dx,dy)
     function get_ij(x,y)
-        print(x-dx.."_"..y-dy)
         local i = math.floor((x-dx)/TILE_SIZE.w) + 1
         local j = math.floor((y-dy)/TILE_SIZE.h) + 1
         return i,j
