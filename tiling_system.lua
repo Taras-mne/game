@@ -160,10 +160,12 @@ function make_tilemap(w,h,bg_t,name)
 end
 
 function upload_tilemap(tilemap)
-    local file_s = "NAME " .. tilemap.name .. "\n"
-    file_s = file_s .. tilemap.w .. "x" .. tilemap.h .. "\n"
-    file_s = file_s .. "BG " .. tilemap.bg_t .. "\n"
-    file_s = file_s .. "===\n"
+    local out = {}
+    
+    table.insert(out, "NAME " .. tilemap.name .. "\n")
+    table.insert(out, tilemap.w .. "x" .. tilemap.h .. "\n")
+    table.insert(out, "BG " .. tilemap.bg_t .. "\n")
+    table.insert(out, "===\n")
 
     local tile_coords = {}
 
@@ -183,30 +185,31 @@ function upload_tilemap(tilemap)
     end
 
     for key, array in pairs(tile_coords) do
-        file_s = file_s .. key .. " "
+        table.insert(out, key .. " ")
         for i, point in pairs(array) do
-            file_s = file_s .. "(" .. point[1] .. " " .. point[2] .. ") "
+            table.insert(out, "(" .. point[1] .. " " .. point[2] .. ") ")
         end
-        file_s = file_s .. "\n"
+        table.insert(out, "\n")
     end
 
-    file_s = file_s .. "===\n"
+    table.insert(out, "===\n")
 
     for direction, link in pairs(tilemap.links) do
         if link.name == "BLOCK" then
-            file_s = file_s .. direction .. " -> BLOCK"
+            table.insert(out, direction .. " -> BLOCK")
         else
-            file_s = file_s .. direction .. " -> [" .. link.name .. "]." .. link.side
+            table.insert(out, direction .. " -> [" .. link.name .. "]." .. link.side)
         end
-        file_s = file_s .. "\n"
+        table.insert(out, "\n")
     end
 
+    local file_s = table.concat(out)
     local file = io.open("o_maps/".. tilemap.name .. ".txt", "w")
     if file then
         file:write(file_s)
         file:close()
     end
-end 
+end
 
 function tokenize(file_str)
     function try_put(tokens, token)
