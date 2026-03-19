@@ -1,17 +1,21 @@
 ROTATION_MATRICES = {
     QUARTER = {
+        rotation_deg= 90,
         { 0,-1},
         { 1, 0},
     },
     HALF = {
+        rotation_deg= 90 * 2,
         {-1, 0},
         { 0,-1},
     },
     THREE_QUARTERS = {
+        rotation_deg= 90 * 3,
         { 0, 1},
         {-1, 0},
     },
     ZERO = {
+        rotation_deg= 0,
         { 1, 0},
         { 0, 1},
     },
@@ -139,6 +143,8 @@ function make_tilemap(w,h,bg_t,name)
     end
     local tilemap =  {
         tiles= tiles, 
+        is_clone = false,
+        rotation_deg = 0,
         w= w, 
         h= h, 
         name= name, 
@@ -317,6 +323,9 @@ function rotate_tilemap(tilemap, rot_m)
     local n_size = {w= n_w, h=n_h}
     local tiles = tilemap.tiles
     local n_tilemap = make_tilemap(n_w, n_h, tilemap.bg_t, tilemap.name)
+    
+    n_tilemap.is_clone = true
+    n_tilemap.rotation_deg = (n_tilemap.rotation_deg + rot_m.rotation_deg) % 360
 
     for x, column in pairs(tiles) do
         for y, value in pairs(column) do

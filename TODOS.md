@@ -1,4 +1,5 @@
 # IN PROGRESS
+- make links show the 1 tile deep after rotating
 - make links show the 1 tile deep look with hover working
 - make links show the 1 tile deep look with flipping magic
 - make the save function save them links with flipping magic
