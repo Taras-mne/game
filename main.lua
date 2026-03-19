@@ -4,16 +4,21 @@ function love.load()
     require("click_UI_system")
     require("rendering_system")
     require("tiling_system")
+    require("menu")
 
     load_tilesets()
 
     read_tilemap("shmol_sphere.txt")
     read_tilemap("shmol_tor.txt")
     read_tilemap("beeg.txt")
+
+    local myFont = love.graphics.newFont("fonts/JacquardaBastarda9-Regular.ttf", 40) -- 24 - размер шрифта
+    love.graphics.setFont(myFont)
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 
     -- drawing_board_setup()
+    menu_setup()
 end
 
 function love.update(dt)
