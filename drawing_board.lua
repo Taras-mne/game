@@ -109,25 +109,40 @@ end
 function do_line(i,j,tilemap,hard)
     if DRAWING_STATE.memo == nil then
         if hard then 
-            DRAWING_STATE.memo = {i,j}
+            DRAWING_STATE.memo = {x= i, y= j}
         end
-    else
-        local current_pos = {i,j}
-        tilemap.tiles[current_pos[1]][current_pos[2]] = DRAWING_STATE.tile
-        tilemap.tiles[DRAWING_STATE.memo[1]][DRAWING_STATE.memo[2]] = DRAWING_STATE.tile
-        
-        local current_pos_r = {i,j}
-        local vec = normalize(sum(neg(current_pos), DRAWING_STATE.memo))
-        while current_pos_r[1] ~= DRAWING_STATE.memo[1] 
-        or current_pos_r[2] ~= DRAWING_STATE.memo[2] do
-            current_pos = sum(current_pos, vec)
-            current_pos_r = {round(current_pos[1]), round(current_pos[2])}
-            tilemap.tiles[current_pos_r[1]][current_pos_r[2]] = DRAWING_STATE.tile
-        end
+        return
+    end
 
-        if hard then 
-            DRAWING_STATE.memo = nil
-        end
+    local click_point = {x= i, y= j}
+    local memo_point = DRAWING_STATE.memo
+
+    tilemap.tiles[click_point.x][click_point.y] = DRAWING_STATE.tile
+    tilemap.tiles[memo_point.x][memo_point.y] = DRAWING_STATE.tile
+
+    if hard then 
+        local original = TILEMAPS[tilemap.name] 
+        assert(not original.is_clone, "original is a clone 4 some reson")
+        local rot_deg = normilize_deg(-tilemap.rotation_deg)
+        local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
+
+        click_point = sizeful_transform_point(
+            click_point, 
+            extract_size(tilemap), 
+            extract_size(original), 
+            rot_m
+        )
+        memo_point = sizeful_transform_point(
+            memo_point, 
+            extract_size(tilemap), 
+            extract_size(original), 
+            rot_m
+        )
+
+        original.tiles[click_point.x][click_point.y] = DRAWING_STATE.tile
+        original.tiles[memo_point.x][memo_point.y] = DRAWING_STATE.tile
+
+        DRAWING_STATE.memo = nil
     end
 end
 
@@ -226,7 +241,7 @@ function get_cell_click_and_hover(dx,dy)
             if is_down then
                 do_pen(i,j,TILEMAP,true)
             else
-                do_pen(i,j,PROJECTED_TILEMAP,false)
+                do_pen(i,j,PROJECTED_TILEMAP)
             end
         end
     elseif DRAWING_STATE.tool == "Line" then
