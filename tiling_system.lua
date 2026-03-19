@@ -26,7 +26,7 @@ TILE_SIZE = {
     h= 32
 }
 
-TILE_NAMES = {
+TILE_NAMES = { --getting deleted in load_tilesets
     Line=     {x=1, y=1, atlas="smol_atlas"},
     Rect=     {x=2, y=1, atlas="smol_atlas"},
     Bucket=   {x=1, y=2, atlas="smol_atlas"},
@@ -74,9 +74,13 @@ TILE_ATLASES = {
     smol_atlas= "pics/2by2.png"
 }
 
-TILESET = {}
+TILESET = {
+    --getting filled in load_tilesets 
+}
 
-TILEMAPS = {}
+TILEMAPS = {
+    --getting filled by calling read_tilemap 4 every tilemap
+}
 
 function flipped_check(side_from, side_where)
     local flipped_transitions = {

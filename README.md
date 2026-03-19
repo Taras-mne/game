@@ -5,3 +5,6 @@ the whole thing is made on [LOVE2D](https://love2d.org/), cause i hate clicking 
 
 # THE CODESTYLE
 variables are snake_case, global ones are SHOUT_CASE. tile names are PascalCase unless it's a special case. the code structure tries it's best to stay as flat as possible - therefore no deep folder hierarchy (you're welcome). i do hate the OOP with hate that is hard to put into words, so the code may appear to go out of its way to avoid OOP-ness, which is not entirely false. sometimes there's questionable naming in code, on which all i can say is - i guess it makes sence to me. 
+
+# WHAT'S DONE
+the tilemap is redactable in built-in redactor, and the links to itself and other tilemaps are shown. the redactor is loaded with a map that is hardcoded in main.lua. there will be menus, those are in TODOs 4 now.
