@@ -171,20 +171,49 @@ function do_line(i, j, tilemap, hard)
     end
 end
 
+function plot_rect(p1, p2, tilemap)
+    for i=math.min(p2.x,p1.x), math.max(p2.x,p1.x) do
+        for j=math.min(p2.y,p1.y), math.max(p2.y,p1.y) do
+            tilemap.tiles[i][j] = DRAWING_STATE.tile
+        end
+    end
+end
+
 function do_rect(i,j,tilemap,hard)
     if DRAWING_STATE.memo == nil then
         if hard then 
-            DRAWING_STATE.memo = {i,j}
+            DRAWING_STATE.memo = {x= i, y= j}
         end
-    else
-        for ii=math.min(i,DRAWING_STATE.memo[1]), math.max(i,DRAWING_STATE.memo[1]) do
-            for jj=math.min(j,DRAWING_STATE.memo[2]), math.max(j,DRAWING_STATE.memo[2]) do
-                tilemap.tiles[ii][jj] = DRAWING_STATE.tile
-            end
-        end
-        if hard then 
-            DRAWING_STATE.memo = nil
-        end
+        return
+    end
+
+    local click_point = {x= i, y= j}
+    local memo_point = DRAWING_STATE.memo
+
+    plot_rect(click_point, memo_point, tilemap)
+
+    if hard then 
+        local original = TILEMAPS[tilemap.name] 
+        assert(not original.is_clone, "original is a clone 4 some reson")
+        local rot_deg = normilize_deg(-tilemap.rotation_deg)
+        local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
+
+        click_point = sizeful_transform_point(
+            click_point, 
+            extract_size(tilemap), 
+            extract_size(original), 
+            rot_m
+        )
+        memo_point = sizeful_transform_point(
+            memo_point, 
+            extract_size(tilemap), 
+            extract_size(original), 
+            rot_m
+        )
+
+        plot_rect(click_point, memo_point, original)
+
+        DRAWING_STATE.memo = nil
     end
 end
 
