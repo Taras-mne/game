@@ -106,7 +106,34 @@ function do_pen(i,j,tilemap,hard)
     end
 end
 
-function do_line(i,j,tilemap,hard)
+function do_do_line(p1, p2, tilemap)
+    local p_diff = sum_points(p1, neg_point(p2))
+    local diff = {} 
+    if (math.abs(p_diff.x) < 2) and (math.abs(p_diff.y) < 2) then
+        tilemap.tiles[p1.x][p1.y] = DRAWING_STATE.tile
+        tilemap.tiles[p2.x][p2.y] = DRAWING_STATE.tile
+        return
+    elseif math.abs(p_diff.x) < 2 then
+        diff = {x= 0, y= -1}
+        limit = math.abs(p_diff.y)
+    elseif math.abs(p_diff.y) < 2 then
+        diff = {x= -1, y= 0}
+        limit = math.abs(p_diff.x)
+    else 
+        diff = {x= -1, y= -1}
+        limit = math.min(math.abs(p_diff.x), math.abs(p_diff.y))
+    end
+    diff.x = diff.x * sign(p_diff.x)
+    diff.y = diff.y * sign(p_diff.y)
+    
+    tilemap.tiles[p1.x][p1.y] = DRAWING_STATE.tile
+    for i=1,limit do
+        p1 = sum_points(p1, diff)
+        tilemap.tiles[p1.x][p1.y] = DRAWING_STATE.tile
+    end
+end
+
+function do_line(i, j, tilemap, hard)
     if DRAWING_STATE.memo == nil then
         if hard then 
             DRAWING_STATE.memo = {x= i, y= j}
@@ -117,8 +144,7 @@ function do_line(i,j,tilemap,hard)
     local click_point = {x= i, y= j}
     local memo_point = DRAWING_STATE.memo
 
-    tilemap.tiles[click_point.x][click_point.y] = DRAWING_STATE.tile
-    tilemap.tiles[memo_point.x][memo_point.y] = DRAWING_STATE.tile
+    do_do_line(memo_point, click_point, tilemap)
 
     if hard then 
         local original = TILEMAPS[tilemap.name] 
@@ -139,8 +165,7 @@ function do_line(i,j,tilemap,hard)
             rot_m
         )
 
-        original.tiles[click_point.x][click_point.y] = DRAWING_STATE.tile
-        original.tiles[memo_point.x][memo_point.y] = DRAWING_STATE.tile
+        do_do_line(memo_point, click_point, original)
 
         DRAWING_STATE.memo = nil
     end

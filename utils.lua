@@ -1,4 +1,3 @@
---used in many places, 100% needed
 function round(x)
     if x >= 0 then
         return math.floor(x + 0.5)
@@ -7,9 +6,24 @@ function round(x)
     end
 end
 
---used in tiling system once, feels like it will be used again somewhere
 function compare_points(p1, p2)
     return p1.x == p2.x and p1.y == p2.y
+end
+
+function sum_points(p1, p2)
+    return {x=p1.x + p2.x , y=p1.y + p2.y}
+end
+
+function neg_point(p)
+    return {x=-p.x , y=-p.y}
+end
+
+function abs_point(p)
+    return {x=math.abs(p.x) , y=math.abs(p.y)}
+end
+
+function sign(number)
+    return number > 0 and 1 or (number == 0 and 0 or -1)
 end
 
 function transform_point(point, rot_m)
