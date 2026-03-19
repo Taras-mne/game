@@ -106,7 +106,7 @@ function do_pen(i,j,tilemap,hard)
     end
 end
 
-function do_do_line(p1, p2, tilemap)
+function plot_line(p1, p2, tilemap)
     local p_diff = sum_points(p1, neg_point(p2))
     local diff = {} 
     if (math.abs(p_diff.x) < 2) and (math.abs(p_diff.y) < 2) then
@@ -144,7 +144,7 @@ function do_line(i, j, tilemap, hard)
     local click_point = {x= i, y= j}
     local memo_point = DRAWING_STATE.memo
 
-    do_do_line(memo_point, click_point, tilemap)
+    plot_line(memo_point, click_point, tilemap)
 
     if hard then 
         local original = TILEMAPS[tilemap.name] 
@@ -165,7 +165,7 @@ function do_line(i, j, tilemap, hard)
             rot_m
         )
 
-        do_do_line(memo_point, click_point, original)
+        plot_line(memo_point, click_point, original)
 
         DRAWING_STATE.memo = nil
     end
