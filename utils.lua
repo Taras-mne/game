@@ -63,3 +63,14 @@ function array_flip(array)
     end
     return n_array
 end
+
+function normilize_deg(deg)
+    return deg % 360
+end
+
+DEG_TO_NAMES = {
+    [90 * 0] = "ZERO",
+    [90 * 1] = "QUARTER",
+    [90 * 2] = "HALF",
+    [90 * 3] = "THREE_QUARTERS",
+}

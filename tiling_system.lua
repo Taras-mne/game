@@ -325,7 +325,7 @@ function rotate_tilemap(tilemap, rot_m)
     local n_tilemap = make_tilemap(n_w, n_h, tilemap.bg_t, tilemap.name)
     
     n_tilemap.is_clone = true
-    n_tilemap.rotation_deg = (n_tilemap.rotation_deg + rot_m.rotation_deg) % 360
+    n_tilemap.rotation_deg = normilize_deg(n_tilemap.rotation_deg + rot_m.rotation_deg)
 
     for x, column in pairs(tiles) do
         for y, value in pairs(column) do
