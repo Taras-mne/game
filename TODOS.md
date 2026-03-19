@@ -4,7 +4,7 @@
 - make the save function save them links with flipping magic
 
 # QUICK ONES
-- refactor the derawing callback so it's using math 4 figuring out which tile is hovered and clicked
+- none yet
 
 # BIG ONES
 - make it a proper ECS

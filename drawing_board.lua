@@ -194,13 +194,22 @@ function do_bucket(i,j,tilemap)
     }
 end
 
-function get_cell_click_and_hover(i,j)
+function get_cell_click_and_hover(dx,dy)
+    function get_ij(x,y)
+        print(x-dx.."_"..y-dy)
+        local i = math.floor((x-dx)/TILE_SIZE.w) + 1
+        local j = math.floor((y-dy)/TILE_SIZE.h) + 1
+        return i,j
+    end
+    
     if DRAWING_STATE.tool == "Pen" then
         return --returns two functions
-        function()
+        function(x,y)
+            local i,j = get_ij(x,y)
             do_pen(i,j,TILEMAP)
         end,
-        function(is_down)
+        function(x,y,is_down)
+            local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             if is_down then
                 do_pen(i,j,TILEMAP)
@@ -210,30 +219,36 @@ function get_cell_click_and_hover(i,j)
         end
     elseif DRAWING_STATE.tool == "Line" then
         return
-        function()
+        function(x,y)
+            local i,j = get_ij(x,y)
             do_line(i,j,TILEMAP,true)
         end,
-        function(is_down)
+        function(x,y,is_down)
+            local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_line(i,j,PROJECTED_TILEMAP)
             do_pen(i,j,PROJECTED_TILEMAP)
         end
     elseif DRAWING_STATE.tool == "Rect" then
         return
-        function()
+        function(x,y)
+            local i,j = get_ij(x,y)
             do_rect(i,j,TILEMAP,true)
         end,
-        function(is_down)
+        function(x,y,is_down)
+            local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_pen(i,j,PROJECTED_TILEMAP)
             do_rect(i,j,PROJECTED_TILEMAP)
         end
     elseif DRAWING_STATE.tool == "Bucket" then
         return
-        function()
+        function(x,y)
+            local i,j = get_ij(x,y)
             do_bucket(i,j,TILEMAP)
         end,
-        function(is_down)
+        function(x,y,is_down)
+            local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_pen(i,j,PROJECTED_TILEMAP)
         end
@@ -243,19 +258,13 @@ end
 function tilemap_i(x, y)
     local tiles = TILEMAP.tiles
     local h_sh = 0
-    for i, column in ipairs(tiles) do
-        local v_sh = 0
-        for j, value in ipairs(column) do
-            create_zone(
-                x + h_sh + 1, y + v_sh + 1, 
-                TILE_SIZE.w-2, TILE_SIZE.h-2, 
-                get_cell_click_and_hover(i,j)
-            )
 
-            v_sh = v_sh + TILE_SIZE.h
-        end
-        h_sh = h_sh + TILE_SIZE.w
-    end
+    create_zone(
+        x, y, 
+        TILE_SIZE.w * TILEMAP.w, TILE_SIZE.h * TILEMAP.h, 
+        get_cell_click_and_hover(x, y)
+    )
+    
     draw_call_add(function() 
         draw_tilemap(PROJECTED_TILEMAP, x, y)
     end)
