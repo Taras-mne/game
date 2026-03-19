@@ -7,18 +7,18 @@ function love.load()
 
     load_tilesets()
 
-    TILEMAP = read_tilemap("shmol_sphere.txt")
-    --needed projecting without destroying TILEMAP
-    --is cloned when needed
-    PROJECTED_TILEMAP = TILEMAP
+    read_tilemap("shmol_sphere.txt")
+    read_tilemap("shmol_tor.txt")
+    read_tilemap("beeg.txt")
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 
-    drawing_board_setup()
+    -- drawing_board_setup()
 end
 
 function love.update(dt)
-    update_bucket()
+    -- in future there will b a global update name that will be changing as needed
+    -- update_bucket()
     local x, y = love.mouse.getPosition()
     check_hover(x, y, love.mouse.isDown(1))
 end
@@ -26,7 +26,7 @@ end
 function love.draw()
     draw_all()
     -- draw_zones()
-    PROJECTED_TILEMAP = TILEMAP
+    -- PROJECTED_TILEMAP = TILEMAP
 end
 
 function love.mousepressed(x, y, button, is_touch)
@@ -34,5 +34,5 @@ function love.mousepressed(x, y, button, is_touch)
 end
 
 function love.resize(width, height)
-    drawing_board_setup()
+    -- drawing_board_setup()
 end

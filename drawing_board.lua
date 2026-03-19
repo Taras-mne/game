@@ -11,6 +11,7 @@ TOOLS = { --TODO: repopulate with tiles when loading
 }
 
 function drawing_board_setup()
+    PROJECTED_TILEMAP = TILEMAP
     nuke_zones()
     nuke_draw_queue()
     local screen_width, screen_height = love.window.getMode()

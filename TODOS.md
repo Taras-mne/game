@@ -1,11 +1,11 @@
 # IN PROGRESS
-- make links show the 1 tile deep look with flipping magic
-- make the save function save them links with flipping magic
+- A MENU
 
 # QUICK ONES
 - none yet
 
 # BIG ONES
+- flipping magic
 - make a char moving on the grid
 - make a menu that loads different levels in redactor OR with char
 - make links work 4 char
