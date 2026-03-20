@@ -39,20 +39,40 @@ end
 
 function menu_setup()
     local screen_width, screen_height = love.window.getMode()
-    local button = button_setup(
-        100,100,
-        400,100,
-        {1,0,1,0.5},"Testing_button",
+    local button1 = button_setup(
+        100, 100,
+        400, 100,
+        {0,1,1,0.5},
         function(self,x,y)
             self.w = self.w + 50
+            self.text = "picaboo"
         end
     )
+    local button2 = button_setup(
+        100, 210,
+        400, 100,
+        {1,0,1,0.5},
+        function(self,x,y)
+            self.w = self.w + 50
+            self.icon.x = self.icon.x + 50
+        end
+    )
+    icon_setup(button2, 20, 20, TILESET.NoTile)
+end
+
+function icon_setup(button, l_x, l_y, tile)
+    local icon = {
+        x= l_x,
+        y= l_y,
+        tile= tile,
+    }
+    button.icon = icon
 end
 
 function button_setup(
     x, y, 
     w, h, 
-    color, text, 
+    color, 
     callback
 )
     local button = {
@@ -60,7 +80,6 @@ function button_setup(
         y= y,
         w= w,
         h= h,
-        text= text,
         color= color,
         color_hovered= {1-color[1], 1-color[2], 1-color[3], 1-color[4]},
         is_hovered= false,
@@ -71,13 +90,18 @@ function button_setup(
     draw_call_add(function()
         if button.is_hovered then
             love.graphics.setColor(button.color_hovered)
-            love.graphics.rectangle("fill", button.x, button.y, button.w, button.h)
-            love.graphics.setColor(WHITE)
-            love.graphics.print(button.text, button.x, button.y)
         else
             love.graphics.setColor(button.color)
-            love.graphics.rectangle("fill", button.x, button.y, button.w, button.h)
-            love.graphics.setColor(WHITE)
+        end
+        love.graphics.rectangle("fill", button.x, button.y, button.w, button.h)
+        love.graphics.setColor(WHITE)
+        if button.icon then
+            draw_tile(
+                button.icon.tile, 
+                button.x + button.icon.x, 
+                button.y + button.icon.y)
+        end
+        if button.text then
             love.graphics.print(button.text, button.x, button.y)
         end
         --calming the hover will b there 4 now
