@@ -51,22 +51,7 @@ function menu_setup()
             if self.upd_key ~= nil then
                 delete_update(self.upd_key)
             end
-            upd_key = create_update(
-                function(_self)
-                    self.w = self.w + (_self.target.w - self.w) / 20
-                end, 
-                function(_self)
-                    _self.target = {}
-                    _self.target.w = self.w + 40
-                end, 
-                function(_self)
-                    if (_self.target.w - self.w) > 1 then
-                        return false
-                    end 
-                    self.w = _self.target.w
-                    return true
-                end
-            )
+            upd_key = animate_numeric_attribute(self, "w", self.w + 100, 1)
             self.upd_key = upd_key
         end
     )
@@ -79,11 +64,33 @@ function menu_setup()
         400, 100,
         {1,0,1,0.5},
         function(self,x,y)
-            self.w = self.w + 50
-            self.icon.x = self.icon.x + 50
+            if self.upd_key ~= nil then
+                delete_update(self.upd_key)
+            end
+            upd_key = animate_numeric_attribute(self, "h", self.h + 100, 1)
+            self.upd_key = upd_key
         end
     )
     icon_setup(button2, 20, 20, TILESET.NoTile)
+end
+
+function animate_numeric_attribute(table, key, target, epsilon)
+    return create_update(
+        function(_self)
+            table[key] = table[key] + (_self.target[key] - table[key]) / 20
+        end, 
+        function(_self)
+            _self.target = {}
+            _self.target[key] = target
+        end, 
+        function(_self)
+            if (_self.target[key] - table[key]) > epsilon then
+                return false
+            end 
+            table[key] = _self.target[key]
+            return true
+        end
+    )
 end
 
 function icon_setup(button, l_x, l_y, tile)
