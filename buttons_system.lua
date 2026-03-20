@@ -31,15 +31,14 @@ function hover_buttons(h_x, h_y, is_down)
 
         button.is_hovered = true
         if button.hovered_callback then
-            button:hovered_callback(h_x, h_y, c_button)
+            button:hovered_callback(h_x, h_y, is_down)
         end
-        goto the_end --return breaks here 4 some reason
+        goto the_end 
 
         ::continue::
     end
     ::the_end::
 end
-
 function menu_setup()
     local screen_width, screen_height = love.window.getMode()
     local button1 = button_setup(

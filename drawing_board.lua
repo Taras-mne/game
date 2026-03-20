@@ -369,12 +369,6 @@ function tilemap_i(x, y)
     map_btn.hovered_callback = hover_fn
     
     draw_call_add(function()
-        if map_btn.is_hovered then
-            local mx, my = love.mouse.getPosition()
-            local is_down = love.mouse.isDown(1)
-        else
-            PROJECTED_TILEMAP = TILEMAP
-        end
         draw_tilemap(PROJECTED_TILEMAP, x, y)
     end)
 end

@@ -122,7 +122,6 @@ function draw_palette(x, y, padding, margin, tiles_todraw)
     love.graphics.setColor(1, 1, 1, 1)
     local where = {x = x + padding, y = y + padding}
     for _,key in pairs(tiles_todraw) do
-        -- draw_tile(TILESET[key], where.x, where.y)
         where.y = where.y + TILE_SIZE.h + margin
     end
     local where = {x = x + padding + TILE_SIZE.w + margin, y = y + padding}
@@ -136,6 +135,5 @@ function draw_palette(x, y, padding, margin, tiles_todraw)
             ) 
         end
         local tile = TILESET[tool]
-        -- draw_tile(tile, where.x, where.y)
     end
 end
