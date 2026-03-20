@@ -78,3 +78,7 @@ end
 function extract_size(obj)
     return {w= obj.w, h= obj.h}
 end
+
+function is_function(obj)
+    return type(obj) == "function"
+end
