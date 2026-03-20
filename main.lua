@@ -4,7 +4,7 @@ function love.load()
     require("click_UI_system")
     require("rendering_system")
     require("tiling_system")
-    require("menu")
+    require("buttons_system")
 
     load_tilesets()
 

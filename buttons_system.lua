@@ -1,9 +1,11 @@
 WHITE = {1, 1, 1, 1}
 BUTTONS = {}
 
+-- needs a button system instead of current one
+
 function menu_setup()
     local screen_width, screen_height = love.window.getMode()
-    button_setup(
+    button = button_setup(
         100,100,
         400,100,
         {1,0,1,0.5},"Testing_button",
@@ -26,7 +28,8 @@ function button_setup(
         text= text,
         color= color,
         color_hovered= {1-color[1], 1-color[2], 1-color[3], 1-color[4]},
-        is_hovered= false
+        is_hovered= false,
+        callback= callback,
     }
     table.insert(BUTTONS, button)
 
@@ -49,9 +52,13 @@ function button_setup(
     create_zone(
         x, y, 
         w, h,
-        callback,
+        function(x, y)
+            button.callback(x, y)
+        end,
         function()
             button.is_hovered = true
         end
     )
+
+    return button
 end
