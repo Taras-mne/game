@@ -39,6 +39,7 @@ function hover_buttons(h_x, h_y, is_down)
     end
     ::the_end::
 end
+
 function menu_setup()
     local screen_width, screen_height = love.window.getMode()
     local button1 = button_setup(
