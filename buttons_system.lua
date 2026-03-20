@@ -11,7 +11,7 @@ function click_buttons(c_x, c_y, c_button)
             goto continue
         end
 
-        button:callback(x, y, c_button)
+        button:callback(c_x, c_y, c_button)
         goto the_end --return breaks here 4 some reason
 
         ::continue::
@@ -30,6 +30,9 @@ function hover_buttons(h_x, h_y, is_down)
         end
 
         button.is_hovered = true
+        if button.hovered_callback then
+            button:hovered_callback(h_x, h_y, c_button)
+        end
         goto the_end --return breaks here 4 some reason
 
         ::continue::
@@ -48,6 +51,9 @@ function menu_setup()
             self.text = "picaboo"
         end
     )
+    button1.hovered_callback = function(self,x,y)
+        self.text = "NO"
+    end
     local button2 = button_setup(
         100, 210,
         400, 100,
@@ -108,15 +114,15 @@ function button_setup(
         button.is_hovered = false
     end)
 
-    create_zone(
-        x, y, 
-        w, h,
-        function(x, y, c_button)
-        end,
-        function(x, y)
-            button.is_hovered = true
-        end
-    )
-
     return button
+end
+
+function transparent_button_setup(
+    x, y, 
+    w, h, 
+    callback
+)
+    local btn = button_setup(x, y, w, h, {0, 0, 0, 0}, callback)
+    btn.color_hovered = {0, 0, 0, 0}
+    return btn
 end
