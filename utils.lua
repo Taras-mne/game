@@ -82,3 +82,7 @@ end
 function is_function(obj)
     return type(obj) == "function"
 end
+
+function clone_color(color)
+    return {color[1], color[2], color[3], color[4]}
+end

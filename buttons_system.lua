@@ -25,13 +25,17 @@ function hover_buttons(h_x, h_y, is_down)
         or h_y < button.y
         or h_x > button.x + button.w  
         or h_y > button.y + button.h 
-        then 
+        then
+            if button.unhovered_callback and button.is_hovered then
+                button:unhovered_callback(h_x, h_y, is_down)
+                button.is_hovered = false
+            end 
             goto continue
         end
 
-        button.is_hovered = true
-        if button.hovered_callback then
+        if button.hovered_callback and not button.is_hovered then
             button:hovered_callback(h_x, h_y, is_down)
+            button.is_hovered = true
         end
         goto the_end 
 
@@ -48,16 +52,25 @@ function menu_setup()
         {0,1,1,0.5},
         function(self,x,y)
             self.text = "picaboo"
-            if self.upd_key ~= nil then
-                delete_update(self.upd_key)
+            if self.c_upd_key ~= nil then
+                delete_update(self.c_upd_key)
             end
             upd_key = animate_numeric_attribute(self, "w", self.w + 100, 1)
-            self.upd_key = upd_key
+            self.c_upd_key = upd_key
         end
     )
-    button1.target = {
-        w= nil
-    }
+    button1.hovered_callback = function(self, x, y)
+        self.h_upd_key = animate_color(self, "display_color", clone_color(self.color_hovered), 0.01)
+        if self.uh_upd_key ~= nil then
+            delete_update(self.uh_upd_key)
+        end
+    end
+    button1.unhovered_callback = function(self, x, y)
+        self.uh_upd_key = animate_color(self, "display_color", clone_color(self.color_default), 0.01)
+        if self.h_upd_key ~= nil then
+            delete_update(self.h_upd_key)
+        end
+    end
 
     local button2 = button_setup(
         100, 210,
@@ -72,6 +85,18 @@ function menu_setup()
         end
     )
     icon_setup(button2, 20, 20, TILESET.NoTile)
+    button2.hovered_callback = function(self, x, y)
+        self.h_upd_key = animate_color(self, "display_color", clone_color(self.color_hovered), 0.01)
+        if self.uh_upd_key ~= nil then
+            delete_update(self.uh_upd_key)
+        end
+    end
+    button2.unhovered_callback = function(self, x, y)
+        self.uh_upd_key = animate_color(self, "display_color", clone_color(self.color_default), 0.01)
+        if self.h_upd_key ~= nil then
+            delete_update(self.h_upd_key)
+        end
+    end
 end
 
 function animate_numeric_attribute(table, key, target, epsilon)
@@ -85,9 +110,33 @@ function animate_numeric_attribute(table, key, target, epsilon)
             _self.target[key] = target
         end, 
         function(_self)
-            if (_self.target[key] - table[key]) > epsilon then
+            if math.abs(_self.target[key] - table[key]) > epsilon then
                 return false
             end 
+            table[key] = _self.target[key]
+            return true
+        end
+    )
+end
+
+function animate_color(table, key, target, epsilon)
+    return create_update(
+        function(_self, dt)
+            --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
+            for i=1,4 do
+                table[key][i] = table[key][i] + ((_self.target[key][i] - table[key][i])/5) * (dt*30) 
+            end
+        end, 
+        function(_self)
+            _self.target = {}
+            _self.target[key] = target
+        end, 
+        function(_self)
+            for i=1,4 do
+                if math.abs(_self.target[key][i] - table[key][i]) > epsilon then
+                    return false
+                end 
+            end
             table[key] = _self.target[key]
             return true
         end
@@ -114,7 +163,8 @@ function button_setup(
         y= y,
         w= w,
         h= h,
-        color= color,
+        display_color= clone_color(color),
+        color_default= clone_color(color),
         color_hovered= {1-color[1], 1-color[2], 1-color[3], 1-color[4]},
         is_hovered= false,
         callback= callback,
@@ -122,11 +172,7 @@ function button_setup(
     table.insert(BUTTONS, button)
 
     draw_call_add(function()
-        if button.is_hovered then
-            love.graphics.setColor(button.color_hovered)
-        else
-            love.graphics.setColor(button.color)
-        end
+        love.graphics.setColor(button.display_color)
         love.graphics.rectangle("fill", button.x, button.y, button.w, button.h)
         love.graphics.setColor(WHITE)
         if button.icon then
@@ -138,8 +184,6 @@ function button_setup(
         if button.text then
             love.graphics.print(button.text, button.x, button.y)
         end
-        --calming the hover will b there 4 now
-        button.is_hovered = false
     end)
 
     return button
