@@ -25,7 +25,8 @@ function love.update(dt)
     -- in future there will b a global update name that will be changing as needed
     -- update_bucket()
     local x, y = love.mouse.getPosition()
-    check_hover(x, y, love.mouse.isDown(1))
+    hover_buttons(x, y, love.mouse.isDown(1))
+    -- check_hover(x, y, love.mouse.isDown(1))
 end
 
 function love.draw()
@@ -35,7 +36,8 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button, is_touch)
-    check_zones(x, y, button)
+    -- check_zones(x, y, button)
+    click_buttons(x, y, button)
 end
 
 function love.resize(width, height)

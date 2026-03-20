@@ -1,15 +1,50 @@
 WHITE = {1, 1, 1, 1}
 BUTTONS = {}
 
--- needs a button system instead of current one
+function click_buttons(c_x, c_y, c_button)
+    for _, button in pairs(BUTTONS) do
+        if c_x < button.x 
+        or c_y < button.y
+        or c_x > button.x + button.w  
+        or c_y > button.y + button.h 
+        then 
+            goto continue
+        end
+
+        button:callback(x, y, c_button)
+        goto the_end --return breaks here 4 some reason
+
+        ::continue::
+    end
+    ::the_end::
+end
+
+function hover_buttons(h_x, h_y, is_down)
+    for _, button in pairs(BUTTONS) do
+        if h_x < button.x 
+        or h_y < button.y
+        or h_x > button.x + button.w  
+        or h_y > button.y + button.h 
+        then 
+            goto continue
+        end
+
+        button.is_hovered = true
+        goto the_end --return breaks here 4 some reason
+
+        ::continue::
+    end
+    ::the_end::
+end
 
 function menu_setup()
     local screen_width, screen_height = love.window.getMode()
-    button = button_setup(
+    local button = button_setup(
         100,100,
         400,100,
         {1,0,1,0.5},"Testing_button",
-        function()
+        function(self,x,y)
+            self.w = self.w + 50
         end
     )
 end
@@ -52,10 +87,9 @@ function button_setup(
     create_zone(
         x, y, 
         w, h,
-        function(x, y)
-            button.callback(x, y)
+        function(x, y, c_button)
         end,
-        function()
+        function(x, y)
             button.is_hovered = true
         end
     )
