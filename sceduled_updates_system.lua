@@ -26,6 +26,11 @@ function create_update(update_call, update_setup, destruction_check)
     if not update_struct:dead() then 
         UPDATES[key] = update_struct
     end
+    return key
+end
+
+function delete_update(key)
+    UPDATES[key] = nil
 end
 
 function trigger_updates()

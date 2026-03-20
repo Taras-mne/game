@@ -17,12 +17,13 @@ function love.load()
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 
-    drawing_board_setup()
-    -- menu_setup()
+    -- drawing_board_setup()
+    menu_setup()
 end
 
 function love.update(dt)
     update_bucket()
+    trigger_updates()
     local x, y = love.mouse.getPosition()
     hover_buttons(x, y, love.mouse.isDown(1))
 end

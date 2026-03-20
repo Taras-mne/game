@@ -47,13 +47,33 @@ function menu_setup()
         400, 100,
         {0,1,1,0.5},
         function(self,x,y)
-            self.w = self.w + 50
             self.text = "picaboo"
+            if self.upd_key ~= nil then
+                delete_update(self.upd_key)
+            end
+            upd_key = create_update(
+                function(_self)
+                    self.w = self.w + (_self.target.w - self.w) / 20
+                end, 
+                function(_self)
+                    _self.target = {}
+                    _self.target.w = self.w + 40
+                end, 
+                function(_self)
+                    if (_self.target.w - self.w) > 1 then
+                        return false
+                    end 
+                    self.w = _self.target.w
+                    return true
+                end
+            )
+            self.upd_key = upd_key
         end
     )
-    button1.hovered_callback = function(self,x,y)
-        self.text = "NO"
-    end
+    button1.target = {
+        w= nil
+    }
+
     local button2 = button_setup(
         100, 210,
         400, 100,
