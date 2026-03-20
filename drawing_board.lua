@@ -387,7 +387,7 @@ function palette_i(x, y)
     end
 
     draw_call_add(function() 
-        draw_palette(x, y, padding, margin, tiles_todraw)
+        draw_palette(x, y, padding, margin, #tiles_todraw)
     end)
 
     for _,key in ipairs(tiles_todraw) do
