@@ -76,8 +76,9 @@ end
 
 function animate_numeric_attribute(table, key, target, epsilon)
     return create_update(
-        function(_self)
-            table[key] = table[key] + (_self.target[key] - table[key]) / 20
+        function(_self, dt)
+            table[key] = table[key] + ((_self.target[key] - table[key])/5) * (dt*30) 
+            --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
         end, 
         function(_self)
             _self.target = {}

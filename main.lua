@@ -23,7 +23,7 @@ end
 
 function love.update(dt)
     update_bucket()
-    trigger_updates()
+    trigger_updates(dt)
     local x, y = love.mouse.getPosition()
     hover_buttons(x, y, love.mouse.isDown(1))
 end

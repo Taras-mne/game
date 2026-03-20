@@ -13,12 +13,12 @@ function create_update(update_call, update_setup, destruction_check)
         key = key,
         dead = destruction_check,
         _call = update_call,
-        call = function(self)
+        call = function(self, dt)
             if self:dead() then
                 UPDATES[self.key] = nil
                 return
             end
-            self:_call()
+            self:_call(dt)
         end,
     }
 
@@ -33,8 +33,8 @@ function delete_update(key)
     UPDATES[key] = nil
 end
 
-function trigger_updates()
+function trigger_updates(dt)
     for key, update in pairs(UPDATES) do
-        update:call()
+        update:call(dt)
     end 
 end
