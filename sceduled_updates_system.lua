@@ -38,3 +38,73 @@ function trigger_updates(dt)
         update:call(dt)
     end 
 end
+
+function animate_numeric_attribute(table, key, target, epsilon)
+    return create_update(
+        function(_self, dt)
+            table[key] = table[key] + ((_self.target[key] - table[key])/5) * (dt*30) 
+            --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
+        end, 
+        function(_self)
+            _self.target = {}
+            _self.target[key] = target
+        end, 
+        function(_self)
+            if math.abs(_self.target[key] - table[key]) > epsilon then
+                return false
+            end 
+            table[key] = _self.target[key]
+            return true
+        end
+    )
+end
+
+function animate_numeric_attributes(table, keys, targets, epsilons)
+    return create_update(
+        function(_self, dt)
+            for i,key in ipairs(keys) do
+                table[key] = table[key] + ((_self.target[key] - table[key])/5) * (dt*30) 
+            end
+            --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
+        end, 
+        function(_self)
+            _self.target = {}
+            for i,key in ipairs(keys) do
+                _self.target[key] = targets[i]
+            end
+        end, 
+        function(_self)
+            for i,key in ipairs(keys) do
+                if math.abs(_self.target[key] - table[key]) > epsilons[i] then
+                    return false
+                end 
+                table[key] = _self.target[key]
+            end
+            return true
+        end
+    )
+end
+
+function animate_color(table, key, target, epsilon)
+    return create_update(
+        function(_self, dt)
+            --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
+            for i=1,4 do
+                table[key][i] = table[key][i] + ((_self.target[key][i] - table[key][i])/5) * (dt*30) 
+            end
+        end, 
+        function(_self)
+            _self.target = {}
+            _self.target[key] = target
+        end, 
+        function(_self)
+            for i=1,4 do
+                if math.abs(_self.target[key][i] - table[key][i]) > epsilon then
+                    return false
+                end 
+            end
+            table[key] = _self.target[key]
+            return true
+        end
+    )
+end

@@ -59,18 +59,8 @@ function menu_setup()
             self.c_upd_key = upd_key
         end
     )
-    button1.hovered_callback = function(self, x, y)
-        self.h_upd_key = animate_color(self, "display_color", clone_color(self.color_hovered), 0.01)
-        if self.uh_upd_key ~= nil then
-            delete_update(self.uh_upd_key)
-        end
-    end
-    button1.unhovered_callback = function(self, x, y)
-        self.uh_upd_key = animate_color(self, "display_color", clone_color(self.color_default), 0.01)
-        if self.h_upd_key ~= nil then
-            delete_update(self.h_upd_key)
-        end
-    end
+    -- setup_button_color_hover(button1)
+    setup_hover_bounce(button1, -20, -20, 40, 40)
 
     local button2 = button_setup(
         100, 210,
@@ -85,62 +75,7 @@ function menu_setup()
         end
     )
     icon_setup(button2, 20, 20, TILESET.NoTile)
-    button2.hovered_callback = function(self, x, y)
-        self.h_upd_key = animate_color(self, "display_color", clone_color(self.color_hovered), 0.01)
-        if self.uh_upd_key ~= nil then
-            delete_update(self.uh_upd_key)
-        end
-    end
-    button2.unhovered_callback = function(self, x, y)
-        self.uh_upd_key = animate_color(self, "display_color", clone_color(self.color_default), 0.01)
-        if self.h_upd_key ~= nil then
-            delete_update(self.h_upd_key)
-        end
-    end
-end
-
-function animate_numeric_attribute(table, key, target, epsilon)
-    return create_update(
-        function(_self, dt)
-            table[key] = table[key] + ((_self.target[key] - table[key])/5) * (dt*30) 
-            --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
-        end, 
-        function(_self)
-            _self.target = {}
-            _self.target[key] = target
-        end, 
-        function(_self)
-            if math.abs(_self.target[key] - table[key]) > epsilon then
-                return false
-            end 
-            table[key] = _self.target[key]
-            return true
-        end
-    )
-end
-
-function animate_color(table, key, target, epsilon)
-    return create_update(
-        function(_self, dt)
-            --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
-            for i=1,4 do
-                table[key][i] = table[key][i] + ((_self.target[key][i] - table[key][i])/5) * (dt*30) 
-            end
-        end, 
-        function(_self)
-            _self.target = {}
-            _self.target[key] = target
-        end, 
-        function(_self)
-            for i=1,4 do
-                if math.abs(_self.target[key][i] - table[key][i]) > epsilon then
-                    return false
-                end 
-            end
-            table[key] = _self.target[key]
-            return true
-        end
-    )
+    setup_button_color_hover(button2)
 end
 
 function icon_setup(button, l_x, l_y, tile)
@@ -150,6 +85,47 @@ function icon_setup(button, l_x, l_y, tile)
         tile= tile,
     }
     button.icon = icon
+end
+
+function setup_button_color_hover(button)
+    button.hovered_callback = function(self, x, y)
+        self.h_upd_key = animate_color(self, "display_color", clone_color(self.color_hovered), 0.01)
+        if self.uh_upd_key ~= nil then
+            delete_update(self.uh_upd_key)
+        end
+    end
+    button.unhovered_callback = function(self, x, y)
+        self.uh_upd_key = animate_color(self, "display_color", clone_color(self.color_default), 0.01)
+        if self.h_upd_key ~= nil then
+            delete_update(self.h_upd_key)
+        end
+    end
+end
+
+function setup_hover_bounce(button, dx, dy, dw, dh)
+    local starting_pos = {button.x, button.y, button.w, button.h} 
+    button.hovered_callback = function(self, x, y)
+        self.h_upd_key = animate_numeric_attributes(
+            self, 
+            {"x","y","w","h"}, 
+            {starting_pos[1] + dx, starting_pos[2] + dy, starting_pos[3] + dw, starting_pos[4] + dh}, 
+            {1, 1, 1, 1}
+        )
+        if self.uh_upd_key ~= nil then
+            delete_update(self.uh_upd_key)
+        end
+    end
+    button.unhovered_callback = function(self, x, y)
+        self.uh_upd_key = animate_numeric_attributes(
+            self, 
+            {"x","y","w","h"}, 
+            starting_pos,
+            {1, 1, 1, 1}
+        )
+        if self.h_upd_key ~= nil then
+            delete_update(self.h_upd_key)
+        end
+    end
 end
 
 function button_setup(
