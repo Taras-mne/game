@@ -10,8 +10,10 @@ TOOLS = { --TODO: repopulate with tiles when loading
     "Bucket",
 }
 
-function drawing_board_setup()
-    nuke_zones()
+function drawing_board_setup(tilemap_key)
+    TILEMAP = TILEMAPS[tilemap_key]
+    PROJECTED_TILEMAP = TILEMAP
+    nuke_buttons()
     nuke_draw_queue()
     local screen_width, screen_height = love.window.getMode()
     palette_i(10, 10)
@@ -44,38 +46,22 @@ function buttons_bar_i(x, y)
         h = TILE_SIZE.h,
         tile = TILESET.Save
     }
+    local quit = {
+        x = x + (rot_R.w + margin)/2 + padding,
+        y = y + (TILE_SIZE.w + margin) * 2 + padding,
+        w = TILE_SIZE.w,
+        h = TILE_SIZE.h,
+        tile = TILESET.BLOCK
+    }
+
     local rect = {
         x = x,
         y = y,
         w = TILE_SIZE.w * 2 + margin + padding * 2,
-        h = TILE_SIZE.w * 2 + margin + padding * 2,
+        h = TILE_SIZE.w * 3 + margin * 2 + padding * 3,
     }
 
-    create_zone(
-        rot_R.x, rot_R.y, 
-        rot_R.w, rot_R.h, 
-        function()
-            TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.THREE_QUARTERS)
-            drawing_board_setup()
-        end
-    )
-    create_zone(
-        rot_L.x, rot_L.y, 
-        rot_L.w, rot_L.h,
-        function()
-            TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.QUARTER)
-            drawing_board_setup()
-        end
-    )
-    create_zone(
-        save.x, save.y, 
-        save.w, save.h, 
-        function()
-            upload_tilemap(TILEMAP)
-            --TODO - draw a popup 
-        end
-    )
-
+    -- Queue the background first so buttons draw on top of it
     draw_call_add(function()
         love.graphics.setColor(1, 0.5, 0, 1)
         love.graphics.rectangle("fill", 
@@ -83,10 +69,46 @@ function buttons_bar_i(x, y)
             rect.w, rect.h
         )
         love.graphics.setColor(1, 1, 1, 1)
-        draw_tile(rot_R.tile, rot_R.x, rot_R.y)
-        draw_tile(rot_L.tile, rot_L.x, rot_L.y)
-        draw_tile(save.tile, save.x, save.y)
     end)
+
+    local btn_rot_r = transparent_button_setup(
+        rot_R.x, rot_R.y, 
+        rot_R.w, rot_R.h, 
+        function()
+            TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.THREE_QUARTERS)
+            drawing_board_setup()
+        end
+    )
+    icon_setup(btn_rot_r, 0, 0, rot_R.tile)
+    
+    local btn_rot_l = transparent_button_setup(
+        rot_L.x, rot_L.y, 
+        rot_L.w, rot_L.h,
+        function()
+            TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.QUARTER)
+            drawing_board_setup()
+        end
+    )
+    icon_setup(btn_rot_l, 0, 0, rot_L.tile)
+    
+    local btn_save = transparent_button_setup(
+        save.x, save.y, 
+        save.w, save.h, 
+        function()
+            upload_tilemap(TILEMAP)
+            --TODO - draw a popup 
+        end
+    )
+    icon_setup(btn_save, 0, 0, save.tile)
+
+    local btn_quit = transparent_button_setup(
+        quit.x, quit.y, 
+        quit.w, quit.h, 
+        function()
+            menu_setup() 
+        end
+    )
+    icon_setup(btn_quit, 0, 0, quit.tile)
 end
 
 function do_pen(i,j,tilemap,hard)
@@ -299,11 +321,11 @@ function get_cell_click_and_hover(dx,dy)
 
     if DRAWING_STATE.tool == "Pen" then
         return --returns two functions
-        function(x,y)
+        function(self,x,y)
             local i,j = get_ij(x,y)
             do_pen(i,j,TILEMAP,true)
         end,
-        function(x,y,is_down)
+        function(self,x,y,is_down)
             local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             if is_down then
@@ -314,11 +336,11 @@ function get_cell_click_and_hover(dx,dy)
         end
     elseif DRAWING_STATE.tool == "Line" then
         return
-        function(x,y)
+        function(self,x,y)
             local i,j = get_ij(x,y)
             do_line(i,j,TILEMAP,true)
         end,
-        function(x,y,is_down)
+        function(self,x,y,is_down)
             local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_line(i,j,PROJECTED_TILEMAP)
@@ -326,11 +348,11 @@ function get_cell_click_and_hover(dx,dy)
         end
     elseif DRAWING_STATE.tool == "Rect" then
         return
-        function(x,y)
+        function(self,x,y)
             local i,j = get_ij(x,y)
             do_rect(i,j,TILEMAP,true)
         end,
-        function(x,y,is_down)
+        function(self,x,y,is_down)
             local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_pen(i,j,PROJECTED_TILEMAP)
@@ -338,11 +360,11 @@ function get_cell_click_and_hover(dx,dy)
         end
     elseif DRAWING_STATE.tool == "Bucket" then
         return
-        function(x,y)
+        function(self,x,y)
             local i,j = get_ij(x,y)
             do_bucket(i,j,TILEMAP)
         end,
-        function(x,y,is_down)
+        function(self,x,y,is_down)
             local i,j = get_ij(x,y)
             PROJECTED_TILEMAP = clone_tilemap(TILEMAP)
             do_pen(i,j,PROJECTED_TILEMAP)
@@ -351,16 +373,20 @@ function get_cell_click_and_hover(dx,dy)
 end
 
 function tilemap_i(x, y)
-    local tiles = TILEMAP.tiles
-    local h_sh = 0
+    local map_w = (TILE_SIZE.w * TILEMAP.w) - 1
+    local map_h = (TILE_SIZE.h * TILEMAP.h) - 1
 
-    create_zone(
-        x, y, 
-        (TILE_SIZE.w * TILEMAP.w)-1, (TILE_SIZE.h * TILEMAP.h)-1, 
-        get_cell_click_and_hover(x, y)
-    )
+    local click_fn, hover_fn = get_cell_click_and_hover(x, y)
     
-    draw_call_add(function() 
+    local map_btn = transparent_button_setup(
+        x, y, 
+        map_w, map_h, 
+        click_fn
+    )
+
+    map_btn.while_hovered_callback = hover_fn
+    
+    draw_call_add(function()
         draw_tilemap(PROJECTED_TILEMAP, x, y)
     end)
 end
@@ -369,29 +395,36 @@ function palette_i(x, y)
     local padding = 5
     local margin = 10
     local where = {x = x + padding, y = y + padding}
+    
+    -- Pre-calculate to queue the background right away
     local tiles_todraw = {}
-
     for key,tile in pairs(TILESET) do
-        if is_in_table(RESERVED_TILES, key) then
-            goto continue
+        if not is_in_table(RESERVED_TILES, key) then
+            table.insert(tiles_todraw, key)
         end
-        create_zone(
+    end
+
+    draw_call_add(function() 
+        draw_palette(x, y, padding, margin, #tiles_todraw)
+    end)
+
+    for _,key in ipairs(tiles_todraw) do
+        local btn = transparent_button_setup(
             where.x, where.y, 
             TILE_SIZE.w, TILE_SIZE.h, 
             function() 
                 DRAWING_STATE.tile = key 
             end
         )
-        table.insert(tiles_todraw, key)
+        icon_setup(btn, 0, 0, TILESET[key])
         where.y = where.y + TILE_SIZE.h + margin
-        ::continue::
     end
 
-    local where = {x = x + padding + TILE_SIZE.w + margin, y = y + padding}
-    for key,tool in pairs(TOOLS) do
-        where.y = where.y + TILE_SIZE.h + margin
-        create_zone(
-            where.x, where.y, 
+    local where_tools = {x = x + padding + TILE_SIZE.w + margin, y = y + padding}
+    for _,tool in ipairs(TOOLS) do
+        where_tools.y = where_tools.y + TILE_SIZE.h + margin
+        local btn = transparent_button_setup(
+            where_tools.x, where_tools.y, 
             TILE_SIZE.w, TILE_SIZE.h, 
             function() 
                 DRAWING_STATE.tool = tool
@@ -399,9 +432,6 @@ function palette_i(x, y)
                 drawing_board_setup() 
             end
         )
+        icon_setup(btn, 0, 0, TILESET[tool])
     end
-
-    draw_call_add(function() 
-        draw_palette(x, y, padding, margin, tiles_todraw)
-    end)
 end

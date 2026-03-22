@@ -82,6 +82,8 @@ TILEMAPS = {
     --getting filled by calling read_tilemap 4 every tilemap
 }
 
+--TODO: make a OPTIMAL_BG_TILE function
+
 function flipped_check(side_from, side_where)
     local flipped_transitions = {
         "R_U",
