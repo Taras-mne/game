@@ -105,6 +105,25 @@ function animate_color(table, key, target, epsilon)
     )
 end
 
+function sleep_then_do(time, callback)
+    return create_update(
+        function(_self, dt)
+            _self.time = _self.time - dt
+        end, 
+        function(_self)
+            _self.time = time
+            _self.callback = callback
+        end, 
+        function(_self)
+            if _self.time <= 0 then
+                _self.callback()
+                return true
+            end 
+            return false
+        end
+    )
+end
+
 function debug_output(x, y)
     draw_call_add(function()
         s = ""

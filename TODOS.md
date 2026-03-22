@@ -15,3 +15,4 @@
 
 # NOTES
 - need to make some concept art, like 5 different looks to the same game in question
+- need a single routine 4 drawing them buttons

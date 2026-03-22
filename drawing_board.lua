@@ -10,9 +10,10 @@ TOOLS = { --TODO: repopulate with tiles when loading
     "Bucket",
 }
 
-function drawing_board_setup()
+function drawing_board_setup(tilemap_key)
+    TILEMAP = TILEMAPS[tilemap_key]
     PROJECTED_TILEMAP = TILEMAP
-    BUTTONS = {}
+    nuke_buttons()
     nuke_draw_queue()
     local screen_width, screen_height = love.window.getMode()
     palette_i(10, 10)
