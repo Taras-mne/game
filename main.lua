@@ -18,7 +18,6 @@ function love.load()
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 
-    -- drawing_board_setup()
     menu_setup()
 end
 

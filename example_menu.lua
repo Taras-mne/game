@@ -1,56 +1,33 @@
 function menu_setup()
+    nuke_buttons()
+    nuke_draw_queue()
+
     local screen_width, screen_height = love.window.getMode()
-    local button1 = button_setup(
-        200, 200,
-        400, 100,
-        {0,1,1,0.5},
-        function(self,x,y)
-            self.text = "picaboo"
-            if self.c_upd_key ~= nil then
-                delete_update(self.c_upd_key)
-            end
-            self.target.w = self.target.w + 50
-            self.base.w = self.base.w + 50
-            upd_key = animate_numeric_attribute(self.display, "w", self.target, 1)
-            self.c_upd_key = upd_key
-        end
-    )
-    setup_hover_bounce(button1, -20, -20, 40, 40)
+    start = {x= 100, y= 25}
+    size = {w= 300, h= 100}
+    margin = 25
 
-    local button2 = button_setup(
-        200, 310,
-        400, 100,
-        {1,0,1,0.5},
-        function(self,x,y)
-            if self.c_upd_key ~= nil then
-                delete_update(self.c_upd_key)
-            end
-            self.target.h = self.target.h + 50
-            self.base.h = self.base.h + 50
-            upd_key = animate_numeric_attribute(self.display, "h", self.target, 1)
-            self.c_upd_key = upd_key
-        end
-    )
-    icon_setup(button2, 20, 20, TILESET.NoTile)
-    setup_button_color_hover(button2)
 
-    local button2 = button_setup(
-        200, 420,
-        400, 100,
-        {1,1,0,0.5},
-        function(self,x,y)
-            if self.c_key ~= nil then
-                delete_update(self.c_key)
-                self.c_key = nil
-            else
+    for key,value in pairs(TILEMAPS) do
+        local button = button_setup(
+            start.x, start.y,
+            size.w, size.h,
+            {1, 0, 0, 0.5},
+            function(self,x,y)
+                if self.c_key ~= nil then
+                    delete_update(self.c_key)
+                    self.c_key = nil
+                end
                 self.c_key = sleep_then_do(0.25, function()
-                    drawing_board_setup("beeg") 
+                    drawing_board_setup(key) 
                 end)
             end
-        end
-    )
-    icon_setup(button2, 20, 20, TILESET.NoTile)
-    setup_button_color_hover(button2)
+        )
+        button.text = key
+        start.y = start.y + margin + size.h 
+        setup_hover_bounce(button, -15, -15, 30, 30)
+        -- setup_button_color_hover(button)
+    end
 
     debug_output(1,1)
 end

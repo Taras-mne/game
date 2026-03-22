@@ -46,11 +46,19 @@ function buttons_bar_i(x, y)
         h = TILE_SIZE.h,
         tile = TILESET.Save
     }
+    local quit = {
+        x = x + (rot_R.w + margin)/2 + padding,
+        y = y + (TILE_SIZE.w + margin) * 2 + padding,
+        w = TILE_SIZE.w,
+        h = TILE_SIZE.h,
+        tile = TILESET.BLOCK
+    }
+
     local rect = {
         x = x,
         y = y,
         w = TILE_SIZE.w * 2 + margin + padding * 2,
-        h = TILE_SIZE.w * 2 + margin + padding * 2,
+        h = TILE_SIZE.w * 3 + margin * 2 + padding * 3,
     }
 
     -- Queue the background first so buttons draw on top of it
@@ -92,6 +100,15 @@ function buttons_bar_i(x, y)
         end
     )
     icon_setup(btn_save, 0, 0, save.tile)
+
+    local btn_quit = transparent_button_setup(
+        quit.x, quit.y, 
+        quit.w, quit.h, 
+        function()
+            menu_setup() 
+        end
+    )
+    icon_setup(btn_quit, 0, 0, quit.tile)
 end
 
 function do_pen(i,j,tilemap,hard)
