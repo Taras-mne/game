@@ -33,6 +33,10 @@ function hover_buttons(h_x, h_y, is_down)
             goto continue
         end
 
+        if button.while_hovered_callback then
+            button:while_hovered_callback(h_x, h_y, is_down)
+        end
+
         if button.hovered_callback and not button.is_hovered then
             button:hovered_callback(h_x, h_y, is_down)
             button.is_hovered = true

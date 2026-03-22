@@ -366,7 +366,7 @@ function tilemap_i(x, y)
         click_fn
     )
 
-    map_btn.hovered_callback = hover_fn
+    map_btn.while_hovered_callback = hover_fn
     
     draw_call_add(function()
         draw_tilemap(PROJECTED_TILEMAP, x, y)
