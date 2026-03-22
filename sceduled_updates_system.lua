@@ -46,8 +46,7 @@ function animate_numeric_attribute(table, key, target, epsilon)
             --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
         end, 
         function(_self)
-            _self.target = {}
-            _self.target[key] = target
+            _self.target = target
         end, 
         function(_self)
             if math.abs(_self.target[key] - table[key]) > epsilon then
@@ -59,23 +58,20 @@ function animate_numeric_attribute(table, key, target, epsilon)
     )
 end
 
-function animate_numeric_attributes(table, keys, targets, epsilons)
+function animate_numeric_attributes(table, keys, target, epsilons)
     return create_update(
         function(_self, dt)
-            for i,key in ipairs(keys) do
+            for _,key in ipairs(keys) do
                 table[key] = table[key] + ((_self.target[key] - table[key])/5) * (dt*30) 
             end
             --30 fps is the reference point 4 a single frame. in reality 4 me it's 144 fps
         end, 
         function(_self)
-            _self.target = {}
-            for i,key in ipairs(keys) do
-                _self.target[key] = targets[i]
-            end
+            _self.target = target
         end, 
         function(_self)
-            for i,key in ipairs(keys) do
-                if math.abs(_self.target[key] - table[key]) > epsilons[i] then
+            for _,key in ipairs(keys) do
+                if math.abs(_self.target[key] - table[key]) > epsilons[key] then
                     return false
                 end 
                 table[key] = _self.target[key]
@@ -107,4 +103,14 @@ function animate_color(table, key, target, epsilon)
             return true
         end
     )
+end
+
+function debug_output(x, y)
+    draw_call_add(function()
+        s = ""
+        for key,_ in pairs(UPDATES) do
+            s = s .. key .. "\n"
+        end
+        love.graphics.print(s,x,y)
+    end)
 end

@@ -38,5 +38,5 @@ function love.mousepressed(x, y, button, is_touch)
 end
 
 function love.resize(width, height)
-    drawing_board_setup()
+    -- drawing_board_setup()
 end
