@@ -1,8 +1,11 @@
 # IN PROGRESS
-- menu that loads one of 3 different maps and "back to menu" button in map redactor
+- apply rotation button
+- shake up the buttons bar
+- optimal bg tile findig
+- save saving into maps
 
 # QUICK ONES
-- apply rotation button
+- 
 
 # BIG ONES
 - flipping magic
