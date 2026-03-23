@@ -11,7 +11,8 @@ TOOLS = { --TODO: repopulate with tiles when loading
 }
 
 function drawing_board_setup(tilemap_key)
-    TILEMAP = TILEMAPS[tilemap_key]
+    DRAWING_STATE.tilemap_key = tilemap_key
+    TILEMAP = TILEMAPS[DRAWING_STATE.tilemap_key]
     PROJECTED_TILEMAP = TILEMAP
     nuke_buttons()
     nuke_draw_queue()
@@ -76,7 +77,6 @@ function buttons_bar_i(x, y)
         rot_R.w, rot_R.h, 
         function()
             TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.THREE_QUARTERS)
-            drawing_board_setup()
         end
     )
     icon_setup(btn_rot_r, 0, 0, rot_R.tile)
@@ -86,7 +86,6 @@ function buttons_bar_i(x, y)
         rot_L.w, rot_L.h,
         function()
             TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.QUARTER)
-            drawing_board_setup()
         end
     )
     icon_setup(btn_rot_l, 0, 0, rot_L.tile)
@@ -429,7 +428,7 @@ function palette_i(x, y)
             function() 
                 DRAWING_STATE.tool = tool
                 DRAWING_STATE.memo = nil
-                drawing_board_setup() 
+                drawing_board_setup(DRAWING_STATE.tilemap_key) 
             end
         )
         icon_setup(btn, 0, 0, TILESET[tool])
