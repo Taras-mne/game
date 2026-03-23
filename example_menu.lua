@@ -31,19 +31,19 @@ function menu_setup()
         -- local h = button.hovered_callback or function()end
         button.hovered_callback = function(self, x, y, is_down)
             -- h(self, x, y, is_down)
-            MENU_STATE.bg_tilemap = TILEMAPS[key]
+            MENU_STATE.bg_tilemap_key = key
         end
         setup_hover_bounce(button, -15, -15, 30, 30)
         setup_button_color_hover(button)
         
         draw_call_add(function()
-            if MENU_STATE.bg_tilemap == nil then
+            if MENU_STATE.bg_tilemap_key == nil then
                 return 
             end
             local x = 100 + round(math.sin(SECONDS) * 20)
             local y = 100 + round(math.cos(SECONDS) * 20)
             love.graphics.setColor({1,1,1,0.25})
-            draw_tilemap(MENU_STATE.bg_tilemap, x, y)
+            draw_tilemap(TILEMAPS[MENU_STATE.bg_tilemap_key], x, y)
             love.graphics.setColor(WHITE)
         end, "bottom")
     end

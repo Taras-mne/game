@@ -2,7 +2,7 @@
 - menu that loads one of 3 different maps and "back to menu" button in map redactor
 
 # QUICK ONES
-- none yet
+- apply rotation button
 
 # BIG ONES
 - flipping magic

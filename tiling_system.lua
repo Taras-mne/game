@@ -82,6 +82,11 @@ TILEMAPS = {
     --getting filled by calling read_tilemap 4 every tilemap
 }
 
+TILEMAPS_CLONES = {
+    --getting filled when we need temporary changes to not pollute the TILEMAPS
+    --is janky, will fix later
+}
+
 --TODO: make a OPTIMAL_BG_TILE function
 
 function flipped_check(side_from, side_where)

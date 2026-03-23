@@ -11,8 +11,12 @@ TOOLS = { --TODO: repopulate with tiles when loading
 }
 
 function drawing_board_setup(tilemap_key)
-    DRAWING_STATE.tilemap_key = tilemap_key
-    TILEMAP = TILEMAPS[DRAWING_STATE.tilemap_key]
+    if tilemap_key ~= nil then
+        DRAWING_STATE.tilemap_key = tilemap_key
+        TILEMAP = clone_tilemap(TILEMAPS[DRAWING_STATE.tilemap_key])
+        TILEMAP.is_clone = false
+        TILEMAPS_CLONES[DRAWING_STATE.tilemap_key] = TILEMAP
+    end
     PROJECTED_TILEMAP = TILEMAP
     nuke_buttons()
     nuke_draw_queue()
@@ -77,6 +81,7 @@ function buttons_bar_i(x, y)
         rot_R.w, rot_R.h, 
         function()
             TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.THREE_QUARTERS)
+            drawing_board_setup()
         end
     )
     icon_setup(btn_rot_r, 0, 0, rot_R.tile)
@@ -86,6 +91,7 @@ function buttons_bar_i(x, y)
         rot_L.w, rot_L.h,
         function()
             TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.QUARTER)
+            drawing_board_setup()
         end
     )
     icon_setup(btn_rot_l, 0, 0, rot_L.tile)
@@ -94,7 +100,8 @@ function buttons_bar_i(x, y)
         save.x, save.y, 
         save.w, save.h, 
         function()
-            upload_tilemap(TILEMAP)
+            upload_tilemap(TILEMAPS_CLONES[DRAWING_STATE.tilemap_key])
+            TILEMAPS[DRAWING_STATE.tilemap_key] = TILEMAPS_CLONES[DRAWING_STATE.tilemap_key]
             --TODO - draw a popup 
         end
     )
@@ -113,7 +120,7 @@ end
 function do_pen(i,j,tilemap,hard)
     tilemap.tiles[i][j] = DRAWING_STATE.tile
     if hard and tilemap.is_clone then
-        local original = TILEMAPS[tilemap.name] 
+        local original = TILEMAPS_CLONES[tilemap.name] 
         assert(not original.is_clone, "original is a clone 4 some reson")
         local rot_deg = normalize_deg(-tilemap.rotation_deg)
         local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
@@ -169,7 +176,7 @@ function do_line(i, j, tilemap, hard)
     plot_line(memo_point, click_point, tilemap)
 
     if hard then 
-        local original = TILEMAPS[tilemap.name] 
+        local original = TILEMAPS_CLONES[tilemap.name] 
         assert(not original.is_clone, "original is a clone 4 some reson")
         local rot_deg = normalize_deg(-tilemap.rotation_deg)
         local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
@@ -215,7 +222,7 @@ function do_rect(i,j,tilemap,hard)
     plot_rect(click_point, memo_point, tilemap)
 
     if hard then 
-        local original = TILEMAPS[tilemap.name] 
+        local original = TILEMAPS_CLONES[tilemap.name] 
         assert(not original.is_clone, "original is a clone 4 some reson")
         local rot_deg = normalize_deg(-tilemap.rotation_deg)
         local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
@@ -251,7 +258,7 @@ function update_bucket()
         return
     end
 
-    local original = TILEMAPS[TILEMAP.name] 
+    local original = TILEMAPS_CLONES[TILEMAP.name] 
     assert(not original.is_clone, "original is a clone 4 some reson")
     local rot_deg = normalize_deg(-TILEMAP.rotation_deg)
     local rot_m = ROTATION_MATRICES[DEG_TO_NAMES[rot_deg]]
@@ -428,7 +435,7 @@ function palette_i(x, y)
             function() 
                 DRAWING_STATE.tool = tool
                 DRAWING_STATE.memo = nil
-                drawing_board_setup(DRAWING_STATE.tilemap_key) 
+                drawing_board_setup() 
             end
         )
         icon_setup(btn, 0, 0, TILESET[tool])
