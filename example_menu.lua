@@ -3,7 +3,7 @@ function menu_setup()
     nuke_draw_queue()
 
     local screen_width, screen_height = love.window.getMode()
-    start = {x= 100, y= 25}
+    start = {x= 100, y= 70}
     size = {w= 300, h= 100}
     margin = 25
 
@@ -25,8 +25,18 @@ function menu_setup()
         )
         button.text = key
         start.y = start.y + margin + size.h 
+        -- local h = button.hovered_callback or function()end
+        button.hovered_callback = function(self, x, y, is_down)
+            -- h(self, x, y, is_down)
+            TILEMAP = TILEMAPS[key]
+            draw_call_add(function()
+                local x = 520 + round(math.sin(SECONDS) * 20)
+                local y = 100 + round(math.cos(SECONDS) * 20)
+                draw_tilemap(TILEMAP, x, y)
+            end)
+        end
         setup_hover_bounce(button, -15, -15, 30, 30)
-        -- setup_button_color_hover(button)
+        setup_button_color_hover(button)
     end
 
     debug_output(1,1)

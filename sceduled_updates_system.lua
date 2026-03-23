@@ -127,6 +127,7 @@ end
 function debug_output(x, y)
     draw_call_add(function()
         s = ""
+        s = s .. SECONDS .. "\n"
         for key,_ in pairs(UPDATES) do
             s = s .. key .. "\n"
         end

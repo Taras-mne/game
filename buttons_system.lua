@@ -61,54 +61,61 @@ function icon_setup(button, l_x, l_y, tile)
 end
 
 function setup_button_color_hover(button)
+    local h = button.hovered_callback or function()end
     button.hovered_callback = function(self, x, y)
-        self.h_upd_key = animate_color(self.display, "color", clone_color(self.color_hovered), 0.01)
-        if self.uh_upd_key ~= nil then
-            delete_update(self.uh_upd_key)
-            self.uh_upd_key = nil
+        h(self, x, y)
+        self.h_upd_key_c = animate_color(self.display, "color", clone_color(self.color_hovered), 0.01)
+        if self.uh_upd_key_c ~= nil then
+            delete_update(self.uh_upd_key_c)
+            self.uh_upd_key_c = nil
         end
     end
+    local uh = button.unhovered_callback or function()end
     button.unhovered_callback = function(self, x, y)
-        self.uh_upd_key = animate_color(self.display, "color", clone_color(self.color_default), 0.01)
-        if self.h_upd_key ~= nil then
-            delete_update(self.h_upd_key)
-            self.h_upd_key = nil
+        uh(self, x, y)
+        self.uh_upd_key_c = animate_color(self.display, "color", clone_color(self.color_default), 0.01)
+        if self.h_upd_key_c ~= nil then
+            delete_update(self.h_upd_key_c)
+            self.h_upd_key_c = nil
         end
     end
 end
 
 function setup_hover_bounce(button, dx, dy, dw, dh)
-    local starting_pos = {button.x, button.y, button.w, button.h} 
+    local h = button.hovered_callback or function()end 
     button.hovered_callback = function(self, x, y)
+        h(self, x, y)
         self.target.x = self.base.x + dx
         self.target.y = self.base.y + dy
         self.target.w = self.base.w + dw
         self.target.h = self.base.h + dh
-        self.h_upd_key = animate_numeric_attributes(
+        self.h_upd_key_b = animate_numeric_attributes(
             self.display, 
             {"x","y","w","h"}, 
             self.target, 
             {x=1, y=1, w=1, h=1}
         )
-        if self.uh_upd_key ~= nil then
-            delete_update(self.uh_upd_key)
-            self.uh_upd_key = nil
+        if self.uh_upd_key_b ~= nil then
+            delete_update(self.uh_upd_key_b)
+            self.uh_upd_key_b = nil
         end
     end
+    local uh = button.unhovered_callback or function()end
     button.unhovered_callback = function(self, x, y)
+        uh(self, x, y)
         self.target.x = self.base.x
         self.target.y = self.base.y
         self.target.w = self.base.w
         self.target.h = self.base.h
-        self.uh_upd_key = animate_numeric_attributes(
+        self.uh_upd_key_b = animate_numeric_attributes(
             self.display, 
             {"x","y","w","h"}, 
             self.target,
             {x=1, y=1, w=1, h=1}
         )
-        if self.h_upd_key ~= nil then
-            delete_update(self.h_upd_key)
-            self.h_upd_key = nil
+        if self.h_upd_key_b ~= nil then
+            delete_update(self.h_upd_key_b)
+            self.h_upd_key_b = nil
         end
     end
 end

@@ -21,7 +21,10 @@ function love.load()
     menu_setup()
 end
 
+SECONDS = 0
+
 function love.update(dt)
+    SECONDS = SECONDS + dt
     trigger_updates(dt)
     update_bucket()
     local x, y = love.mouse.getPosition()
