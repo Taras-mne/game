@@ -132,5 +132,5 @@ function debug_output(x, y)
             s = s .. key .. "\n"
         end
         love.graphics.print(s,x,y)
-    end)
+    end, "top")
 end

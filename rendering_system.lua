@@ -1,17 +1,31 @@
-DRAW_QUEUE = {}
+DRAW_QUEUE = {
+    top=    {},
+    mid=    {},
+    bottom= {}
+}
 
 function nuke_draw_queue()
-    DRAW_QUEUE = {}
+    DRAW_QUEUE = {
+        top=    {},
+        mid=    {},
+        bottom= {}
+    }
 end
 
 function draw_all()
-    for i,call in ipairs(DRAW_QUEUE) do
+    for i,call in ipairs(DRAW_QUEUE.bottom) do
+        call()
+    end
+    for i,call in ipairs(DRAW_QUEUE.mid) do
+        call()
+    end
+    for i,call in ipairs(DRAW_QUEUE.top) do
         call()
     end
 end
 
-function draw_call_add(call)
-    table.insert(DRAW_QUEUE, call)
+function draw_call_add(call, place)
+    table.insert(DRAW_QUEUE[place or "mid"], call)
 end
 
 function draw_tile(tile, x, y)

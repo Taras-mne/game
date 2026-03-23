@@ -149,7 +149,7 @@ function button_setup(
             h= h,
         },
         color_default= clone_color(color),
-        color_hovered= {1-color[1], 1-color[2], 1-color[3], 1-color[4]},
+        color_hovered= {1-color[1], 1-color[2], 1-color[3], color[4]},
         is_hovered= false,
         callback= callback,
     }
