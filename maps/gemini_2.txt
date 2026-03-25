@@ -1,0 +1,10 @@
+NAME gemini_2
+5x5
+BG Spikes
+===
+Lava (1 3) (1 4) (1 5) (2 3) (2 4) (2 5) (3 1) (3 2) (4 1) (4 2) (5 1) (5 2) 
+===
+L -> [gemini_1].L
+R -> [gemini_1].R
+U -> [gemini_1].U
+D -> [gemini_1].D

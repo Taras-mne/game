@@ -295,27 +295,27 @@ function read_tilemap(filename)
     end 
     local self_side = ""
     local dest_side = ""
-    local destination = {}
+    local destination = ""
     while i < #tokens do
         if tokens[i] == "->" then
             self_side = tokens[i-1]
             i = i + 1
         elseif tokens[i] == "[" then
             assert(tokens[i+2] == "]", "closing bracket expected")
-            destination = TILEMAPS[tokens[i+1]]
+            destination = tokens[i+1]
             i = i + 3
         elseif tokens[i] == "BLOCK" then
             -- block is default, no behaviour needed
             self_side = ""
             dest_side = ""
-            destination = {}
+            destination = ""
             i = i + 1
         elseif tokens[i] == "." then
             dest_side = tokens[i+1]
             assert(self_side ~= "", "missing self side")
             assert(dest_side ~= "", "missing destination side")
-            assert(destination.name ~= nil, "missing destination")
-            tilemap.links[self_side] = {name = destination.name, side = dest_side}
+            assert(destination ~= "", "missing destination")
+            tilemap.links[self_side] = {name = destination, side = dest_side}
             i = i + 1
         elseif tokens[i] == "U" 
             or tokens[i] == "D"

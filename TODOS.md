@@ -1,14 +1,15 @@
 # IN PROGRESS
--
+- SELF links, like a BLOCK ones
+- the same-sided links with two-sided maps are not working as intended
+- flipping magic (it's time ig)
 
 # QUICK ONES
-- SELF links, like a BLOCK ones
+-
 
 # BIG ONES
 - make a menu that loads different levels in redactor OR with char
 - make a char moving on the grid
 - make links work 4 char
-- flipping magic
 - add ENTITIES that have special interactions with player
 - make it a proper ECS (low priority, but prob needs 2 b done)
 - make a two-layer render to not deep-copy the whole thing (low priority, most prob will never b done)
