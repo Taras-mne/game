@@ -2,7 +2,7 @@
 -
 
 # QUICK ONES
-- 
+- SELF links, like a BLOCK ones
 
 # BIG ONES
 - flipping magic

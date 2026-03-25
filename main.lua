@@ -12,6 +12,7 @@ function love.load()
     read_tilemap("shmol_sphere.txt")
     read_tilemap("shmol_tor.txt")
     read_tilemap("beeg.txt")
+    read_tilemap("weird.txt")
 
     local myFont = love.graphics.newFont("fonts/JacquardaBastarda9-Regular.ttf", 40) -- 24 - размер шрифта
     love.graphics.setFont(myFont)
