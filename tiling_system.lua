@@ -67,7 +67,26 @@ TILEMAPS_CLONES = {
     --is janky, will fix later
 }
 
---TODO: make a OPTIMAL_BG_TILE function
+function set_optimal_bg_tile(tilemap)
+    counts = {}
+    for x, column in pairs(tilemap.tiles) do
+        for y, value in pairs(column) do
+            if counts[value] == nil then
+                counts[value] = 1
+            else 
+                counts[value] = counts[value] + 1
+            end  
+        end
+    end
+    optimal_tile = {name= "", count= 0}
+    for name,count in pairs(counts) do
+        if optimal_tile.count < count then
+            optimal_tile.name = name
+            optimal_tile.count = count
+        end 
+    end
+    tilemap.bg_t = optimal_tile.name
+end
 
 function flipped_check(side_from, side_where)
     local flipped_transitions = {
@@ -151,6 +170,7 @@ function make_tilemap(w,h,bg_t,name)
 end
 
 function upload_tilemap(tilemap)
+    set_optimal_bg_tile(tilemap)
     local out = {}
     
     table.insert(out, "NAME " .. tilemap.name .. "\n")
@@ -195,7 +215,7 @@ function upload_tilemap(tilemap)
     end
 
     local file_s = table.concat(out)
-    local file = io.open("o_maps/".. tilemap.name .. ".txt", "w")
+    local file = io.open("maps/".. tilemap.name .. ".txt", "w")
     if file then
         file:write(file_s)
         file:close()

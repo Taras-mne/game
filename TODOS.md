@@ -1,6 +1,5 @@
 # IN PROGRESS
-- save saving into maps
-- optimal bg tile findig
+-
 
 # QUICK ONES
 - 
