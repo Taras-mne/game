@@ -1,26 +1,3 @@
-ROTATION_MATRICES = {
-    QUARTER = {
-        rotation_deg= 90,
-        { 0,-1},
-        { 1, 0},
-    },
-    HALF = {
-        rotation_deg= 90 * 2,
-        {-1, 0},
-        { 0,-1},
-    },
-    THREE_QUARTERS = {
-        rotation_deg= 90 * 3,
-        { 0, 1},
-        {-1, 0},
-    },
-    ZERO = {
-        rotation_deg= 0,
-        { 1, 0},
-        { 0, 1},
-    },
-}
-
 TILE_SIZE = {
     w= 32,
     h= 32
@@ -37,9 +14,11 @@ TILE_NAMES = { --getting deleted in load_tilesets
     Water=    {y=1, x=4, atlas="big_atlas"},
     Lava=     {y=2, x=3, atlas="big_atlas"},
     Spikes=   {y=2, x=4, atlas="big_atlas"},
-    Rot90cw=  {y=5, x=4, atlas="big_atlas"},
-    Rot90ccw= {y=5, x=5, atlas="big_atlas"},
-    Save=     {y=5, x=1, atlas="big_atlas"},
+
+    Rot90cw=       {y=5, x=4, atlas="big_atlas"},
+    Rot90ccw=      {y=5, x=5, atlas="big_atlas"},
+    Save=          {y=5, x=1, atlas="big_atlas"},
+    ApplyRotation= {y=5, x=3, atlas="big_atlas"},
 
     UpArrow=     {y=2, x=2, atlas="big_atlas"},
     DownArrow=   {y=4, x=2, atlas="big_atlas"},
@@ -67,6 +46,7 @@ RESERVED_TILES = {-- tiles that are gfx not 4 level editing
     "Save",
     "Rot90ccw",
     "Rot90cw",
+    "ApplyRotation",
 }
 
 TILE_ATLASES = {
@@ -374,4 +354,37 @@ end
 
 function clone_tilemap(tilemap)
     return rotate_tilemap(tilemap, ROTATION_MATRICES.ZERO)
+end
+
+function apply_tilemap_rotation(tilemap)
+    --mutates the table
+    deg = tilemap.rotation_deg
+    if deg == 0 then
+        return
+    end
+    rot_m = deg_to_matrix(deg)
+    tilemap.rotation_deg = 0
+    local points = {
+        D= {x= 0, y= 1}, 
+        U= {x= 0, y= -1},
+        L= {x= -1, y= 0},
+        R= {x= 1, y= 0},
+    }
+    for self_side,link in pairs(tilemap.links) do
+        if link.name ~= tilemap.name then
+            goto continue 
+        end
+        local point = points[link.side]
+        local n_point = transform_point(point, rot_m)
+        if compare_points(n_point, point) then
+            goto continue
+        end
+        for key,g_point in pairs(points) do
+            if compare_points(n_point, g_point) then
+                link.side = key
+                goto continue
+            end
+        end
+        ::continue::
+    end
 end

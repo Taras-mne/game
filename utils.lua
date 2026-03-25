@@ -5,6 +5,29 @@ DEG_TO_NAMES = {
     [90 * 3] = "THREE_QUARTERS",
 }
 
+ROTATION_MATRICES = {
+    QUARTER = {
+        rotation_deg= 90,
+        { 0,-1},
+        { 1, 0},
+    },
+    HALF = {
+        rotation_deg= 90 * 2,
+        {-1, 0},
+        { 0,-1},
+    },
+    THREE_QUARTERS = {
+        rotation_deg= 90 * 3,
+        { 0, 1},
+        {-1, 0},
+    },
+    ZERO = {
+        rotation_deg= 0,
+        { 1, 0},
+        { 0, 1},
+    },
+}
+
 function round(x)
     if x >= 0 then
         return math.floor(x + 0.5)
@@ -73,6 +96,10 @@ end
 
 function normalize_deg(deg)
     return deg % 360
+end
+
+function deg_to_matrix(deg)
+    return ROTATION_MATRICES[DEG_TO_NAMES[normalize_deg(deg)]]
 end
 
 function extract_size(obj)

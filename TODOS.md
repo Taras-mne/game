@@ -1,8 +1,7 @@
 # IN PROGRESS
-- apply rotation button
 - shake up the buttons bar
-- optimal bg tile findig
 - save saving into maps
+- optimal bg tile findig
 
 # QUICK ONES
 - 

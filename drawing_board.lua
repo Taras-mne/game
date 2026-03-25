@@ -100,6 +100,8 @@ function buttons_bar_i(x, y)
         save.x, save.y, 
         save.w, save.h, 
         function()
+            apply_tilemap_rotation(TILEMAP)
+            TILEMAPS_CLONES[DRAWING_STATE.tilemap_key] = TILEMAP 
             upload_tilemap(TILEMAPS_CLONES[DRAWING_STATE.tilemap_key])
             TILEMAPS[DRAWING_STATE.tilemap_key] = TILEMAPS_CLONES[DRAWING_STATE.tilemap_key]
             --TODO - draw a popup 
