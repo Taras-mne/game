@@ -32,28 +32,28 @@ function buttons_bar_i(x, y)
     
     local rot_R = {
         x = x + padding,
-        y = y + padding,
+        y = y + TILE_SIZE.w + margin + padding,
         w = TILE_SIZE.w,
         h = TILE_SIZE.h,
         tile = TILESET.Rot90cw
     }
     local rot_L = {
-        x = x + rot_R.w + margin + padding,
-        y = y + padding,
+        x = x + TILE_SIZE.w + margin + padding,
+        y = y + TILE_SIZE.w + margin + padding,
         w = TILE_SIZE.w,
         h = TILE_SIZE.h,
         tile = TILESET.Rot90ccw
     }
     local save = {
-        x = x + (rot_R.w + margin)/2 + padding,
-        y = y + rot_R.w + margin + padding,
+        x = x + padding,
+        y = y + padding,
         w = TILE_SIZE.w,
         h = TILE_SIZE.h,
         tile = TILESET.Save
     }
     local quit = {
-        x = x + (rot_R.w + margin)/2 + padding,
-        y = y + (TILE_SIZE.w + margin) * 2 + padding,
+        x = x + TILE_SIZE.w + margin + padding,
+        y = y + padding,
         w = TILE_SIZE.w,
         h = TILE_SIZE.h,
         tile = TILESET.BLOCK
@@ -63,7 +63,7 @@ function buttons_bar_i(x, y)
         x = x,
         y = y,
         w = TILE_SIZE.w * 2 + margin + padding * 2,
-        h = TILE_SIZE.w * 3 + margin * 2 + padding * 3,
+        h = TILE_SIZE.h * 2 + margin + padding * 2,
     }
 
     -- Queue the background first so buttons draw on top of it
