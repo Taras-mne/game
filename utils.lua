@@ -8,23 +8,39 @@ DEG_TO_NAMES = {
 ROTATION_MATRICES = {
     QUARTER = {
         rotation_deg= 90,
+        flips= {w= 0, h= 0},
         { 0,-1},
         { 1, 0},
     },
     HALF = {
         rotation_deg= 90 * 2,
+        flips= {w= 1, h= 1},
         {-1, 0},
         { 0,-1},
     },
     THREE_QUARTERS = {
         rotation_deg= 90 * 3,
+        flips= {w= 0, h= 0},
         { 0, 1},
         {-1, 0},
     },
     ZERO = {
         rotation_deg= 0,
+        flips= {w= 0, h= 0},
         { 1, 0},
         { 0, 1},
+    },
+    W_FLIPPED = {
+        rotation_deg= 0,
+        flips= {w= 1, h= 0},
+        { -1, 0},
+        { 0, 1},
+    },
+    H_FLIPPED = {
+        rotation_deg= 0,
+        flips= {w= 0, h= 1},
+        { 1, 0},
+        { 0, -1},
     },
 }
 
