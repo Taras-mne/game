@@ -1,7 +1,5 @@
 # IN PROGRESS
-- SELF links, like a BLOCK ones
-- the same-sided links with two-sided maps are not working as intended
-- flipping magic (it's time ig)
+-
 
 # QUICK ONES
 -

@@ -206,12 +206,16 @@ function upload_tilemap(tilemap)
     table.insert(out, "===\n")
 
     for direction, link in pairs(tilemap.links) do
+        local name = "[" .. link.name .. "]"
+        if tilemap.name == link.name then
+            name = "SELF"
+        end
         if link.name == "BLOCK" then
             table.insert(out, direction .. " -> BLOCK")
         elseif link.flipped then
-            table.insert(out, direction .. " -> FLIPPED.[" .. link.name .. "]." .. link.side)
+            table.insert(out, direction .. " -> FLIPPED." .. name .. "." .. link.side)
         else
-            table.insert(out, direction .. " -> [" .. link.name .. "]." .. link.side)
+            table.insert(out, direction .. " -> " .. name .. "." .. link.side)
         end
         table.insert(out, "\n")
     end
@@ -307,6 +311,9 @@ function read_tilemap(filename)
             assert(tokens[i+2] == "]", "closing bracket expected")
             destination = tokens[i+1]
             i = i + 3
+        elseif tokens[i] == "SELF" then
+            destination = tilemap.name
+            i = i + 1
         elseif tokens[i] == "BLOCK" then
             -- block is default, no behaviour needed
             self_side = ""
