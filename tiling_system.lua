@@ -296,6 +296,7 @@ function read_tilemap(filename)
     local self_side = ""
     local dest_side = ""
     local destination = ""
+    local flipped = false
     while i < #tokens do
         if tokens[i] == "->" then
             self_side = tokens[i-1]
@@ -315,7 +316,11 @@ function read_tilemap(filename)
             assert(self_side ~= "", "missing self side")
             assert(dest_side ~= "", "missing destination side")
             assert(destination ~= "", "missing destination")
-            tilemap.links[self_side] = {name = destination, side = dest_side}
+            tilemap.links[self_side] = {name= destination, side= dest_side, flipped= flipped}
+            self_side = ""
+            dest_side = ""
+            destination = ""
+            flipped = false
             i = i + 1
         elseif tokens[i] == "U" 
             or tokens[i] == "D"
@@ -323,6 +328,10 @@ function read_tilemap(filename)
             or tokens[i] == "R" 
         then
             i = i + 1
+        elseif tokens[i] == "FLIPPED"
+        then
+            flipped = true
+            i = i + 2
         else
             assert(false, "unexpected token recieved: " .. tokens[i])
         end
