@@ -6,14 +6,17 @@ TILE_SIZE = {
 TILE_NAMES = { --getting deleted in load_tilesets
     Line=     {x=1, y=1, atlas="smol_atlas"},
     Rect=     {x=2, y=1, atlas="smol_atlas"},
-    Bucket=   {x=1, y=2, atlas="smol_atlas"},
-    Pen=      {x=2, y=2, atlas="smol_atlas"},
+    Bucket=   {x=3, y=1, atlas="new_atlas"},
+    Pen=      {x=4, y=1, atlas="new_atlas"},
     Wug=      {x=1, y=1, atlas="big_atlas"},
     Birb=     {x=2, y=1, atlas="big_atlas"},
     Grass=    {y=1, x=3, atlas="big_atlas"},
     Water=    {y=1, x=4, atlas="big_atlas"},
     Lava=     {y=2, x=3, atlas="big_atlas"},
     Spikes=   {y=2, x=4, atlas="big_atlas"},
+
+    Carpet1=   {x=1, y=1, atlas="new_atlas"},
+    Carpet2=   {x=2, y=1, atlas="new_atlas"},
 
     Rot90cw=       {y=5, x=4, atlas="big_atlas"},
     Rot90ccw=      {y=5, x=5, atlas="big_atlas"},
@@ -51,7 +54,8 @@ RESERVED_TILES = {-- tiles that are gfx not 4 level editing
 
 TILE_ATLASES = {
     big_atlas= "pics/5by5.png",
-    smol_atlas= "pics/2by2.png"
+    smol_atlas= "pics/2by2.png",
+    new_atlas= "pics/10by10.png"
 }
 
 TILESET = {
