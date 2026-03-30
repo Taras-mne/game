@@ -1,14 +1,14 @@
 NAME weird
 5x5
-BG Lava
+BG Grass
 ===
-NULL (3 3) 
 Save (5 5) 
 Line (5 1) 
 Water (1 5) 
+NULL (3 3) 
 Bucket (1 1) 
 ===
-R -> SELF.R
-U -> SELF.U
 D -> SELF.D
 L -> SELF.L
+R -> SELF.R
+U -> SELF.U
