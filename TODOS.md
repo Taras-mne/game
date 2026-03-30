@@ -1,8 +1,8 @@
 # IN PROGRESS
--
+- none yet
 
 # QUICK ONES
--
+- none yet
 
 # BIG ONES
 - make a menu that loads different levels in redactor OR with char
