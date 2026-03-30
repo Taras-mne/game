@@ -9,9 +9,9 @@ function love.load()
 
     load_tilesets()
 
-    read_tilemap("shmol_sphere.txt")
-    read_tilemap("shmol_tor.txt")
-    read_tilemap("beeg.txt")
+    -- read_tilemap("shmol_sphere.txt")
+    -- read_tilemap("shmol_tor.txt")
+    -- read_tilemap("beeg.txt")
     read_tilemap("weird.txt")
     
     read_tilemap("gemini_1.txt")

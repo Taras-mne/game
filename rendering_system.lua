@@ -87,7 +87,8 @@ function draw_tilemap(tilemap, x, y)
         end
         local side = get_side(
             other_tilemap, link.side, 
-            flipped_check(direction, link.side))
+            flipped_check(direction, link.side) ~= link.flipped
+        )
         local i = 0
         for _,tile_name in pairs(side) do
             local tile = TILESET[tile_name] 
