@@ -208,6 +208,8 @@ function upload_tilemap(tilemap)
     for direction, link in pairs(tilemap.links) do
         if link.name == "BLOCK" then
             table.insert(out, direction .. " -> BLOCK")
+        elseif link.flipped then
+            table.insert(out, direction .. " -> FLIPPED.[" .. link.name .. "]." .. link.side)
         else
             table.insert(out, direction .. " -> [" .. link.name .. "]." .. link.side)
         end
