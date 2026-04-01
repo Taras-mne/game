@@ -30,9 +30,13 @@ TILE_NAMES = { --getting deleted in load_tilesets
 
     BLOCK=  {y=4, x=1, atlas="big_atlas"},
     NoTile=  {y=4, x=3, atlas="big_atlas"},
+
+    Player=   {x=2, y=2, atlas="new_atlas"},
 }
 
 RESERVED_TILES = {-- tiles that are gfx not 4 level editing
+    "Player",
+
     "Pen",
     "Line",
     "Rect",

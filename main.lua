@@ -4,6 +4,7 @@ function love.load()
     require("tiling_system")
     require("buttons_system")
     require("sceduled_updates_system")
+    require("gameplay_system")
     require("example_menu")
     require("drawing_board")
 
@@ -22,7 +23,7 @@ function love.load()
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 
-    menu_setup()
+    gameplay_setup(TILEMAPS.beeg, player_init(3,3))
 end
 
 SECONDS = 0
@@ -30,7 +31,7 @@ SECONDS = 0
 function love.update(dt)
     SECONDS = SECONDS + dt
     trigger_updates(dt)
-    update_bucket()
+    -- update_bucket()
     local x, y = love.mouse.getPosition()
     hover_buttons(x, y, love.mouse.isDown(1))
 end
