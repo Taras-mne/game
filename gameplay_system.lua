@@ -5,10 +5,17 @@ MOVEMENT_OPTIONS = {
     R = {x= 1, y= 0},
 }
 
+function move_thing_beyond_map(thing, n_pos)
+    -- only a call to tiling system, which returns the new coords
+    -- TILEMAP, n_pos = call(TILEMAP, n_pos)
+    -- thing.x = n_pos.x
+    -- thing.y = n_pos.y
+end
+
 function move_thing(thing, vector)
     n_pos = sum_points(thing, vector)
     if not point_within_bounds(n_pos, TILEMAP) then
-        return
+        return move_thing_beyond_map(thing, n_pos)
     end
     local tile = TILESET[TILEMAP.tiles[n_pos.x][n_pos.y]]
     if  tile.passable == nil then

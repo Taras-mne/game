@@ -54,6 +54,34 @@ TILEMAPS_CLONES = {
     --is janky, will fix later
 }
 
+function tilemap_transition_handling(tilemap, pos)
+    local side = ""
+    if pos.x == 0 then
+        side = "L"
+    elseif pos.y == 0 then
+        side = "U"
+    elseif pos.y == tilemap.h + 1 then
+        side = "D"
+    elseif pos.x == tilemap.w + 1 then
+        side = "R"
+    else
+        assert(false,"tf you mean none of the above")
+    end
+
+    local link = tilemap.links[side]
+    if link.name = "BLOCK" then
+        return tilemap, pos
+    end
+
+    --i need a function, that returns them rotation matricies knowing, from where to where we go
+
+    n_tilemap = rotate_tilemap(TILEMAPS[link.name], ROTATION_MATRICES.ZERO)
+end
+
+function get_transition_matricies(side, link)
+    
+end
+
 function point_within_bounds(point, tilemap)
     return point.x > 0 and point.y > 0 and point.y <= tilemap.h and point.x <= tilemap.w
 end
