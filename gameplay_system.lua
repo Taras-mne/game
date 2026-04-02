@@ -10,6 +10,9 @@ function move_thing(thing, vector)
     if not point_within_bounds(n_pos, TILEMAP) then
         return
     end
+    if TILEMAP.tiles[n_pos.x][n_pos.y] == "Spikes" then
+        return
+    end
     thing.x = n_pos.x
     thing.y = n_pos.y
 end

@@ -28,6 +28,7 @@ function love.load()
         love.event.quit()
     end)
     
+    -- menu_setup()
     gameplay_setup(TILEMAPS.beeg, player_init(3,3))
 end
 
