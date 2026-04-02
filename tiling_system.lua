@@ -411,6 +411,14 @@ function rotate_tilemap(tilemap, rot_m)
             end
         end
     end
+
+    if rot_m.flips.w ~= rot_m.flips.h then
+        n_tilemap.links.U.flipped = n_tilemap.links.U.flipped == false
+        n_tilemap.links.D.flipped = n_tilemap.links.D.flipped == false
+        n_tilemap.links.L.flipped = n_tilemap.links.L.flipped == false
+        n_tilemap.links.R.flipped = n_tilemap.links.R.flipped == false
+    end
+
     return n_tilemap
 end
 

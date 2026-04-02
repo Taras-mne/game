@@ -62,19 +62,7 @@ function draw_tilemap(tilemap, x, y)
         local block_tile = TILESET["BLOCK"]
         local shift = shifts[direction]
         local other_tilemap = {}
-        if link.name == tilemap.name then
-            if tilemap.rotation_deg == 0 then
-                other_tilemap = tilemap
-            else 
-                local deg = normalize_deg(-tilemap.rotation_deg)
-                other_tilemap = rotate_tilemap(
-                    tilemap, 
-                    ROTATION_MATRICES[DEG_TO_NAMES[deg]]
-                )
-            end
-        else
-            other_tilemap = TILEMAPS[link.name]
-        end
+        other_tilemap = TILEMAPS[link.name]
 
         if link.name == "BLOCK" then
             for i=0,shift.len-1 do 
