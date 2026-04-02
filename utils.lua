@@ -121,7 +121,15 @@ function deg_to_matrix(deg)
 end
 
 function extract_size(obj)
+    assert(obj.w ~= nil, "no width")
+    assert(obj.h ~= nil, "no height")
     return {w= obj.w, h= obj.h}
+end
+
+function extract_point(obj)
+    assert(obj.x ~= nil, "no X")
+    assert(obj.y ~= nil, "no Y")
+    return {x= obj.x, y= obj.y}
 end
 
 function is_function(obj)
