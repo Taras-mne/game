@@ -75,6 +75,10 @@ TILEMAPS_CLONES = {
     --is janky, will fix later
 }
 
+function point_within_bounds(point, tilemap)
+    return point.x > 0 and point.y > 0 and point.y <= tilemap.h and point.x <= tilemap.w
+end
+
 function set_optimal_bg_tile(tilemap)
     counts = {}
     for x, column in pairs(tilemap.tiles) do

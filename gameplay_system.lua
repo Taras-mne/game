@@ -7,6 +7,9 @@ MOVEMENT_OPTIONS = {
 
 function move_thing(thing, vector)
     n_pos = sum_points(thing, vector)
+    if not point_within_bounds(n_pos, TILEMAP) then
+        return
+    end
     thing.x = n_pos.x
     thing.y = n_pos.y
 end
