@@ -1,8 +1,22 @@
+MOVEMENT_OPTIONS = {
+    U = {x= 0, y= -1},
+    D = {x= 0, y= 1},
+    L = {x= -1, y= 0},
+    R = {x= 1, y= 0},
+}
+
+function move_thing(thing, vector)
+    n_pos = sum_points(thing, vector)
+    thing.x = n_pos.x
+    thing.y = n_pos.y
+end
+
 function player_init(x,y)
     return {
         x= x,
         y= y,
-        tile = TILESET.Player
+        tile= TILESET.Player,
+        type= "PLAYER"
     }
 end
 
@@ -11,20 +25,20 @@ function gameplay_setup(map, player)
     PLAYER = player
 
     draw_call_add(function()
-        gameplay_draw(150, 150)
+        gameplay_draw(100, 100)
     end)
 
     add_key_callback("w", function()
-        PLAYER.y = PLAYER.y - 1
+        move_thing(PLAYER, MOVEMENT_OPTIONS.U)
     end)
     add_key_callback("a", function()
-        PLAYER.x = PLAYER.x - 1
+        move_thing(PLAYER, MOVEMENT_OPTIONS.L)
     end)
     add_key_callback("s", function()
-        PLAYER.y = PLAYER.y + 1
+        move_thing(PLAYER, MOVEMENT_OPTIONS.D)
     end)
     add_key_callback("d", function()
-        PLAYER.x = PLAYER.x + 1
+        move_thing(PLAYER, MOVEMENT_OPTIONS.R)
     end)
 end
 
