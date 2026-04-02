@@ -4,6 +4,7 @@ function love.load()
     require("tiling_system")
     require("buttons_system")
     require("sceduled_updates_system")
+    require("key_mapping_system")
     require("gameplay_system")
     require("example_menu")
     require("drawing_board")
@@ -23,6 +24,10 @@ function love.load()
     
     love.window.setMode(1300, 800, {resizable=true, fullscreen=false, vsync=true})
 
+    add_key_callback("escape", function()
+        love.event.quit()
+    end)
+    
     gameplay_setup(TILEMAPS.beeg, player_init(3,3))
 end
 
