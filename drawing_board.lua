@@ -44,6 +44,20 @@ function buttons_bar_i(x, y)
         h = TILE_SIZE.h,
         tile = TILESET.Rot90ccw
     }
+    local h_flip = {
+        x = x + padding,
+        y = y + TILE_SIZE.w*2 + margin*2 + padding,
+        w = TILE_SIZE.w,
+        h = TILE_SIZE.h,
+        tile = TILESET.HeightFlipped
+    }
+    local w_flip = {
+        x = x + TILE_SIZE.w + margin + padding,
+        y = y + TILE_SIZE.w*2 + margin*2 + padding,
+        w = TILE_SIZE.w,
+        h = TILE_SIZE.h,
+        tile = TILESET.WidthFlipped
+    }
     local save = {
         x = x + padding,
         y = y + padding,
@@ -63,7 +77,7 @@ function buttons_bar_i(x, y)
         x = x,
         y = y,
         w = TILE_SIZE.w * 2 + margin + padding * 2,
-        h = TILE_SIZE.h * 2 + margin + padding * 2,
+        h = TILE_SIZE.h * 3 + margin * 2 + padding * 2,
     }
 
     -- Queue the background first so buttons draw on top of it
@@ -95,6 +109,26 @@ function buttons_bar_i(x, y)
         end
     )
     icon_setup(btn_rot_l, 0, 0, rot_L.tile)
+
+    local btn_h_flip = transparent_button_setup(
+        h_flip.x, h_flip.y, 
+        h_flip.w, h_flip.h,
+        function()
+            TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.H_FLIPPED)
+            drawing_board_setup()
+        end
+    )
+    icon_setup(btn_h_flip, 0, 0, h_flip.tile)
+
+    local btn_w_flip = transparent_button_setup(
+        w_flip.x, w_flip.y, 
+        w_flip.w, w_flip.h,
+        function()
+            TILEMAP = rotate_tilemap(TILEMAP, ROTATION_MATRICES.W_FLIPPED)
+            drawing_board_setup()
+        end
+    )
+    icon_setup(btn_w_flip, 0, 0, w_flip.tile)
     
     local btn_save = transparent_button_setup(
         save.x, save.y, 

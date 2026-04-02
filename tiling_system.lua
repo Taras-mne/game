@@ -21,6 +21,8 @@ TILE_NAMES = { --getting deleted in load_tilesets
 
     Rot90cw=       {y=5, x=4, atlas="big_atlas", reserved= true},
     Rot90ccw=      {y=5, x=5, atlas="big_atlas", reserved= true},
+    HeightFlipped= {y=4, x=5, atlas="big_atlas", reserved= true},
+    WidthFlipped=  {y=4, x=4, atlas="big_atlas", reserved= true},
     Save=          {y=5, x=1, atlas="big_atlas", reserved= true},
     ApplyRotation= {y=5, x=3, atlas="big_atlas", reserved= true},
 
@@ -69,7 +71,7 @@ function tilemap_transition_handling(tilemap, pos)
     end
 
     local link = tilemap.links[side]
-    if link.name = "BLOCK" then
+    if link.name == "BLOCK" then
         return tilemap, pos
     end
 
@@ -79,7 +81,7 @@ function tilemap_transition_handling(tilemap, pos)
 end
 
 function get_transition_matricies(side, link)
-    
+    --pass
 end
 
 function point_within_bounds(point, tilemap)

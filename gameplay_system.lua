@@ -7,7 +7,7 @@ MOVEMENT_OPTIONS = {
 
 function move_thing_beyond_map(thing, n_pos)
     -- only a call to tiling system, which returns the new coords
-    -- TILEMAP, n_pos = call(TILEMAP, n_pos)
+    -- TILEMAP, n_pos = tilemap_transition_handling(TILEMAP, n_pos)
     -- thing.x = n_pos.x
     -- thing.y = n_pos.y
 end
