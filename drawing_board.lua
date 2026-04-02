@@ -407,7 +407,7 @@ function palette_i(x, y)
     -- Pre-calculate to queue the background right away
     local tiles_todraw = {}
     for key,tile in pairs(TILESET) do
-        if not is_in_table(RESERVED_TILES, key) then
+        if tile.reserved == nil then 
             table.insert(tiles_todraw, key)
         end
     end

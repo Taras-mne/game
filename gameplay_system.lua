@@ -10,7 +10,8 @@ function move_thing(thing, vector)
     if not point_within_bounds(n_pos, TILEMAP) then
         return
     end
-    if TILEMAP.tiles[n_pos.x][n_pos.y] == "Spikes" then
+    local tile = TILESET[TILEMAP.tiles[n_pos.x][n_pos.y]]
+    if  tile.passable == nil then
         return
     end
     thing.x = n_pos.x

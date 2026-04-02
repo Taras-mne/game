@@ -4,13 +4,14 @@ TILE_SIZE = {
 }
 
 TILE_NAMES = { --getting deleted in load_tilesets
-    Line=     {x=1, y=1, atlas="smol_atlas"},
-    Rect=     {x=2, y=1, atlas="smol_atlas"},
-    Bucket=   {x=3, y=1, atlas="new_atlas"},
-    Pen=      {x=4, y=1, atlas="new_atlas"},
-    Wug=      {x=1, y=1, atlas="big_atlas"},
+    Line=     {x=1, y=1, atlas="smol_atlas", reserved= true},
+    Rect=     {x=2, y=1, atlas="smol_atlas", reserved= true},
+    Bucket=   {x=3, y=1, atlas="new_atlas", reserved= true},
+    Pen=      {x=4, y=1, atlas="new_atlas", reserved= true},
+
+    Wug=      {x=1, y=1, atlas="big_atlas", passable= true},
     Birb=     {x=2, y=1, atlas="big_atlas"},
-    Grass=    {y=1, x=3, atlas="big_atlas"},
+    Grass=    {y=1, x=3, atlas="big_atlas", passable= true},
     Water=    {y=1, x=4, atlas="big_atlas"},
     Lava=     {y=2, x=3, atlas="big_atlas"},
     Spikes=   {y=2, x=4, atlas="big_atlas"},
@@ -18,42 +19,20 @@ TILE_NAMES = { --getting deleted in load_tilesets
     Carpet1=   {x=1, y=1, atlas="new_atlas"},
     Carpet2=   {x=2, y=1, atlas="new_atlas"},
 
-    Rot90cw=       {y=5, x=4, atlas="big_atlas"},
-    Rot90ccw=      {y=5, x=5, atlas="big_atlas"},
-    Save=          {y=5, x=1, atlas="big_atlas"},
-    ApplyRotation= {y=5, x=3, atlas="big_atlas"},
+    Rot90cw=       {y=5, x=4, atlas="big_atlas", reserved= true},
+    Rot90ccw=      {y=5, x=5, atlas="big_atlas", reserved= true},
+    Save=          {y=5, x=1, atlas="big_atlas", reserved= true},
+    ApplyRotation= {y=5, x=3, atlas="big_atlas", reserved= true},
 
-    UpArrow=     {y=2, x=2, atlas="big_atlas"},
-    DownArrow=   {y=4, x=2, atlas="big_atlas"},
-    LeftArrow=   {y=3, x=1, atlas="big_atlas"},
-    RightArrow=  {y=3, x=3, atlas="big_atlas"},
+    UpArrow=     {y=2, x=2, atlas="big_atlas", reserved= true},
+    DownArrow=   {y=4, x=2, atlas="big_atlas", reserved= true},
+    LeftArrow=   {y=3, x=1, atlas="big_atlas", reserved= true},
+    RightArrow=  {y=3, x=3, atlas="big_atlas", reserved= true},
 
-    BLOCK=  {y=4, x=1, atlas="big_atlas"},
-    NoTile=  {y=4, x=3, atlas="big_atlas"},
+    BLOCK=  {y=4, x=1, atlas="big_atlas", reserved= true},
+    NoTile=  {y=4, x=3, atlas="big_atlas", reserved= true},
 
-    Player=   {x=2, y=2, atlas="new_atlas"},
-}
-
-RESERVED_TILES = {-- tiles that are gfx not 4 level editing
-    "Player",
-
-    "Pen",
-    "Line",
-    "Rect",
-    "Bucket",
-
-    "BLOCK",
-    "NoTile",
-
-    "UpArrow",
-    "DownArrow",
-    "LeftArrow",
-    "RightArrow",
-
-    "Save",
-    "Rot90ccw",
-    "Rot90cw",
-    "ApplyRotation",
+    Player=   {x=2, y=2, atlas="new_atlas", reserved= true},
 }
 
 TILE_ATLASES = {
@@ -149,7 +128,10 @@ function load_tilesets()
         TILESET[name] = {
             name= name,
             quad= tile_quad,
-            atlas= coords.atlas
+            atlas= coords.atlas,
+
+            passable= coords.passable,
+            reserved= coords.reserved,
         } 
     end
     TILE_NAMES = nil

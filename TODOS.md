@@ -3,10 +3,7 @@
 - make a menu that loads different levels in redactor OR with char
 
 # PLAN
-- make a BUTTON CALLBACK SYSTEM
-- make char move on the grid
 - make the movement between the maps
-- make him not go some places (PASSABLE_TILES)
 - make some tiles have special behaviour
 - ANIMATIONS OOoOOooooooOOOOooOOOo
 
