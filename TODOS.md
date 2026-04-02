@@ -3,7 +3,6 @@
 - make a menu that loads different levels in redactor OR with char
 
 # PLAN
-- FUCK, i need to make and test flip function, both vertical and horisontal 
 - make the movement between the maps
 - make some tiles have special behaviour
 - ANIMATIONS OOoOOooooooOOOOooOOOo

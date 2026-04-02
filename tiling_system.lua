@@ -16,8 +16,8 @@ TILE_NAMES = { --getting deleted in load_tilesets
     Lava=     {y=2, x=3, atlas="big_atlas"},
     Spikes=   {y=2, x=4, atlas="big_atlas"},
 
-    Carpet1=   {x=1, y=1, atlas="new_atlas"},
-    Carpet2=   {x=2, y=1, atlas="new_atlas"},
+    Carpet1=   {x=1, y=1, atlas="new_atlas", passable= true},
+    Carpet2=   {x=2, y=1, atlas="new_atlas", passable= true},
 
     Rot90cw=       {y=5, x=4, atlas="big_atlas", reserved= true},
     Rot90ccw=      {y=5, x=5, atlas="big_atlas", reserved= true},
@@ -57,31 +57,88 @@ TILEMAPS_CLONES = {
 }
 
 function tilemap_transition_handling(tilemap, pos)
-    local side = ""
+    local side
+    local n_pos = extract_point(pos)
     if pos.x == 0 then
         side = "L"
     elseif pos.y == 0 then
         side = "U"
     elseif pos.y == tilemap.h + 1 then
         side = "D"
+        n_pos.y = 1
     elseif pos.x == tilemap.w + 1 then
         side = "R"
+        n_pos.x = 1
     else
         assert(false,"tf you mean none of the above")
     end
 
     local link = tilemap.links[side]
     if link.name == "BLOCK" then
-        return tilemap, pos
+        -- special behaviour will b there soon
+        -- return success, tilemap, pos
+        return false, tilemap, pos
     end
 
-    --i need a function, that returns them rotation matricies knowing, from where to where we go
+    n_tilemap = get_transited_tilemap(side, link)
+    if pos.x == 0 then
+        n_pos.x = n_tilemap.w
+    elseif pos.y == 0 then
+        n_pos.y = n_tilemap.h
+    end
 
-    n_tilemap = rotate_tilemap(TILEMAPS[link.name], ROTATION_MATRICES.ZERO)
+    local tile = TILESET[n_tilemap.tiles[n_pos.x][n_pos.y]]
+    return tile.passable, n_tilemap, n_pos
 end
 
-function get_transition_matricies(side, link)
-    --pass
+function get_transited_tilemap(side, link)
+    local points = {
+        D= {x= 0, y= 1}, 
+        U= {x= 0, y= -1},
+        L= {x= -1, y= 0},
+        R= {x= 1, y= 0},
+    }
+    
+    local point = extract_point(points[side])
+    local deg = 0
+    
+    while not compare_points(points.U, point) do
+        deg = deg + 90
+        point = transform_point(point, ROTATION_MATRICES.QUARTER)
+    end
+    
+    point_to = transform_point(points[link.side], deg_to_matrix(deg))
+    local new_to
+    for key,value in pairs(points) do
+        if compare_points(value, point_to) then
+            new_to = key
+        end
+    end
+    
+    local r1
+    if     new_to == "U" then
+        r1 = ROTATION_MATRICES.HALF
+    elseif new_to == "D" then
+        r1 = ROTATION_MATRICES.ZERO
+    elseif new_to == "L" then
+        r1 = ROTATION_MATRICES.THREE_QUARTERS
+    elseif new_to == "R" then
+        r1 = ROTATION_MATRICES.QUARTER
+    end
+    
+    local r2
+    if     link.flipped and (side == "U" or side == "D") then
+        r2 = ROTATION_MATRICES.W_FLIPPED
+    elseif link.flipped and (side == "L" or side == "R") then
+        r2 = ROTATION_MATRICES.H_FLIPPED 
+    else
+        r2 = ROTATION_MATRICES.ZERO
+    end
+    
+    local n_tilemap = rotate_tilemap(TILEMAPS[link.name], r1)
+    n_tilemap = rotate_tilemap(n_tilemap, r2)
+
+    return n_tilemap
 end
 
 function point_within_bounds(point, tilemap)
@@ -349,7 +406,11 @@ function read_tilemap(filename)
             assert(self_side ~= "", "missing self side")
             assert(dest_side ~= "", "missing destination side")
             assert(destination ~= "", "missing destination")
-            tilemap.links[self_side] = {name= destination, side= dest_side, flipped= flipped}
+            tilemap.links[self_side] = {
+                name= destination, 
+                side= dest_side, 
+                flipped= flipped
+            }
             self_side = ""
             dest_side = ""
             destination = ""

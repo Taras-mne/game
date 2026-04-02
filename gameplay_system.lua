@@ -5,11 +5,12 @@ MOVEMENT_OPTIONS = {
     R = {x= 1, y= 0},
 }
 
-function move_thing_beyond_map(thing, n_pos)
-    -- only a call to tiling system, which returns the new coords
-    -- TILEMAP, n_pos = tilemap_transition_handling(TILEMAP, n_pos)
-    -- thing.x = n_pos.x
-    -- thing.y = n_pos.y
+function move_thing_beyond_map(thing, pos)
+    success, TILEMAP, n_pos = tilemap_transition_handling(TILEMAP, pos)
+    if success then
+        thing.x = n_pos.x
+        thing.y = n_pos.y
+    end
 end
 
 function move_thing(thing, vector)
