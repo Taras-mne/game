@@ -85,6 +85,10 @@ function tilemap_transition_handling(tilemap, pos)
         n_pos.x = n_tilemap.w
     elseif pos.y == 0 then
         n_pos.y = n_tilemap.h
+    elseif pos.y == tilemap.h+1 then
+        n_pos.y = 1
+    elseif pos.x == tilemap.w+1 then
+        n_pos.x = 1
     end
 
     local tile = TILESET[n_tilemap.tiles[n_pos.x][n_pos.y]]

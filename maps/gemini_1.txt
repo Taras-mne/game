@@ -2,7 +2,7 @@ NAME gemini_1
 5x5
 BG Carpet2
 ===
-Spikes (1 3) (3 1) (3 5) (5 3) 
+Spikes (1 3) (1 5) (3 1) (3 5) (5 1) (5 3) 
 ===
 L -> FLIPPED.[gemini_2].L
 R -> FLIPPED.[gemini_2].R

@@ -6,8 +6,9 @@ MOVEMENT_OPTIONS = {
 }
 
 function move_thing_beyond_map(thing, pos)
-    success, TILEMAP, n_pos = tilemap_transition_handling(TILEMAP, pos)
-    if success then
+    success, n_tilemap, n_pos = tilemap_transition_handling(TILEMAP, pos)
+    if success and success ~= nil then
+        TILEMAP = n_tilemap
         thing.x = n_pos.x
         thing.y = n_pos.y
     end
