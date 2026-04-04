@@ -41,7 +41,7 @@ function gameplay_setup(map, player)
     PLAYER = player
 
     draw_call_add(function()
-        gameplay_draw(100, 100)
+        gameplay_draw()
     end)
 
     add_keys_callback({"w","up"}, function()
@@ -61,11 +61,48 @@ end
 function gameplay_update(dt)
 end
 
-function gameplay_draw(x,y)
-    draw_tilemap(TILEMAP, x, y)
+function gameplay_draw()
+    local x,y = 100,100
+    draw_tilemap(TILEMAP, 100, 100)
     draw_tile(
         PLAYER.tile,
         x + (PLAYER.x-1) * TILE_SIZE.w,
         y + (PLAYER.y-1) * TILE_SIZE.h
     )
+    draw_debug_tilemap_links(x + 400, y)
+end
+
+function draw_debug_tilemap_links(x, y)
+    if not TILEMAP then return end
+
+    love.graphics.setColor(1, 1, 1, 1)
+    
+    local line_height = 40
+    local current_y = y
+
+    love.graphics.print("DEBUG: TILEMAP INFO", x, current_y)
+    current_y = current_y + line_height
+    
+    local rot = TILEMAP.rotation_deg or 0
+    love.graphics.print("Rotation: " .. rot .. "°", x, current_y)
+    current_y = current_y + line_height + 5
+
+    love.graphics.print("LINKS:", x, current_y)
+    current_y = current_y + line_height
+
+    local directions = {"U", "D", "L", "R"}
+    for _, dir in ipairs(directions) do
+        local link = TILEMAP.links and TILEMAP.links[dir]
+        local info = "NONE"
+        
+        if link then
+            local target = link.name or "unknown"
+            local deg = link.rotation_deg or 0
+            local flipped = link.flipped and "YES" or "NO"
+            info = string.format("-> %s (Rot: %d°, Flip: %s)", target, deg, flipped)
+        end
+        
+        love.graphics.print(dir .. ": " .. info, x + 10, current_y)
+        current_y = current_y + line_height
+    end
 end

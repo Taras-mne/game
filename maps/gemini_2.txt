@@ -4,7 +4,7 @@ BG Carpet1
 ===
 Spikes (1 4) (1 5) (2 4) (2 5) (4 1) (4 2) (5 1) (5 2) 
 ===
-L -> FLIPPED.[gemini_1].L
-R -> FLIPPED.[gemini_1].R
-U -> FLIPPED.[gemini_1].U
-D -> FLIPPED.[gemini_1].D
+L -> [gemini_1].L
+R -> [gemini_1].R
+U -> [gemini_1].U
+D -> [gemini_1].D
