@@ -18,6 +18,8 @@ function love.load()
     
     read_tilemap("gemini_1.txt")
     read_tilemap("gemini_2.txt")
+    read_tilemap("gemini_1_f.txt")
+    read_tilemap("gemini_2_f.txt")
 
     local myFont = love.graphics.newFont("fonts/JacquardaBastarda9-Regular.ttf", 40) -- 24 - размер шрифта
     love.graphics.setFont(myFont)
@@ -29,7 +31,7 @@ function love.load()
     end)
     
     -- menu_setup()
-    gameplay_setup(TILEMAPS.gemini_1, player_init(3,3))
+    gameplay_setup(TILEMAPS.gemini_1_f, player_init(3,3))
 end
 
 SECONDS = 0

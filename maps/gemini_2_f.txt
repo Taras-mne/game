@@ -1,0 +1,10 @@
+NAME gemini_2_f
+5x5
+BG Carpet1
+===
+Spikes (1 4) (1 5) (2 4) (2 5) (4 1) (4 2) (5 1) (5 2) 
+===
+L -> [gemini_1_f].L
+R -> [gemini_1_f].R
+U -> [gemini_1_f].U
+D -> [gemini_1_f].D
